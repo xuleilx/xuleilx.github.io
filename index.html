@@ -324,6 +324,137 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习4之legend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xuleilx">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/24/matplotlib学习4之legend/" itemprop="url">matplotlib学习4之legend</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T14:53:35+08:00">
+                2017-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/24/matplotlib学习4之legend/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/24/matplotlib学习4之legend/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 产生数据</span></span><br><span class="line">x = np.linspace(<span class="number">-3</span>,<span class="number">3</span>,<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制直线</span></span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制曲线</span></span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置坐标轴</span></span><br><span class="line">plt.xlim(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line">plt.ylim(<span class="number">-2</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'I am x'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'I am y'</span>)</span><br><span class="line"></span><br><span class="line">new_ticks= np.linspace(<span class="number">-1</span>,<span class="number">2</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 设置坐标的粒度</span></span><br><span class="line">plt.xticks(new_ticks)</span><br><span class="line"><span class="comment"># 用文字代替对应的数值</span></span><br><span class="line">plt.yticks([<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>],</span><br><span class="line">           [<span class="string">'very bad'</span>,<span class="string">'bad'</span>,<span class="string">'normal'</span>,<span class="string">'good'</span>,<span class="string">'very good'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单纯直线</span></span><br><span class="line">l1, = plt.plot(x,y2,label=<span class="string">'up'</span>)</span><br><span class="line"><span class="comment"># 指定线的颜色, 宽度和类型</span></span><br><span class="line">l2, = plt.plot(x,y1,color=<span class="string">'red'</span>,linewidth=<span class="number">5.0</span>,linestyle=<span class="string">'--'</span>,label=<span class="string">'bottom'</span>)</span><br><span class="line"></span><br><span class="line">plt.legend(handles=[l1,l2],labels=[<span class="string">'aaa'</span>,<span class="string">'bbb'</span>],loc=<span class="string">'best'</span>)</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/legend.png"</span>)</span><br><span class="line"><span class="comment">#显示</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/legend.png" alt="legend"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1157,7 +1288,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
