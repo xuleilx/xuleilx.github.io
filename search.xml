@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[matplotlib学习6之tick能见度]]></title>
+    <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A06%E4%B9%8Btick%E8%83%BD%E8%A7%81%E5%BA%A6%2F</url>
+    <content type="text"><![CDATA[代码：1234567891011121314151617181920212223242526272829303132333435363738# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y = 0.1*xplt.figure(num=1,figsize=(8,5))# 单纯直线plt.plot(x,y,linewidth=10,zorder=1)plt.ylim(-2,2)# gca = 'get current axis'# 移动坐标轴位置ax = plt.gca()ax.spines['right'].set_color('none')ax.spines['top'].set_color('none')ax.xaxis.set_ticks_position("bottom")ax.yaxis.set_ticks_position("left")ax.spines['bottom'].set_position(('data',0))ax.spines['left'].set_position(('data',0))# 当坐标轴的数字被遮挡时，调整线的透明度for label in ax.get_xticklabels() + ax.get_yticklabels(): label.set_fontsize(12) label.set_bbox(dict(facecolor='white', edgecolor='None', alpha=0.7, zorder=2))plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/tick.png")#显示plt.show()]]></content>
+      <tags>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[matplotlib学习5之标注annotate]]></title>
     <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A05%E4%B9%8B%E6%A0%87%E6%B3%A8annotate%2F</url>
     <content type="text"><![CDATA[代码：123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y = 2*x + 1plt.figure(num=1,figsize=(8,5))# 单纯直线plt.plot(x,y)# gca = 'get current axis'# 移动坐标轴位置ax = plt.gca()ax.spines['right'].set_color('none')ax.spines['top'].set_color('none')ax.xaxis.set_ticks_position("bottom")ax.yaxis.set_ticks_position("left")ax.spines['bottom'].set_position(('data',0))ax.spines['left'].set_position(('data',0))x0 = 1y0 = 2*x0+1# x:[x0,x0],y:[0,y0] 矩阵运算plt.plot([x0,x0],[0,y0],'k--',linewidth=2.5)# set dot stylesplt.scatter([x0,],[y0,],s=50,color='b')# 添加标注# method1plt.annotate(r'$2x+1=%s$'%y0, xy=(x0,y0), xycoords='data', xytext=(+30,-30), textcoords='offset points', fontsize=16, arrowprops=dict(arrowstyle='-&gt;', connectionstyle='arc3,rad=.2'))# method2plt.text(-1,3, r'$\mu\ \sigma_i\ \alpha_t$', fontdict=&#123;'size':16,'color':'r'&#125;)plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/annotation.png")#显示plt.show() 结果：]]></content>
