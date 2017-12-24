@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[matplotlib学习2之figure]]></title>
+    <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A02%E4%B9%8Bfigure%2F</url>
+    <content type="text"><![CDATA[代码：123456789101112131415161718192021222324# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x**2# figure 3，指定figure的编号并指定figure的大小plt.figure(num=3,figsize=(8,5))plt.plot(x,y1)plt.figure(&quot;f2&quot;)plt.plot(x,y2)# 指定线的颜色, 宽度和类型plt.plot(x,y1,color=&apos;red&apos;,linewidth=5.0,linestyle=&apos;--&apos;)#显示plt.show() 结果：]]></content>
+      <tags>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[matplotlib学习1之直线曲线]]></title>
     <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A01%E4%B9%8B%E7%9B%B4%E7%BA%BF%E6%9B%B2%E7%BA%BF%2F</url>
     <content type="text"><![CDATA[代码： 1234567891011121314151617# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-1,1,50)#绘制直线y = x + 1plt.plot(x,y)#绘制曲线y = x**2plt.plot(x,y)#显示plt.show() 显示结果：]]></content>
