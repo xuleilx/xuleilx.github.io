@@ -324,6 +324,137 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/24/matplotlib学习7之散点图/" itemprop="url">matplotlib学习7之散点图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T20:12:54+08:00">
+                2017-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/24/matplotlib学习7之散点图/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/24/matplotlib学习7之散点图/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">n = <span class="number">1024</span></span><br><span class="line"><span class="comment"># 高斯分布 http://blog.csdn.net/lanchunhui/article/details/50163669</span></span><br><span class="line">X = np.random.normal(<span class="number">0</span>,<span class="number">1</span>,n)</span><br><span class="line">Y = np.random.normal(<span class="number">0</span>,<span class="number">1</span>,n)</span><br><span class="line">T = np.arctan2(Y,X)<span class="comment"># for color value</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X,Y,s=<span class="number">75</span>,c=T,alpha=<span class="number">0.5</span>)</span><br><span class="line"><span class="comment">#设置显示范围</span></span><br><span class="line">plt.xlim(<span class="number">-1.5</span>,<span class="number">1.5</span>)</span><br><span class="line">plt.ylim(<span class="number">-1.5</span>,<span class="number">1.5</span>)</span><br><span class="line"><span class="comment"># 去坐标</span></span><br><span class="line">plt.xticks(())</span><br><span class="line">plt.yticks(())</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/dot_map.png"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/dot_map.png" alt="dot_map"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习6之tick能见度/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1550,7 +1681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
