@@ -79,21 +79,20 @@
 
 
 
-<meta name="description" content="代码： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#coding:utf-8import tensorflow as tfimport numpy as npimport ma">
+<meta name="description" content="代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x">
 <meta name="keywords" content="Hexo, NexT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tensorflow学习之二次曲线">
-<meta property="og:url" content="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/index.html">
+<meta property="og:title" content="matplotlib学习3之axis2">
+<meta property="og:url" content="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#coding:utf-8import tensorflow as tfimport numpy as npimport ma">
+<meta property="og:description" content="代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/test.gif">
-<meta property="og:image" content="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif">
-<meta property="og:updated_time" content="2017-12-24T05:58:53.339Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/axis_2.png">
+<meta property="og:updated_time" content="2017-12-24T06:19:09.729Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tensorflow学习之二次曲线">
-<meta name="twitter:description" content="代码： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#coding:utf-8import tensorflow as tfimport numpy as npimport ma">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/test.gif">
+<meta name="twitter:title" content="matplotlib学习3之axis2">
+<meta name="twitter:description" content="代码：12345678910111213141516171819202122232425262728293031323334353637383940414243444546# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/axis_2.png">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/"/>
 
 
 
 
 
-  <title>tensorflow学习之二次曲线 | 沧海一粟</title>
+  <title>matplotlib学习3之axis2 | 沧海一粟</title>
   
 
 
@@ -330,7 +329,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xuleilx">
@@ -347,7 +346,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tensorflow学习之二次曲线</h1>
+          <h1 class="post-title" itemprop="name headline">matplotlib学习3之axis2</h1>
         
 
         <div class="post-meta">
@@ -359,8 +358,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T20:59:17+08:00">
-                2017-12-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T13:43:56+08:00">
+                2017-12-24
               </time>
             
 
@@ -378,8 +377,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/17/tensorflow学习之二次曲线/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/17/tensorflow学习之二次曲线/" itemprop="commentCount"></span>
+                <a href="/2017/12/24/matplotlib学习3之axis2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/24/matplotlib学习3之axis2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -407,10 +406,8 @@
       
 
       
-        <p>代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构造添加神经层的函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_layer</span><span class="params">(inputs,in_size,out_size,activation_function=None)</span>:</span></span><br><span class="line">    <span class="comment"># 权重，in_size*out_size随机变量矩阵</span></span><br><span class="line">    Weights = tf.Variable(tf.random_normal([in_size,out_size]))</span><br><span class="line">    <span class="comment"># 偏差，1*out_size数组。</span></span><br><span class="line">    <span class="comment"># 在机器学习中，biases的推荐值不为0，这里是在0向量的基础上+0.1</span></span><br><span class="line">    biases = tf.Variable(tf.zeros([<span class="number">1</span>,out_size])+<span class="number">0.1</span>)</span><br><span class="line">    <span class="comment"># y = Weights*x+biases 。 tf.matmul()是矩阵的乘法</span></span><br><span class="line">    Wx_plus_b = tf.matmul(inputs,Weights)+biases</span><br><span class="line">    <span class="comment"># 如果没有定义激励函数就是线性函数</span></span><br><span class="line">    <span class="keyword">if</span> activation_function <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        outputs = Wx_plus_b</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        outputs = activation_function(Wx_plus_b)</span><br><span class="line">    <span class="keyword">return</span> outputs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成x的值,类似</span></span><br><span class="line"><span class="comment"># [[-1. ]</span></span><br><span class="line"><span class="comment">#  [-0.5]</span></span><br><span class="line"><span class="comment">#  [ 0. ]</span></span><br><span class="line"><span class="comment">#  [ 0.5]</span></span><br><span class="line"><span class="comment">#  [ 1. ]]</span></span><br><span class="line">x_data = np.linspace(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">300</span>)[:,np.newaxis]</span><br><span class="line"><span class="comment"># 加了一个noise,这样看起来会更像真实情况.类型与x_data一样</span></span><br><span class="line">noise = np.random.normal(<span class="number">0</span>,<span class="number">0.05</span>,x_data.shape)</span><br><span class="line"><span class="comment"># y = x**2 - 0.5 + noise</span></span><br><span class="line">y_data = np.square(x_data)<span class="number">-0.5</span>+noise</span><br><span class="line"></span><br><span class="line"><span class="comment"># 利用占位符定义我们所需的神经网络的输入。</span></span><br><span class="line"><span class="comment"># tf.placeholder()就是代表占位符，这里的None代表无论输入有多少都可以，</span></span><br><span class="line"><span class="comment"># 因为输入只有一个特征，所以这里是1</span></span><br><span class="line">xs=tf.placeholder(tf.float32,[<span class="keyword">None</span>,<span class="number">1</span>])</span><br><span class="line">ys=tf.placeholder(tf.float32,[<span class="keyword">None</span>,<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># inputLayer hideLayer outputLayer</span></span><br><span class="line"><span class="comment">#    1         10         1</span></span><br><span class="line"><span class="comment"># hideLayer</span></span><br><span class="line">l1 = add_layer(xs,<span class="number">1</span>,<span class="number">10</span>,activation_function=tf.nn.relu)</span><br><span class="line"><span class="comment"># outputLayer</span></span><br><span class="line">predition = add_layer(l1,<span class="number">10</span>,<span class="number">1</span>,activation_function=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 误差的平方和，再求平均</span></span><br><span class="line">loss = tf.reduce_mean(tf.reduce_sum(tf.square(ys-predition),reduction_indices=[<span class="number">1</span>]))</span><br><span class="line">train_step=tf.train.GradientDescentOptimizer(<span class="number">0.1</span>).minimize(loss)</span><br><span class="line"></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax = fig.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">ax.scatter(x_data,y_data)</span><br><span class="line">plt.ion()</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    sess.run(train_step,feed_dict=&#123;xs:x_data,ys:y_data&#125;)</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="comment">#print sess.run(loss,feed_dict=&#123;xs:x_data,ys:y_data&#125;)</span></span><br><span class="line">        predition_value= sess.run(predition,feed_dict=&#123;xs:x_data&#125;)</span><br><span class="line">        lines =ax.plot(x_data,predition_value,<span class="string">'r-'</span>,lw=<span class="number">5</span>)</span><br><span class="line">        plt.pause(<span class="number">0.5</span>)</span><br><span class="line">        ax.lines.remove(lines[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># input()</span></span><br></pre></td></tr></table></figure>
-<p>学习的结果：</p>
-<p><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/test.gif" alt="image"><br><img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" alt="Alt Text"></p>
+        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 产生数据</span></span><br><span class="line">x = np.linspace(<span class="number">-3</span>,<span class="number">3</span>,<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制直线</span></span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制曲线</span></span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单纯直线</span></span><br><span class="line">plt.plot(x,y2)</span><br><span class="line"><span class="comment"># 指定线的颜色, 宽度和类型</span></span><br><span class="line">plt.plot(x,y1,color=<span class="string">'red'</span>,linewidth=<span class="number">5.0</span>,linestyle=<span class="string">'--'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置坐标轴</span></span><br><span class="line">plt.xlim(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line">plt.ylim(<span class="number">-2</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'I am x'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'I am y'</span>)</span><br><span class="line"></span><br><span class="line">new_ticks= np.linspace(<span class="number">-1</span>,<span class="number">2</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 设置坐标的粒度</span></span><br><span class="line">plt.xticks(new_ticks)</span><br><span class="line"><span class="comment"># 用文字代替对应的数值</span></span><br><span class="line">plt.yticks([<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>],</span><br><span class="line">           [<span class="string">'very bad'</span>,<span class="string">'bad'</span>,<span class="string">'normal'</span>,<span class="string">'good'</span>,<span class="string">'very good'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># gca = 'get current axis'</span></span><br><span class="line">ax = plt.gca()</span><br><span class="line">ax.spines[<span class="string">'right'</span>].set_color(<span class="string">'none'</span>)</span><br><span class="line">ax.spines[<span class="string">'top'</span>].set_color(<span class="string">'none'</span>)</span><br><span class="line">ax.xaxis.set_ticks_position(<span class="string">"bottom"</span>)</span><br><span class="line">ax.yaxis.set_ticks_position(<span class="string">"left"</span>)</span><br><span class="line">ax.spines[<span class="string">'bottom'</span>].set_position((<span class="string">'data'</span>,<span class="number">0</span>))</span><br><span class="line">ax.spines[<span class="string">'left'</span>].set_position((<span class="string">'data'</span>,<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/axis_2.png"</span>)</span><br><span class="line"><span class="comment">#显示</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/axis_2.png" alt="image"></p>
 
       
     </div>
@@ -435,8 +432,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/17/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/12/24/matplotlib学习3之axis/" rel="next" title="matplotlib学习3之axis">
+                <i class="fa fa-chevron-left"></i> matplotlib学习3之axis
               </a>
             
           </div>
@@ -444,10 +441,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/24/matplotlib学习1之直线曲线/" rel="prev" title="matplotlib学习1之直线曲线">
-                matplotlib学习1之直线曲线 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -466,10 +459,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/12/17/tensorflow学习之二次曲线/"
-     data-title="tensorflow学习之二次曲线"
+        <div class="ds-share flat" data-thread-key="2017/12/24/matplotlib学习3之axis2/"
+     data-title="matplotlib学习3之axis2"
      data-content=""
-     data-url="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/">
+     data-url="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -496,8 +489,8 @@
           
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2017/12/17/tensorflow学习之二次曲线/"
-           data-title="tensorflow学习之二次曲线" data-url="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/">
+      <div class="ds-thread" data-thread-key="2017/12/24/matplotlib学习3之axis2/"
+           data-title="matplotlib学习3之axis2" data-url="http://yoursite.com/2017/12/24/matplotlib学习3之axis2/">
       </div>
     </div>
   
