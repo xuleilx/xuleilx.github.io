@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[matplotlib学习3之axis]]></title>
     <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A03%E4%B9%8Baxis%2F</url>
-    <content type="text"><![CDATA[代码：12345678910111213141516171819202122232425262728293031323334# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x**2plt.figure()# 单纯直线plt.plot(x,y2)# 指定线的颜色, 宽度和类型plt.plot(x,y1,color='red',linewidth=5.0,linestyle='--')# 设置坐标轴plt.xlim(-1,2)plt.ylim(-2,3)plt.xlabel('I am x')plt.ylabel('I am y')new_ticks= np.linspace(-1,2,5)plt.xticks(new_ticks)plt.yticks([-2,-1,0,1,3], ['very bad','bad','normal','good','very good'])#显示plt.show() 输出结果：]]></content>
+    <content type="text"><![CDATA[代码：123456789101112131415161718192021222324252627282930313233343536# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x**2plt.figure()# 单纯直线plt.plot(x,y2)# 指定线的颜色, 宽度和类型plt.plot(x,y1,color='red',linewidth=5.0,linestyle='--')# 设置坐标轴plt.xlim(-1,2)plt.ylim(-2,3)plt.xlabel('I am x')plt.ylabel('I am y')new_ticks= np.linspace(-1,2,5)# 设置坐标的粒度plt.xticks(new_ticks)# 用文字代替对应的数值plt.yticks([-2,-1,0,1,3], ['very bad','bad','normal','good','very good'])#显示plt.show() 输出结果：]]></content>
       <tags>
         <tag>matplotlib</tag>
       </tags>
