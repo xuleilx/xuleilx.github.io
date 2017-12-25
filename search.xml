@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[matplotlib学习9Contours等高线图]]></title>
+    <url>%2F2017%2F12%2F25%2Fmatplotlib%E5%AD%A6%E4%B9%A09Contours%E7%AD%89%E9%AB%98%E7%BA%BF%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[代码：1234567891011121314151617181920212223242526# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npdef f(x,y): # the height function return (1-x/2+x**5+y**3)*np.exp(-x**2-y**2)n = 256x = np.linspace(-3,3,n)y = np.linspace(-3,3,n)# 编织成栅格X,Y = np.meshgrid(x,y)# use plt.contourf to filling contours# X,Y and value for (X,Y) pointplt.contourf(X,Y,f(X,Y),8,alpha=.75,cmap=plt.cm.hot)C = plt.contour(X,Y,f(X,Y),8,colors='black',linewidth=.5)# 添加label，隐藏坐标轴plt.clabel(C,inline=True,fontsize=10)plt.xticks(())plt.yticks(())plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/contours.png")plt.show() 结果：]]></content>
+      <tags>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[matplotlib学习8之bar柱状图]]></title>
     <url>%2F2017%2F12%2F24%2Fmatplotlib%E5%AD%A6%E4%B9%A08%E4%B9%8Bbar%E6%9F%B1%E7%8A%B6%E5%9B%BE%2F</url>
     <content type="text"><![CDATA[代码：1234567891011121314151617181920212223242526272829# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 10X = np.arange(n)# 均匀分布Y1 = (1-X/float(n))*np.random.uniform(0.5,1,n)Y2 = (1-X/float(n))*np.random.uniform(0.5,1,n)plt.bar(X,+Y1,facecolor='#9999ff',edgecolor='white')plt.bar(X,-Y2,facecolor='#ff9999',edgecolor='white')for x,y in zip(X,Y1): # ha: horizontal alignment # va: vertical alignment plt.text(x,y,'%.2f'%y,ha='center',va='bottom')for x,y in zip(X,Y2): plt.text(x,-y,'%.2f'%y,ha='center',va='top')#设置显示范围plt.xlim(-.5,n)plt.ylim(-1.25,1.25)plt.xticks(())plt.yticks(())plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/bar_map.png")plt.show() 结果：]]></content>
