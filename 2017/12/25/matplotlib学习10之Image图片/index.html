@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="matplotlib," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,20 +79,15 @@
 
 
 
-<meta name="description" content="代码：1234567891011121314151617181920212223242526272829# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 10X = np.arange(n)# 均匀分布Y1 = (1-X/float(n))*np.random.uniform(0.5,1,n)Y2">
-<meta name="keywords" content="matplotlib">
+<meta name="keywords" content="Hexo, NexT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="matplotlib学习8之bar柱状图">
-<meta property="og:url" content="http://yoursite.com/2017/12/24/matplotlib学习8之bar柱状图/index.html">
+<meta property="og:title" content="matplotlib学习9之Image图片">
+<meta property="og:url" content="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码：1234567891011121314151617181920212223242526272829# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 10X = np.arange(n)# 均匀分布Y1 = (1-X/float(n))*np.random.uniform(0.5,1,n)Y2">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/bar_map.png">
-<meta property="og:updated_time" content="2017-12-24T12:47:01.711Z">
+<meta property="og:updated_time" content="2017-12-25T14:21:26.172Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="matplotlib学习8之bar柱状图">
-<meta name="twitter:description" content="代码：1234567891011121314151617181920212223242526272829# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 10X = np.arange(n)# 均匀分布Y1 = (1-X/float(n))*np.random.uniform(0.5,1,n)Y2">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/bar_map.png">
+<meta name="twitter:title" content="matplotlib学习9之Image图片">
 
 
 
@@ -122,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/24/matplotlib学习8之bar柱状图/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/"/>
 
 
 
 
 
-  <title>matplotlib学习8之bar柱状图 | 沧海一粟</title>
+  <title>matplotlib学习9之Image图片 | 沧海一粟</title>
   
 
 
@@ -329,7 +324,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习8之bar柱状图/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -346,7 +341,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">matplotlib学习8之bar柱状图</h1>
+          <h1 class="post-title" itemprop="name headline">matplotlib学习9之Image图片</h1>
         
 
         <div class="post-meta">
@@ -358,8 +353,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T20:45:59+08:00">
-                2017-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T22:21:26+08:00">
+                2017-12-25
               </time>
             
 
@@ -377,8 +372,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/24/matplotlib学习8之bar柱状图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/24/matplotlib学习8之bar柱状图/" itemprop="commentCount"></span>
+                <a href="/2017/12/25/matplotlib学习10之Image图片/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/25/matplotlib学习10之Image图片/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,9 +401,7 @@
       
 
       
-        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">n = <span class="number">10</span></span><br><span class="line">X = np.arange(n)</span><br><span class="line"><span class="comment"># 均匀分布</span></span><br><span class="line">Y1 = (<span class="number">1</span>-X/float(n))*np.random.uniform(<span class="number">0.5</span>,<span class="number">1</span>,n)</span><br><span class="line">Y2 = (<span class="number">1</span>-X/float(n))*np.random.uniform(<span class="number">0.5</span>,<span class="number">1</span>,n)</span><br><span class="line"></span><br><span class="line">plt.bar(X,+Y1,facecolor=<span class="string">'#9999ff'</span>,edgecolor=<span class="string">'white'</span>)</span><br><span class="line">plt.bar(X,-Y2,facecolor=<span class="string">'#ff9999'</span>,edgecolor=<span class="string">'white'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x,y <span class="keyword">in</span> zip(X,Y1):</span><br><span class="line">    <span class="comment"># ha: horizontal alignment</span></span><br><span class="line">    <span class="comment"># va: vertical alignment</span></span><br><span class="line">    plt.text(x,y,<span class="string">'%.2f'</span>%y,ha=<span class="string">'center'</span>,va=<span class="string">'bottom'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x,y <span class="keyword">in</span> zip(X,Y2):</span><br><span class="line">    plt.text(x,-y,<span class="string">'%.2f'</span>%y,ha=<span class="string">'center'</span>,va=<span class="string">'top'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置显示范围</span></span><br><span class="line">plt.xlim(<span class="number">-.5</span>,n)</span><br><span class="line">plt.ylim(<span class="number">-1.25</span>,<span class="number">1.25</span>)</span><br><span class="line">plt.xticks(())</span><br><span class="line">plt.yticks(())</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/bar_map.png"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/bar_map.png" alt="bar_map"></p>
-
+        
       
     </div>
     
@@ -423,12 +416,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/matplotlib/" rel="tag"># matplotlib</a>
-          
-        </div>
-      
 
       
       
@@ -438,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/24/matplotlib学习7之散点图/" rel="next" title="matplotlib学习7之散点图">
-                <i class="fa fa-chevron-left"></i> matplotlib学习7之散点图
+              <a href="/2017/12/25/matplotlib学习9之Contours等高线图/" rel="next" title="matplotlib学习9Contours等高线图">
+                <i class="fa fa-chevron-left"></i> matplotlib学习9Contours等高线图
               </a>
             
           </div>
@@ -447,10 +434,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/25/matplotlib学习9之Contours等高线图/" rel="prev" title="matplotlib学习9Contours等高线图">
-                matplotlib学习9Contours等高线图 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -469,10 +452,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/12/24/matplotlib学习8之bar柱状图/"
-     data-title="matplotlib学习8之bar柱状图"
+        <div class="ds-share flat" data-thread-key="2017/12/25/matplotlib学习10之Image图片/"
+     data-title="matplotlib学习9之Image图片"
      data-content=""
-     data-url="http://yoursite.com/2017/12/24/matplotlib学习8之bar柱状图/">
+     data-url="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -499,8 +482,8 @@
           
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2017/12/24/matplotlib学习8之bar柱状图/"
-           data-title="matplotlib学习8之bar柱状图" data-url="http://yoursite.com/2017/12/24/matplotlib学习8之bar柱状图/">
+      <div class="ds-thread" data-thread-key="2017/12/25/matplotlib学习10之Image图片/"
+           data-title="matplotlib学习9之Image图片" data-url="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
       </div>
     </div>
   
