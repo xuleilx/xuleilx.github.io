@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[matplotlib学习11之3D图像]]></title>
+    <url>%2F2017%2F12%2F25%2Fmatplotlib%E5%AD%A6%E4%B9%A011%E4%B9%8B3D%E5%9B%BE%E5%83%8F%2F</url>
+    <content type="text"><![CDATA[代码：123456789101112131415161718192021222324# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom mpl_toolkits.mplot3d import Axes3Dfig = plt.figure()ax = Axes3D(fig)# X,Y valuex = np.arange(-4,4,0.25)y = np.arange(-4,4,0.25)X,Y = np.meshgrid(x,y)# x-y 平面的网格R = np.sqrt(X**2+Y**2)# height valueZ = np.sin(R)# rstride 和 cstride 分别代表 row 和 column 的跨度ax.plot_surface(X,Y,Z,rstride=1,cstride=1,cmap='rainbow',edgecolor='black')# 添加 XY 平面的等高线ax.contourf(X,Y,Z,zdir='z',offset=-2,cmap='rainbow')ax.set_zlim(-2,2)plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/3d_data.png")plt.show() 结果：]]></content>
+      <tags>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[matplotlib学习9之Image图片]]></title>
     <url>%2F2017%2F12%2F25%2Fmatplotlib%E5%AD%A6%E4%B9%A010%E4%B9%8BImage%E5%9B%BE%E7%89%87%2F</url>
     <content type="text"><![CDATA[代码：123456789101112131415# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npa = np.linspace(0,1,9).reshape(3,3)# 三行三列的格子，a代表每一个值，图像右边有一个注释，白色代表值最大的地方，颜色越深值越小。plt.imshow(a,interpolation='nearest',cmap='bone',origin='lower')# 添加一个colorbar ，其中我们添加一个shrink参数，使colorbar的长度变短为原来的92%plt.colorbar(shrink=.92)plt.xticks(())plt.yticks(())plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/image.png")plt.show() 结果：]]></content>
