@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="代码：123456789101112131415# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npa = np.linspace(0,1,9).reshape(3,3)# 三行三列的格子，a代表每一个值，图像右边有一个注释，白色代表值最大的地方，颜色越深值越小。plt.imshow(a,interpola">
+<meta name="description" content="代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.a">
 <meta name="keywords" content="matplotlib">
 <meta property="og:type" content="article">
-<meta property="og:title" content="matplotlib学习9之Image图片">
-<meta property="og:url" content="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/index.html">
+<meta property="og:title" content="matplotlib学习15之Animation动画">
+<meta property="og:url" content="http://yoursite.com/2017/12/28/matplotlib学习15之Animation动画/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码：123456789101112131415# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npa = np.linspace(0,1,9).reshape(3,3)# 三行三列的格子，a代表每一个值，图像右边有一个注释，白色代表值最大的地方，颜色越深值越小。plt.imshow(a,interpola">
+<meta property="og:description" content="代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/image.png">
-<meta property="og:updated_time" content="2017-12-25T14:27:46.060Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/animation.gif">
+<meta property="og:updated_time" content="2017-12-28T14:50:03.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="matplotlib学习9之Image图片">
-<meta name="twitter:description" content="代码：123456789101112131415# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npa = np.linspace(0,1,9).reshape(3,3)# 三行三列的格子，a代表每一个值，图像右边有一个注释，白色代表值最大的地方，颜色越深值越小。plt.imshow(a,interpola">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/image.png">
+<meta name="twitter:title" content="matplotlib学习15之Animation动画">
+<meta name="twitter:description" content="代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.a">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/animation.gif">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/28/matplotlib学习15之Animation动画/"/>
 
 
 
 
 
-  <title>matplotlib学习9之Image图片 | 沧海一粟</title>
+  <title>matplotlib学习15之Animation动画 | 沧海一粟</title>
   
 
 
@@ -329,7 +329,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/28/matplotlib学习15之Animation动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -346,7 +346,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">matplotlib学习9之Image图片</h1>
+          <h1 class="post-title" itemprop="name headline">matplotlib学习15之Animation动画</h1>
         
 
         <div class="post-meta">
@@ -358,8 +358,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T22:21:26+08:00">
-                2017-12-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T22:48:53+08:00">
+                2017-12-28
               </time>
             
 
@@ -377,8 +377,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/25/matplotlib学习10之Image图片/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/25/matplotlib学习10之Image图片/" itemprop="commentCount"></span>
+                <a href="/2017/12/28/matplotlib学习15之Animation动画/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/28/matplotlib学习15之Animation动画/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,8 +406,8 @@
       
 
       
-        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">a = np.linspace(<span class="number">0</span>,<span class="number">1</span>,<span class="number">9</span>).reshape(<span class="number">3</span>,<span class="number">3</span>)</span><br><span class="line"><span class="comment"># 三行三列的格子，a代表每一个值，图像右边有一个注释，白色代表值最大的地方，颜色越深值越小。</span></span><br><span class="line">plt.imshow(a,interpolation=<span class="string">'nearest'</span>,cmap=<span class="string">'bone'</span>,origin=<span class="string">'lower'</span>)</span><br><span class="line"><span class="comment"># 添加一个colorbar ，其中我们添加一个shrink参数，使colorbar的长度变短为原来的92%</span></span><br><span class="line">plt.colorbar(shrink=<span class="number">.92</span>)</span><br><span class="line"></span><br><span class="line">plt.xticks(())</span><br><span class="line">plt.yticks(())</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/image.png"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/image.png" alt="image"></p>
+        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> animation</span><br><span class="line"></span><br><span class="line">fig,ax = plt.subplots()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据是一个0~2π内的正弦曲线</span></span><br><span class="line">x = np.arange(<span class="number">0</span>,<span class="number">2</span>*np.pi,<span class="number">0.1</span>)</span><br><span class="line">y= np.sin(x)</span><br><span class="line">line, = ax.plot(x,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 采用np.pi*i/30 方式更新，更流畅</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">animate</span><span class="params">(i)</span>:</span></span><br><span class="line">    line.set_ydata(np.sin(x+np.pi*i/<span class="number">30</span>))</span><br><span class="line">    <span class="keyword">return</span> line,</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">()</span>:</span></span><br><span class="line">    line.set_ydata(np.sin(x))</span><br><span class="line">    <span class="keyword">return</span> line,</span><br><span class="line"></span><br><span class="line"><span class="comment"># https://matplotlib.org/api/animation_api.html</span></span><br><span class="line">ani = animation.FuncAnimation(fig=fig,func=animate,frames=<span class="number">30</span>,init_func=init,blit=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># https://stackoverflow.com/questions/25140952/matplotlib-save-animation-in-gif-error</span></span><br><span class="line">ani.save(<span class="string">'/home/xuleilx/workspace/github/github_pages/public/images/animation.gif'</span>, writer=<span class="string">'imagemagick'</span>, fps=<span class="number">30</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="https://xuleilx.github.io/images/animation.gif" alt="animation"></p>
 
       
     </div>
@@ -438,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/25/matplotlib学习9之Contours等高线图/" rel="next" title="matplotlib学习9Contours等高线图">
-                <i class="fa fa-chevron-left"></i> matplotlib学习9Contours等高线图
+              <a href="/2017/12/28/matplotlib学习14之次坐标轴/" rel="next" title="matplotlib学习14之次坐标轴">
+                <i class="fa fa-chevron-left"></i> matplotlib学习14之次坐标轴
               </a>
             
           </div>
@@ -447,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/25/matplotlib学习11之3D图像/" rel="prev" title="matplotlib学习11之3D图像">
-                matplotlib学习11之3D图像 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -469,10 +465,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/12/25/matplotlib学习10之Image图片/"
-     data-title="matplotlib学习9之Image图片"
+        <div class="ds-share flat" data-thread-key="2017/12/28/matplotlib学习15之Animation动画/"
+     data-title="matplotlib学习15之Animation动画"
      data-content=""
-     data-url="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
+     data-url="http://yoursite.com/2017/12/28/matplotlib学习15之Animation动画/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -499,8 +495,8 @@
           
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2017/12/25/matplotlib学习10之Image图片/"
-           data-title="matplotlib学习9之Image图片" data-url="http://yoursite.com/2017/12/25/matplotlib学习10之Image图片/">
+      <div class="ds-thread" data-thread-key="2017/12/28/matplotlib学习15之Animation动画/"
+           data-title="matplotlib学习15之Animation动画" data-url="http://yoursite.com/2017/12/28/matplotlib学习15之Animation动画/">
       </div>
     </div>
   

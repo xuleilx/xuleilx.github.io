@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[matplotlib学习15之Animation动画]]></title>
+    <url>%2F2017%2F12%2F28%2Fmatplotlib%E5%AD%A6%E4%B9%A015%E4%B9%8BAnimation%E5%8A%A8%E7%94%BB%2F</url>
+    <content type="text"><![CDATA[代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.arange(0,2*np.pi,0.1)y= np.sin(x)line, = ax.plot(x,y)# 采用np.pi*i/30 方式更新，更流畅def animate(i): line.set_ydata(np.sin(x+np.pi*i/30)) return line,def init(): line.set_ydata(np.sin(x)) return line,# https://matplotlib.org/api/animation_api.htmlani = animation.FuncAnimation(fig=fig,func=animate,frames=30,init_func=init,blit=True)# https://stackoverflow.com/questions/25140952/matplotlib-save-animation-in-gif-errorani.save('/home/xuleilx/workspace/github/github_pages/public/images/animation.gif', writer='imagemagick', fps=30)plt.show() 结果：]]></content>
+      <tags>
+        <tag>matplotlib</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[matplotlib学习14之次坐标轴]]></title>
     <url>%2F2017%2F12%2F28%2Fmatplotlib%E5%AD%A6%E4%B9%A014%E4%B9%8B%E6%AC%A1%E5%9D%90%E6%A0%87%E8%BD%B4%2F</url>
     <content type="text"><![CDATA[代码：12345678910111213141516171819202122# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npx = np.arange(0,10,0.1)y1 = 0.05*x**2y2 = -1*y1# 获取figure默认的坐标系 ax1# fig,ax1 = plt.subplots()ax1 = plt.subplot()# 对ax1调用twinx()方法，生成如同镜面效果后的ax2ax2 = ax1.twinx()ax1.plot(x,y1,'g-')ax2.plot(x,y2,'b--')ax1.set_xlabel('X data')ax1.set_ylabel('Y1',color='g')ax2.set_ylabel('Y2',color='b')plt.savefig("/home/xuleilx/workspace/github/github_pages/public/images/subaxes.png")plt.show() 结果：]]></content>
