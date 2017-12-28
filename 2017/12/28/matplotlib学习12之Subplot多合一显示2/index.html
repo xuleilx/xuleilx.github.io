@@ -79,20 +79,22 @@
 
 
 
-<meta name="description" content="代码：1234567891011121314151617181920# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 1024# 高斯分布 http://blog.csdn.net/lanchunhui/article/details/50163669X = np.random.normal(0,">
+<meta name="description" content="123456789101112131415161718192021222324252627282930313233# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport matplotlib.gridspec as gridspec# method 1:subplot2grid############################">
 <meta name="keywords" content="matplotlib">
 <meta property="og:type" content="article">
-<meta property="og:title" content="matplotlib学习7之散点图">
-<meta property="og:url" content="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/index.html">
+<meta property="og:title" content="matplotlib学习12之Subplot多合一显示2">
+<meta property="og:url" content="http://yoursite.com/2017/12/28/matplotlib学习12之Subplot多合一显示2/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码：1234567891011121314151617181920# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 1024# 高斯分布 http://blog.csdn.net/lanchunhui/article/details/50163669X = np.random.normal(0,">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport matplotlib.gridspec as gridspec# method 1:subplot2grid############################">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/dot_map.png">
-<meta property="og:updated_time" content="2017-12-24T12:13:58.242Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/subplot_method1.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/subplot_method2.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/subplot_method3.png">
+<meta property="og:updated_time" content="2017-12-28T13:20:03.585Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="matplotlib学习7之散点图">
-<meta name="twitter:description" content="代码：1234567891011121314151617181920# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npn = 1024# 高斯分布 http://blog.csdn.net/lanchunhui/article/details/50163669X = np.random.normal(0,">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/dot_map.png">
+<meta name="twitter:title" content="matplotlib学习12之Subplot多合一显示2">
+<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport matplotlib.gridspec as gridspec# method 1:subplot2grid############################">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/subplot_method1.png">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/28/matplotlib学习12之Subplot多合一显示2/"/>
 
 
 
 
 
-  <title>matplotlib学习7之散点图 | 沧海一粟</title>
+  <title>matplotlib学习12之Subplot多合一显示2 | 沧海一粟</title>
   
 
 
@@ -329,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/28/matplotlib学习12之Subplot多合一显示2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -346,7 +348,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">matplotlib学习7之散点图</h1>
+          <h1 class="post-title" itemprop="name headline">matplotlib学习12之Subplot多合一显示2</h1>
         
 
         <div class="post-meta">
@@ -358,8 +360,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T20:12:54+08:00">
-                2017-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T21:16:07+08:00">
+                2017-12-28
               </time>
             
 
@@ -377,8 +379,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/24/matplotlib学习7之散点图/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/24/matplotlib学习7之散点图/" itemprop="commentCount"></span>
+                <a href="/2017/12/28/matplotlib学习12之Subplot多合一显示2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/28/matplotlib学习12之Subplot多合一显示2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,8 +408,8 @@
       
 
       
-        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">n = <span class="number">1024</span></span><br><span class="line"><span class="comment"># 高斯分布 http://blog.csdn.net/lanchunhui/article/details/50163669</span></span><br><span class="line">X = np.random.normal(<span class="number">0</span>,<span class="number">1</span>,n)</span><br><span class="line">Y = np.random.normal(<span class="number">0</span>,<span class="number">1</span>,n)</span><br><span class="line">T = np.arctan2(Y,X)<span class="comment"># for color value</span></span><br><span class="line"></span><br><span class="line">plt.scatter(X,Y,s=<span class="number">75</span>,c=T,alpha=<span class="number">0.5</span>)</span><br><span class="line"><span class="comment">#设置显示范围</span></span><br><span class="line">plt.xlim(<span class="number">-1.5</span>,<span class="number">1.5</span>)</span><br><span class="line">plt.ylim(<span class="number">-1.5</span>,<span class="number">1.5</span>)</span><br><span class="line"><span class="comment"># 去坐标</span></span><br><span class="line">plt.xticks(())</span><br><span class="line">plt.yticks(())</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/dot_map.png"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/dot_map.png" alt="dot_map"></p>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.gridspec <span class="keyword">as</span> gridspec</span><br><span class="line"></span><br><span class="line"><span class="comment"># method 1:subplot2grid</span></span><br><span class="line"><span class="comment">#############################</span></span><br><span class="line">plt.figure()</span><br><span class="line">ax1 = plt.subplot2grid((<span class="number">3</span>,<span class="number">3</span>),(<span class="number">0</span>,<span class="number">0</span>),colspan=<span class="number">3</span>,rowspan=<span class="number">1</span>)</span><br><span class="line">ax1.plot([<span class="number">1</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">ax1.set_title(<span class="string">'ax1_title'</span>)</span><br><span class="line">ax2 = plt.subplot2grid((<span class="number">3</span>,<span class="number">3</span>),(<span class="number">1</span>,<span class="number">0</span>),colspan=<span class="number">2</span>)</span><br><span class="line">ax3 = plt.subplot2grid((<span class="number">3</span>,<span class="number">3</span>),(<span class="number">1</span>,<span class="number">2</span>),rowspan=<span class="number">2</span>)</span><br><span class="line">ax4 = plt.subplot2grid((<span class="number">3</span>,<span class="number">3</span>),(<span class="number">2</span>,<span class="number">0</span>))</span><br><span class="line">ax5 = plt.subplot2grid((<span class="number">3</span>,<span class="number">3</span>),(<span class="number">2</span>,<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># method 2:gridspec</span></span><br><span class="line"><span class="comment">#############################</span></span><br><span class="line"><span class="comment"># plt.figure()</span></span><br><span class="line"><span class="comment"># gs = gridspec.GridSpec(3,3)</span></span><br><span class="line"><span class="comment"># ax1 = plt.subplot(gs[0,:])</span></span><br><span class="line"><span class="comment"># ax2 = plt.subplot(gs[1,:2])</span></span><br><span class="line"><span class="comment"># ax3 = plt.subplot(gs[1:,2])</span></span><br><span class="line"><span class="comment"># ax4 = plt.subplot(gs[2,0])</span></span><br><span class="line"><span class="comment"># ax5 = plt.subplot(gs[2,1])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># method 3:easy to define structure</span></span><br><span class="line"><span class="comment">#############################</span></span><br><span class="line"><span class="comment"># f,axes = plt.subplots(2,2,sharex=True)</span></span><br><span class="line"><span class="comment"># axes[0,0].scatter([1,2],[1,2])</span></span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/subplot_method1.png"</span>)</span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://xuleilx.github.io/images/subplot_method1.png" alt="subplot_method1"><br><img src="https://xuleilx.github.io/images/subplot_method2.png" alt="subplot_method2"><br><img src="https://xuleilx.github.io/images/subplot_method3.png" alt="subplot_method3"></p>
 
       
     </div>
@@ -438,8 +440,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/24/matplotlib学习6之tick能见度/" rel="next" title="matplotlib学习6之tick能见度">
-                <i class="fa fa-chevron-left"></i> matplotlib学习6之tick能见度
+              <a href="/2017/12/28/matplotlib学习12之Subplot多合一显示/" rel="next" title="matplotlib学习12之Subplot多合一显示">
+                <i class="fa fa-chevron-left"></i> matplotlib学习12之Subplot多合一显示
               </a>
             
           </div>
@@ -447,10 +449,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/24/matplotlib学习8之bar柱状图/" rel="prev" title="matplotlib学习8之bar柱状图">
-                matplotlib学习8之bar柱状图 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -469,10 +467,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2017/12/24/matplotlib学习7之散点图/"
-     data-title="matplotlib学习7之散点图"
+        <div class="ds-share flat" data-thread-key="2017/12/28/matplotlib学习12之Subplot多合一显示2/"
+     data-title="matplotlib学习12之Subplot多合一显示2"
      data-content=""
-     data-url="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/">
+     data-url="http://yoursite.com/2017/12/28/matplotlib学习12之Subplot多合一显示2/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -499,8 +497,8 @@
           
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2017/12/24/matplotlib学习7之散点图/"
-           data-title="matplotlib学习7之散点图" data-url="http://yoursite.com/2017/12/24/matplotlib学习7之散点图/">
+      <div class="ds-thread" data-thread-key="2017/12/28/matplotlib学习12之Subplot多合一显示2/"
+           data-title="matplotlib学习12之Subplot多合一显示2" data-url="http://yoursite.com/2017/12/28/matplotlib学习12之Subplot多合一显示2/">
       </div>
     </div>
   
