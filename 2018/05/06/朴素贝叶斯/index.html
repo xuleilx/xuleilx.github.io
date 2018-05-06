@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
+<meta name="description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发 生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="朴素贝叶斯">
 <meta property="og:url" content="http://yoursite.com/2018/05/06/朴素贝叶斯/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
+<meta property="og:description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发 生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=28ccd0787e310a55d029d6a6d62c28cc/5243fbf2b21193136f84b53b62380cd790238d72.jpg">
-<meta property="og:updated_time" content="2018-05-06T08:40:22.302Z">
+<meta property="og:updated_time" content="2018-05-06T08:44:18.440Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="朴素贝叶斯">
-<meta name="twitter:description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
+<meta name="twitter:description" content="0、概述朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。 贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发 生的情况下A发生的可能性。 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。 按照乘法法则，可以立刻导出： P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B) 如上公式也可变形为：">
 <meta name="twitter:image" content="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=28ccd0787e310a55d029d6a6d62c28cc/5243fbf2b21193136f84b53b62380cd790238d72.jpg">
 
 
@@ -407,7 +407,8 @@
 
       
         <h1 id="0、概述"><a href="#0、概述" class="headerlink" title="0、概述"></a>0、概述</h1><pre><code>朴素贝叶斯是贝叶斯理论的一部分，所以讲述这部分内容之前首先需要了解一下贝叶斯定理。
-贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发生的情况下A发生的可能性。
+贝叶斯定理是关于随机事件A和B的条件概率（或边缘概率）的一则定理。其中P(A|B)是在B发
+生的情况下A发生的可能性。
 描述两个条件概率之间的关系，比如 P(A|B) 和 P(B|A)。
 按照乘法法则，可以立刻导出：
 P(A∩B) = P(A)*P(B|A) = P(B)*P(A|B)
@@ -416,7 +417,9 @@ P(B|A) = P(A|B)*P(B)/P(A)
 
 朴素贝叶斯分类器基于一个简单的假定：给定目标值时属性之间相互条件独立。
 </code></pre><p><img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=28ccd0787e310a55d029d6a6d62c28cc/5243fbf2b21193136f84b53b62380cd790238d72.jpg" alt="贝叶斯公式"></p>
-<h1 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h1><h2 id="1-1、工作原理"><a href="#1-1、工作原理" class="headerlink" title="1.1、工作原理"></a>1.1、工作原理</h2><pre><code>假设每个特征对于决定样本属于哪一类都同等重要。给定一个测试样本w，计算它属于c的概率，只需要计算出训练样本中类别c的每个特征类型的概率p(w|c)，所有训练样本中类别c的概率p(c)，测试样本w的概率(实际使用中比较样本w属于哪个类别的可能性更大，等号两边相等)
+<h1 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h1><h2 id="1-1、工作原理"><a href="#1-1、工作原理" class="headerlink" title="1.1、工作原理"></a>1.1、工作原理</h2><pre><code>假设每个特征对于决定样本属于哪一类都同等重要。给定一个测试样本w，计算它属于c的概
+率，只需要计算出训练样本中类别c的每个特征类型的概率p(w|c)，所有训练样本中类别c的
+概率p(c)，测试样本w的概率(实际使用中比较样本w属于哪个类别的可能性更大，等号两边相等)
 p(c|w) = p(w|c)p(c)/p(w)
 </code></pre><h2 id="1-2、优点，缺点，适用范围"><a href="#1-2、优点，缺点，适用范围" class="headerlink" title="1.2、优点，缺点，适用范围"></a>1.2、优点，缺点，适用范围</h2><pre><code>优点：在数据较少的情况下仍然有效，可以处理多类别问题。
 缺点：对于输入数据的准备方式较为敏感。
