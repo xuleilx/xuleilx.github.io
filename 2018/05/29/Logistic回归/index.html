@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="matplotlib," />
+  <meta name="keywords" content="机器学习," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="代码：123456789101112131415161718192021222324252627282930313233343536373839# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x">
-<meta name="keywords" content="matplotlib">
+<meta name="description" content="0、概述0.1、回归的含义    高尔顿（Frramcia Galton,1882-1911）早年在剑桥大学学习医学，但医生的职业对 他并无吸引力，后来他接受了一笔遗产，这使他可以放弃医生的生涯，并与 1850－1852年期 间去非洲考察，他所取得的成就使其在1853年获得英国皇家地理学会的金质奖章。此后他研究 过多种学科（气象学、心理学、社会学、 教育学和指纹学等），在1865年后他的主要兴趣转">
+<meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="matplotlib学习4之legend">
-<meta property="og:url" content="http://yoursite.com/2017/12/24/matplotlib学习4之legend/index.html">
+<meta property="og:title" content="Logistic回归">
+<meta property="og:url" content="http://yoursite.com/2018/05/29/Logistic回归/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码：123456789101112131415161718192021222324252627282930313233343536373839# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x">
+<meta property="og:description" content="0、概述0.1、回归的含义    高尔顿（Frramcia Galton,1882-1911）早年在剑桥大学学习医学，但医生的职业对 他并无吸引力，后来他接受了一笔遗产，这使他可以放弃医生的生涯，并与 1850－1852年期 间去非洲考察，他所取得的成就使其在1853年获得英国皇家地理学会的金质奖章。此后他研究 过多种学科（气象学、心理学、社会学、 教育学和指纹学等），在1865年后他的主要兴趣转">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/legend.png">
-<meta property="og:updated_time" content="2017-12-24T10:48:06.803Z">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg">
+<meta property="og:updated_time" content="2018-05-29T14:02:04.732Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="matplotlib学习4之legend">
-<meta name="twitter:description" content="代码：123456789101112131415161718192021222324252627282930313233343536373839# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y1 = x + 1#绘制曲线y2 = x">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/legend.png">
+<meta name="twitter:title" content="Logistic回归">
+<meta name="twitter:description" content="0、概述0.1、回归的含义    高尔顿（Frramcia Galton,1882-1911）早年在剑桥大学学习医学，但医生的职业对 他并无吸引力，后来他接受了一笔遗产，这使他可以放弃医生的生涯，并与 1850－1852年期 间去非洲考察，他所取得的成就使其在1853年获得英国皇家地理学会的金质奖章。此后他研究 过多种学科（气象学、心理学、社会学、 教育学和指纹学等），在1865年后他的主要兴趣转">
+<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/24/matplotlib学习4之legend/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/29/Logistic回归/"/>
 
 
 
 
 
-  <title>matplotlib学习4之legend | 沧海一粟</title>
+  <title>Logistic回归 | 沧海一粟</title>
   
 
 
@@ -339,7 +339,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习4之legend/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/29/Logistic回归/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -356,7 +356,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">matplotlib学习4之legend</h1>
+          <h1 class="post-title" itemprop="name headline">Logistic回归</h1>
         
 
         <div class="post-meta">
@@ -368,8 +368,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T14:53:35+08:00">
-                2017-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-29T22:00:25+08:00">
+                2018-05-29
               </time>
             
 
@@ -406,8 +406,48 @@
       
 
       
-        <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 产生数据</span></span><br><span class="line">x = np.linspace(<span class="number">-3</span>,<span class="number">3</span>,<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制直线</span></span><br><span class="line">y1 = x + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#绘制曲线</span></span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line"></span><br><span class="line">plt.figure()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置坐标轴</span></span><br><span class="line">plt.xlim(<span class="number">-1</span>,<span class="number">2</span>)</span><br><span class="line">plt.ylim(<span class="number">-2</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">plt.xlabel(<span class="string">'I am x'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'I am y'</span>)</span><br><span class="line"></span><br><span class="line">new_ticks= np.linspace(<span class="number">-1</span>,<span class="number">2</span>,<span class="number">5</span>)</span><br><span class="line"><span class="comment"># 设置坐标的粒度</span></span><br><span class="line">plt.xticks(new_ticks)</span><br><span class="line"><span class="comment"># 用文字代替对应的数值</span></span><br><span class="line">plt.yticks([<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>],</span><br><span class="line">           [<span class="string">'very bad'</span>,<span class="string">'bad'</span>,<span class="string">'normal'</span>,<span class="string">'good'</span>,<span class="string">'very good'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单纯直线</span></span><br><span class="line">l1, = plt.plot(x,y2,label=<span class="string">'up'</span>)</span><br><span class="line"><span class="comment"># 指定线的颜色, 宽度和类型</span></span><br><span class="line">l2, = plt.plot(x,y1,color=<span class="string">'red'</span>,linewidth=<span class="number">5.0</span>,linestyle=<span class="string">'--'</span>,label=<span class="string">'bottom'</span>)</span><br><span class="line"></span><br><span class="line">plt.legend(handles=[l1,l2],labels=[<span class="string">'aaa'</span>,<span class="string">'bbb'</span>],loc=<span class="string">'best'</span>)</span><br><span class="line"></span><br><span class="line">plt.savefig(<span class="string">"/home/xuleilx/workspace/github/github_pages/public/images/legend.png"</span>)</span><br><span class="line"><span class="comment">#显示</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/legend.png" alt="legend"></p>
+        <h1 id="0、概述"><a href="#0、概述" class="headerlink" title="0、概述"></a>0、概述</h1><h2 id="0-1、回归的含义"><a href="#0-1、回归的含义" class="headerlink" title="0.1、回归的含义"></a>0.1、回归的含义</h2><pre><code>    高尔顿（Frramcia Galton,1882-1911）早年在剑桥大学学习医学，但医生的职业对
+他并无吸引力，后来他接受了一笔遗产，这使他可以放弃医生的生涯，并与 1850－1852年期
+间去非洲考察，他所取得的成就使其在1853年获得英国皇家地理学会的金质奖章。此后他研究
+过多种学科（气象学、心理学、社会学、 教育学和指纹学等），在1865年后他的主要兴趣转
+向遗传学，这也许是受他表兄达尔文的影响。
+   从19世纪80年代高尔顿就开始思考父代和子代相似，如身高、性格及其它种种特制的相似
+性问题。于是他选择了父母平均身高X与其一子身高Y的关系作为研究对象。他观察了1074对
+父母及每对父母的一个儿子，将结果描成散点图，发现趋势近乎一条直 线。总的来说是父母
+平均身高X增加时，其子的身高Y也倾向于增加，这是意料中的结果。但有意思的是高尔顿发现
+这1074对父母平均身高的平均值为68 英寸（英国计量单位，1 英寸=2.54cm）时，1074个
+儿子的平均身高为69 英寸，比父母平均身高大1 英寸 ，于是他推想，当父母平均身高为64 
+英寸时，1074个儿子的平均身高应为64+1=65 英寸；若父母的身高为72 英寸时，他们儿子
+的平均身高应为72=1=73 英寸，但观察结果确与此不符。高尔顿发现前一种情况是儿子的平
+均身高为67 英寸，高于父母平均值达3 英寸，后者儿子的平均身高为71英寸，比父母的平均
+身高低1 英寸。
+    高尔顿对此研究后得出的解释是自然界有一种约束力，使人类身高在一定时期是相对稳定
+的。如果父 母身高（或矮了），其子女比他们更高（矮），则人类身材将向高、矮两个极端
+分化。自然界不这样做，它让身高有一种回归到中心的作用。例如，父母平均身高 72 英寸，
+这超过了平均值68英寸，表明这些父母属于高的一类，其儿子也倾向属于高的一类（其平均身
+高71 英寸 大于子代69 英寸），但不像父母离子代那么远（71-69&lt;72-68）。反之，父母
+平均身高64 英寸，属于矮的一类，其儿子也倾向属于矮的一类（其平均67 英寸，小于子代
+的平均数69 英寸），但不像父母离中心那么远（69 -67&lt; 68-64）。
+    因此，身高有回归于中心的趋势，由于这个性质，高尔顿就把“回归”这个词引进到问题
+的讨论中，这就是“回归”名称的由来，逐渐背后人沿用成习了。
+</code></pre><h2 id="0-2、线性回归"><a href="#0-2、线性回归" class="headerlink" title="0.2、线性回归"></a>0.2、线性回归</h2><p>线性回归实际上就是找到一条直线 $$y = W^{T}x + b$$ ，使得该直线尽可能的拟合样本数据。</p>
+<h2 id="0-3、Logistic回归"><a href="#0-3、Logistic回归" class="headerlink" title="0.3、Logistic回归"></a>0.3、Logistic回归</h2><p>Logistic回归其实不是线性回归求预测值的问题，而是二分类问题。首先我们的线性回归模型输出的<br>预测值，连续的数值，我们想用它解决分类问题，就需要让连续的数值转换到0/1就可以了,这里引入<br>一个新的函数sigmoid $$y=\frac{1}{1+e^{-z}}$$ 函数，其中 $$z = W^{T}x + b$$ 。<br>图像是这样的：<br><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logistic-curve.svg" alt="sigmoid"></p>
+<h2 id="0-4、Softmax回归"><a href="#0-4、Softmax回归" class="headerlink" title="0.4、Softmax回归"></a>0.4、Softmax回归</h2><p>In mathematics, the <strong>softmax</strong> function, or <strong>normalized exponential</strong> function,[1]:198 is a<br>generalization of the logistic function that “squashes” a K-dimensional vector $$\mathbf {z}$$ of<br>arbitrary real values to a K-dimensional vector $$\sigma (\mathbf {z} )$$ of real values, where each<br>entry is in the range (0, 1), and all the entries adds up to 1. The function is given by<br>$$<br>{\displaystyle \sigma :\mathbb {R} ^{K}\to \left\{\sigma \in \mathbb {R} ^{K}|\sigma _{i}&gt;0,\sum _{i=1}^{K}\sigma _{i}=1\right\}}<br>$$<br>$$<br>\sigma (\mathbf {z} )_{j}={\frac {e^{z_{j}}}{\sum _{k=1}^{K}e^{z_{k}}}}    for j = 1, …, K.<br>$$<br>举个栗子：<br>假设模型的输入样本是I，讨论一个3分类问题（类别用1，2，3表示），样本I的真实类别是2，那么这个样本I经过网络所有层到达 softmax 层之前就得到了 $$W^{T}x$$，也就是说 $$W^{T}x$$ 是一个3 <em> 1的向量，那么上面公式中的 $$a_{j}$$ 就表示这个3 </em> 1的向量中的第 j 个值; 而分母中的 $$a_{k}$$ 则表示3 <em> 1的向量中的3个值，所以会有个求和符号。 因为 $$e^{x}$$ 恒大于0，所以分子永远是正数，分母又是多个正数的和，所以分母也肯定是正数，因此 $$\sigma (\mathbf {z} )_{j}$$ 是正数，而且范围是(0,1)。如果现在不是在训练模型，而是在测试模型，那么当一个样本经过 softmax 层并输出一个K </em> 1的向量时，就会取这个向量中值最大的那个数的index作为这个样本的预测标签。</p>
+<p>总结一下：<br>sigmoid将一个real value映射到（0,1）的区间（当然也可以是（-1,1）），这样可以用来做二分类。<br>softmax把一个k维的real value向量（a1,a2,a3,a4….）映射成一个（b1,b2,b3,b4….）其中bi是一个0-1的常数，然后可以根据bi的大小来进行多分类的任务，如取权重最大的一维。 </p>
+<h1 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h1><h2 id="1-1、工作原理"><a href="#1-1、工作原理" class="headerlink" title="1.1、工作原理"></a>1.1、工作原理</h2><h2 id="1-2、优点，缺点，适用范围"><a href="#1-2、优点，缺点，适用范围" class="headerlink" title="1.2、优点，缺点，适用范围"></a>1.2、优点，缺点，适用范围</h2><pre><code>优点：计算代价不高，易于理解和实现。
+缺点：容易欠拟合，分类精度可能不高。
+适用范围：标称型数据，标称型数据。
+</code></pre><h2 id="1-3、一般流程"><a href="#1-3、一般流程" class="headerlink" title="1.3、一般流程"></a>1.3、一般流程</h2><pre><code>收集数据：可以使用任何方法。
+准备数据：由于需要进行距离计算，因此要求数据类型为数值型。另外，结构化数据格式则最佳。
+分析数据：采用任意方法对数据进行分析。
+训练算法：大部分时间用于训练，训练的目的是为了找到最佳的分类回归系数。
+测试算法：一旦训练步骤完成，分类将会很快。
+使用算法：首先，我们需要输入一些数据，并将其装换成对应的结构化数字；接着基于训练好的回归系数就可以对这些数据进行简单的回归计算，判定它们属于哪个类别；在此之后，我们就可以在输出的类别上做一些其他分析工作。
+</code></pre><h1 id="2、实现"><a href="#2、实现" class="headerlink" title="2、实现"></a>2、实现</h1><h2 id="2-1、梯度下降"><a href="#2-1、梯度下降" class="headerlink" title="2.1、梯度下降"></a>2.1、梯度下降</h2><p>梯度：对于可微的数量场f(x,y,z)，以 $$\left ( \partial f /\partial x, \partial f /\partial y, \partial f /\partial z\right )$$ 为分量的向量场称为f的梯度或斜量。<br>梯度下降法(gradient descent)是一个最优化算法，常用于机器学习和人工智能当中用来递归性地逼近最小偏差模型。</p>
+<p>对于只含有一组数据的训练样本，我们可以得到更新weights的规则为：<br>$$<br>\theta _{j} := \theta _{j} + \alpha ( y^{i} - h_{\theta }(x^{i}))x_{j}^{(i)}<br>$$<br>扩展到多组数据样本，更新公式为：<br>Repeat until convergence {<br>$$<br>\theta _{j} := \theta _{j} + \alpha \sum_{i=1}^{m}  ( y^{i} - h_{\theta }(x^{i}))x_{j}^{(i)}        (for every j)<br>$$<br>}<br>称为批处理梯度下降算法，这种更新算法所需要的运算成本很高，尤其是数据量较大时。考虑下面的更新算法：<br>Loop {<br>    for i=1 to m,{<br>$$<br>\theta _{j} := \theta _{j} + \alpha ( y^{i} - h_{\theta }(x^{i}))x_{j}^{(i)}        (for every j)<br>$$<br>​    }<br>}<br>该算法又叫做随机梯度下降法，这种算法不停的更新weights，每次使用一个样本数据进行更新。当数据量较大时，一般使用后者算法进行更新。</p>
+<h2 id="2-2、伪代码"><a href="#2-2、伪代码" class="headerlink" title="2.2、伪代码"></a>2.2、伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#随机梯度上升算法可以写成如下的伪代码：</span><br><span class="line">所有回归系数初始化为1</span><br><span class="line">对数据集中每个样本</span><br><span class="line">	计算该样本的梯度</span><br><span class="line">	使用alpha * gradient更新回归系数</span><br><span class="line">返回回归系数</span><br></pre></td></tr></table></figure>
+<h2 id="2-3、python实现"><a href="#2-3、python实现" class="headerlink" title="2.3、python实现"></a>2.3、python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 梯度上升算法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradAscent</span><span class="params">(dataMatIn,classLabels)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param dataMatIn: 输入数据</span></span><br><span class="line"><span class="string">    :param classLabels: 每行数据对应的标签</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    dataMatrix = mat(dataMatIn)</span><br><span class="line">    labelMat = mat(classLabels).transpose()</span><br><span class="line">    <span class="comment"># m*n 矩阵</span></span><br><span class="line">    m,n = shape(dataMatrix)</span><br><span class="line">    alpha = <span class="number">0.001</span></span><br><span class="line">    maxCycles = <span class="number">500</span></span><br><span class="line">    <span class="comment"># n所有的Feature，都有weight</span></span><br><span class="line">    weights = ones((n,<span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(maxCycles):</span><br><span class="line">        h = sigmoid(dataMatrix*weights)</span><br><span class="line">        <span class="comment"># 计算实际值与预测值之间的差值</span></span><br><span class="line">        error = (labelMat - h)</span><br><span class="line">        <span class="comment"># 梯度上升，对sigmoid函数一阶偏导</span></span><br><span class="line">        weights = weights + alpha*dataMatrix.transpose()*error</span><br><span class="line">    <span class="keyword">return</span> weights</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机梯度上升算法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stocGradAscent1</span><span class="params">(dataMatrix, classLabels, numIter=<span class="number">150</span>)</span>:</span></span><br><span class="line">    m,n = shape(dataMatrix)</span><br><span class="line">    weights = ones(n)   <span class="comment">#initialize to all ones</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(numIter):</span><br><span class="line">        dataIndex = list(range(m))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):</span><br><span class="line">            alpha = <span class="number">4</span>/(<span class="number">1.0</span>+j+i)+<span class="number">0.0001</span>    <span class="comment">#apha decreases with iteration</span></span><br><span class="line">            randIndex = int(random.uniform(<span class="number">0</span>,len(dataIndex)))<span class="comment">#Does not go to 0 because of the constant</span></span><br><span class="line">            h = sigmoid(sum(dataMatrix[randIndex]*weights))</span><br><span class="line">            error = classLabels[randIndex] - h <span class="comment"># 梯度下降是预测值-实际值，h - y</span></span><br><span class="line">            weights = weights + alpha * error * float64(dataMatrix[randIndex])</span><br><span class="line">            <span class="keyword">del</span>(dataIndex[randIndex])</span><br><span class="line">    <span class="keyword">return</span> weights</span><br></pre></td></tr></table></figure>
+<h1 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h1><p>本算法接触到了机器学习的一个核心算法，梯度下降(上升)算法，改算法贯穿机器学习的各种算法，使用该算法可以快速求得最小偏差，得到我们建模的参数(w,b)。Logistic回归(逻辑回归)是个分类问题，使用微分知识对函数sigmoid $$y=\frac{1}{1+e^{-z}}$$ 求偏微分，不需要直接求导，而是用偏微分计算。</p>
 
       
     </div>
@@ -454,7 +494,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/matplotlib/" rel="tag"># matplotlib</a>
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
           
         </div>
       
@@ -467,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/24/matplotlib学习3之axis2/" rel="next" title="matplotlib学习3之axis2">
-                <i class="fa fa-chevron-left"></i> matplotlib学习3之axis2
+              <a href="/2018/05/06/朴素贝叶斯/" rel="next" title="朴素贝叶斯">
+                <i class="fa fa-chevron-left"></i> 朴素贝叶斯
               </a>
             
           </div>
@@ -476,10 +516,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/24/matplotlib学习5之标注annotate/" rel="prev" title="matplotlib学习5之标注annotate">
-                matplotlib学习5之标注annotate <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -533,8 +569,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -653,6 +698,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0、概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#0&#x3001;&#x6982;&#x8FF0;" class="headerlink" title="0&#x3001;&#x6982;&#x8FF0;"></a>0&#x3001;&#x6982;&#x8FF0;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-1、回归的含义"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#0-1&#x3001;&#x56DE;&#x5F52;&#x7684;&#x542B;&#x4E49;" class="headerlink" title="0.1&#x3001;&#x56DE;&#x5F52;&#x7684;&#x542B;&#x4E49;"></a>0.1&#x3001;&#x56DE;&#x5F52;&#x7684;&#x542B;&#x4E49;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-2、线性回归"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#0-2&#x3001;&#x7EBF;&#x6027;&#x56DE;&#x5F52;" class="headerlink" title="0.2&#x3001;&#x7EBF;&#x6027;&#x56DE;&#x5F52;"></a>0.2&#x3001;&#x7EBF;&#x6027;&#x56DE;&#x5F52;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-3、Logistic回归"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#0-3&#x3001;Logistic&#x56DE;&#x5F52;" class="headerlink" title="0.3&#x3001;Logistic&#x56DE;&#x5F52;"></a>0.3&#x3001;Logistic&#x56DE;&#x5F52;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0-4、Softmax回归"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#0-4&#x3001;Softmax&#x56DE;&#x5F52;" class="headerlink" title="0.4&#x3001;Softmax&#x56DE;&#x5F52;"></a>0.4&#x3001;Softmax&#x56DE;&#x5F52;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、介绍"><span class="nav-number">2.</span> <span class="nav-text"><a href="#1&#x3001;&#x4ECB;&#x7ECD;" class="headerlink" title="1&#x3001;&#x4ECB;&#x7ECD;"></a>1&#x3001;&#x4ECB;&#x7ECD;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1、工作原理"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-1&#x3001;&#x5DE5;&#x4F5C;&#x539F;&#x7406;" class="headerlink" title="1.1&#x3001;&#x5DE5;&#x4F5C;&#x539F;&#x7406;"></a>1.1&#x3001;&#x5DE5;&#x4F5C;&#x539F;&#x7406;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2、优点，缺点，适用范围"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#1-2&#x3001;&#x4F18;&#x70B9;&#xFF0C;&#x7F3A;&#x70B9;&#xFF0C;&#x9002;&#x7528;&#x8303;&#x56F4;" class="headerlink" title="1.2&#x3001;&#x4F18;&#x70B9;&#xFF0C;&#x7F3A;&#x70B9;&#xFF0C;&#x9002;&#x7528;&#x8303;&#x56F4;"></a>1.2&#x3001;&#x4F18;&#x70B9;&#xFF0C;&#x7F3A;&#x70B9;&#xFF0C;&#x9002;&#x7528;&#x8303;&#x56F4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3、一般流程"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#1-3&#x3001;&#x4E00;&#x822C;&#x6D41;&#x7A0B;" class="headerlink" title="1.3&#x3001;&#x4E00;&#x822C;&#x6D41;&#x7A0B;"></a>1.3&#x3001;&#x4E00;&#x822C;&#x6D41;&#x7A0B;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、实现"><span class="nav-number">3.</span> <span class="nav-text"><a href="#2&#x3001;&#x5B9E;&#x73B0;" class="headerlink" title="2&#x3001;&#x5B9E;&#x73B0;"></a>2&#x3001;&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1、梯度下降"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#2-1&#x3001;&#x68AF;&#x5EA6;&#x4E0B;&#x964D;" class="headerlink" title="2.1&#x3001;&#x68AF;&#x5EA6;&#x4E0B;&#x964D;"></a>2.1&#x3001;&#x68AF;&#x5EA6;&#x4E0B;&#x964D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2、伪代码"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-2&#x3001;&#x4F2A;&#x4EE3;&#x7801;" class="headerlink" title="2.2&#x3001;&#x4F2A;&#x4EE3;&#x7801;"></a>2.2&#x3001;&#x4F2A;&#x4EE3;&#x7801;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3、python实现"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#2-3&#x3001;python&#x5B9E;&#x73B0;" class="headerlink" title="2.3&#x3001;python&#x5B9E;&#x73B0;"></a>2.3&#x3001;python&#x5B9E;&#x73B0;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、总结"><span class="nav-number">4.</span> <span class="nav-text"><a href="#3&#x3001;&#x603B;&#x7ED3;" class="headerlink" title="3&#x3001;&#x603B;&#x7ED3;"></a>3&#x3001;&#x603B;&#x7ED3;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
