@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[概率相加]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
+    <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[相依事件的概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[独立事件的组合概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[排列组合]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
+    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[贝叶斯定理]]></title>
+    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
+    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[以二项式系数概括]]></title>
+    <url>%2F2019%2F03%2F19%2F%E4%BB%A5%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%E6%A6%82%E6%8B%AC%2F</url>
+    <content type="text"><![CDATA[Fair Coin: Flip 4 times获得1个Head的概率P(exactly 1 “heads”) = P(HTTT) +P(THTT)+P(TTHT)+P(TTTH)= $\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$=1/4 获得2个Head的概率4次里面选2次 $C_4^2=\frac{43}{21} = 6$P(exactly 2 “heads”) =$\frac{C_4^2}{16}$ = 3/8 Fair Coin: Flip 5 flips获得3个Head的概率5次里面选3次 $C_5^3=\frac{543}{321} = 10$P(exactly 3 “heads”) =$\frac{C_5^3}{32} $ = 5/16 Fair Coin: Flip n flips获得k个Head的概率n次里面选k次 $C_n^k= \frac{\frac{n!}{(n-k!)}}{k!}=\frac{n(n-1)…(n-k+1)}{k(k-1)…1}$all the probability = $2^{n}$P(exactly k “heads”) =$\frac{n(n-1)…(n-k+1)}{2^{n}k*(k-1)…1}$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[基本概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[i.Max6移植Movidius]]></title>
     <url>%2F2019%2F01%2F14%2Fi.Max6%E7%A7%BB%E6%A4%8DMovidius%2F</url>
     <content type="text"><![CDATA[0、概述&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时隔半年有余，由于工作的原因没能更新机器学习方面的内容。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之间林林总总，看完了《UNIX网络编程卷1：套接字联网API（第3版）》，《Linux多线程服务端编程：使用muduo C++网络库》和《Netty权威指南》的部分章节，完成了Tbox Telemetics模块的设计和编码，在这之前其实已对网络编程有所了解，也尝试用MFC编写过类QQ的sample，只是功能简单，单客户端/单服务端之间的通信，然真正用于网络通信的协议未曾染指。网络编程方面的知识，在这次的开发工作中得以锻炼，略有心得一二。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更换项目的间隙，中间有空闲二周，正直双十一，遂购架构书籍数本，看完《架构整洁之道》开始对于软件架构有了进一步的了解，科室读书会分享之，感觉功力倍增。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新年交替之际，开始AI实验室的预研，主要针对边缘计算，驾驶行为分析。嵌入式的硬件限制，只能外挂计算棒，开始研究Intel的Movidius，接触到了OpenVINO工具套件。本篇主要就是介绍一下NCS2在树莓派上的移植。 1、环境搭建 树莓派。系统Raspbian* 9 OS，官网下载最新版本即可。 The Intel™ Distribution of OpenVINO™ for Raspbian OS package to download is here and the Installation document here. 2、步骤IntroductionThis guide applies to 32-bit Raspbian 9 OS, which is an official OS for Raspberry Pi boards. IMPORTANT: All steps in this guide are required unless otherwise stated. The Intel® Distribution of OpenVINO™ toolkit for Raspbian* OS includes the MYRIAD plugin &gt;only. You can use it with the Intel® Movidius™ Neural Compute Stick (Intel® NCS) or the Intel® &gt;Neural Compute Stick 2 plugged in one of USB ports. ###About the Intel® Distribution of OpenVINO™ ToolkitThe Intel® Distribution of OpenVINO™ toolkit quickly deploys applications and solutions that emulate human vision. Based on Convolutional Neural Networks (CNN), the toolkit extends computer vision (CV) workloads across Intel® hardware, maximizing performance. The Intel Distribution of OpenVINO toolkit includes the Intel® Deep Learning Deployment Toolkit (Intel® DLDT). ###Included in the Installation PackageThe Intel Distribution of OpenVINO toolkit for Raspbian OS is an archive with pre-installed header files and libraries. The following components are installed by default: Component Description Inference Engine This is the engine that runs the deep learning model. It includes a set of libraries for an easy inference integration into your applications. OpenCV* version 4.0 OpenCV* community version compiled for Intel® hardware. Sample Applications A set of simple console applications demonstrating how to use the Inference Engine in your applications. ###System Requirements ###Hardware: Raspberry Pi* board with ARMv7-A CPU architectureOne of Intel® Movidius™ Visual Processing Units (VPU):Intel® Movidius™ Neural Compute StickIntel® Neural Compute Stick 2 ###Operating Systems: Raspbian* Stretch, 32-bit Install the PackageOpen the Terminal* or your preferred console application.Go to the directory in which you downloaded the Intel Distribution of OpenVINO toolkit. This document assumes this is your ~/Downloads directory. If not, replace ~/Downloads with the directory where the file is located. cd ~/Downloads/ By default, the package file is saved as l_openvino_toolkit_ie_p_.tgz.Unpack the archive: tar -xf l_openvino_toolkit_ie_p_.tgz Modify the setupvars.sh script by replacing with the absolute path to the installation folder: sed -i “s||$(pwd)/inference_engine_vpu_arm|” inference_engine_vpu_arm/bin/setupvars.shNow the Intel Distribution of OpenVINO toolkit is ready to be used. Continue to the next sections to configure the environment and set up USB rules. Set the Environment VariablesYou must update several environment variables before you can compile and run Intel Distribution of OpenVINO toolkit applications. Run the following script to temporarily set the environment variables: source inference_engine_vpu_arm/bin/setupvars.sh (Optional) The Intel Distribution of OpenVINO environment variables are removed when you close the shell. As an option, you can permanently set the environment variables as follows: Open the .bashrc file in : vi /.bashrc Add this line to the end of the file: source ~/Downloads/inference_engine_vpu_arm/bin/setupvars.sh Save and close the file: press Esc and type :wq.To test your change, open a new terminal.You will see the following: [setupvars.sh] OpenVINO environment initialized Add USB RulesAdd the current Linux user to the users group: sudo usermod -a -G users “$(whoami)” Log out and log in for it to take effect. To perform inference on the Intel® Movidius™ Neural Compute Stick or Intel® Neural Compute Stick 2, install the USB rules as follows: sh inference_engine_vpu_arm/install_dependencies/install_NCS_udev_rules.sh Build and Run Object Detection SampleFollow the next steps to run pre-trained Face Detection network using samples from Intel Distribution of OpenVINO toolkit: Go to the folder with samples source code: cd inference_engine_vpu_arm/deployment_tools/inference_engine/samples Create build directory: mkdir build &amp;&amp; cd build Build the Object Detection Sample: cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=”-march=armv7-a”make -j2 object_detection_sample_ssd Download the pre-trained Face Detection model or copy it from a host machine:To download the .bin file with weights: wget –no-check-certificate https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin To download the .xml file with the network topology: wget –no-check-certificate https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml Run the sample with specified path to the model:Copy Code ./armv7l/Release/object_detection_sample_ssd -m face-detection-adas-0001.xml -d MYRIAD -i Run Face Detection Model Using OpenCV* APITo validate OpenCV installation, you may try to run OpenCV’s deep learning module with Inference Engine backend. Here is a Python sample, which works with Face Detection model: Download the pre-trained Face Detection model or copy it from a host machine:To download the .bin file with weights: wget –no-check-certificate https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin To download the .xml file with the network topology: wget –no-check-certificate https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml Create a new Python file named as openvino_fd_myriad.py and copy the following script there:12345678910111213141516171819202122232425262728import cv2 as cv# Load the model net = cv.dnn.readNet('face-detection-adas-0001.xml', 'face-detection-adas-0001.bin') # Specify target device net.setPreferableTarget(cv.dnn.DNN_TARGET_MYRIAD) # Read an image frame = cv.imread('/path/to/image') # Prepare input blob and perform an inference blob = cv.dnn.blobFromImage(frame, size=(672, 384), ddepth=cv.CV_8U) net.setInput(blob) out = net.forward() # Draw detected faces on the frame for detection in out.reshape(-1, 7): confidence = float(detection[2]) xmin = int(detection[3] * frame.shape[1]) ymin = int(detection[4] * frame.shape[0]) xmax = int(detection[5] * frame.shape[1]) ymax = int(detection[6] * frame.shape[0]) if confidence &gt; 0.5: cv.rectangle(frame, (xmin, ymin), (xmax, ymax), color=(0, 255, 0))# Save the frame to an image file cv.imwrite('out.png', frame) Run the script: python3 openvino_fd_myriad.py In this script, OpenCV* loads the Face Detection model in the Intermediate Representation (IR) format and an image. Then it runs the model and saves an image with detected faces. 3、i.Max6移植&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理论上树莓派上编译的产物可以直接拷贝到相同处理器架构的i.Max66上(CPU都是ARMv7)，不过由于各个公司BSP对内核裁剪和集成编译的时候包含的软件包不同，需要修改的内容也不尽相同。这里写的是本司的开发板环境缺少的依赖： python3 lsb_release libstdc++ -&gt; 3.4.22 vi inference_engine_vpu_arm/install_dependencies/install_NCS_udev_rules.sh:%s/sudo//g #删除所有的sudo touch /etc/ld.so.conf 4、总结&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初步了解OpenVINO发现其是一大宝藏，里面包含了几十种流行模型的，并且有大量sample可以参考学习，可以通过组合各个模型实现自己想要的功能。增加对机器学习的实战经验，加深对机器学习的理解。遗憾的是Intel的NCS2目前貌似只支持深度学习的预测，之于一般的机器学习模型是否也支持，有待考证。]]></content>
