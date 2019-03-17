@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="0、概述本章主要通过一个简单的实例，实现驱动模块的加载和卸载，并不实现具体的功能。 1、介绍1.1、编写hello.c1234567891011121314151617#include &amp;lt;linux/init.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;MODULE_LICENSE(&quot;Dual BSD/GPL&quot;);static int hello_init(voi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-16T23:10:01.865Z">
+<meta property="og:updated_time" content="2019-03-17T09:50:28.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HelloWorld驱动模块">
 <meta name="twitter:description" content="0、概述本章主要通过一个简单的实例，实现驱动模块的加载和卸载，并不实现具体的功能。 1、介绍1.1、编写hello.c1234567891011121314151617#include &amp;lt;linux/init.h&amp;gt;#include &amp;lt;linux/module.h&amp;gt;MODULE_LICENSE(&quot;Dual BSD/GPL&quot;);static int hello_init(voi">
@@ -408,11 +408,24 @@
 </code></pre><h1 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h1><h2 id="1-1、编写hello-c"><a href="#1-1、编写hello-c" class="headerlink" title="1.1、编写hello.c"></a>1.1、编写hello.c</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/init.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/module.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">MODULE_LICENSE(<span class="string">"Dual BSD/GPL"</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hello_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    printk(KERN_ALERT <span class="string">"Hello, world\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">hello_exit</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    printk(KERN_ALERT <span class="string">"Goodbye, cruel world\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">module_init(hello_init);</span><br><span class="line">module_exit(hello_exit);</span><br></pre></td></tr></table></figure>
 <pre><code>这个模块定义了两个函数，一个在模块加载到内核时被调用（hello_init），一个在模块去除时被调用（hello_exit）。module_init和module_exit这几行使用了特别的内核宏来指出这两个函数的角色。另一个特别的宏（MODULE_LICENSE）是用来告知内核，该模块带有一个自由的许可证，没有这样的说明，在模块加载时内核会报错。
 printk函数在Linux内核中定义并且对模块可用，它与标准C库函数printf的行为相似。内核需要它自己的打印函数，因为没有C库的支持。字串KERN_ALERT是消息的优先级。在此模块中指定了一个高优先级，因为使用默认优先级的消息可能不会直接显示，这依赖于运行的内核版本、klogd守护进程的版本以及配置。
-</code></pre><h2 id="1-2、编写Makefile"><a href="#1-2、编写Makefile" class="headerlink" title="1.2、编写Makefile"></a>1.2、编写Makefile</h2><p>为了编译模块文件，有两种方法创建Makefile文件可以实现:<br>1、只需一行即可，命令如下：<br>    obj-m := hello.o<br>obj-m指出将要编译成的内核模块列表。<em>.o 格式文件会自动地由相应的 </em>.c 文件生成（不需要显式地罗列所有源代码文件）<br>如果要把上述程序编译为一个运行时加载和删除的模块，则编译命令如下所示。<br>    make -C /usr/src/kernels/2.6.25-14.fc9.i686 M=$PWD modules<br>这个命令首先是改变目录到用 -C 选项指定的位置（即内核源代码目录，这个参数要根据自己的情况而定）。这个 M= 选项使Makefile在构造modules目标前，返回到模块源码目录。然后，modules目标指向obj-m变量中设定的模块。这里的编译规则的意思是：在包含内核源代码位置的地方进行make，然后再编译 $PWD （当前）目录下的modules。这里允许我们使用所有定义在内核源代码树下的所有规则来编译我们的内核模块。</p>
+</code></pre><h2 id="1-2、编写Makefile"><a href="#1-2、编写Makefile" class="headerlink" title="1.2、编写Makefile"></a>1.2、编写Makefile</h2><p>为了编译模块文件，有两种方法创建Makefile文件可以实现:<br>1、只需一行即可，命令如下：</p>
+<blockquote>
+<p>obj-m := hello.o</p>
+</blockquote>
+<p>obj-m指出将要编译成的内核模块列表。<em>.o 格式文件会自动地由相应的 </em>.c 文件生成（不需要显式地罗列所有源代码文件）<br>如果要把上述程序编译为一个运行时加载和删除的模块，则编译命令如下所示。</p>
+<blockquote>
+<p>make -C /usr/src/kernels/2.6.25-14.fc9.i686 M=$PWD modules</p>
+</blockquote>
+<p>这个命令首先是改变目录到用 -C 选项指定的位置（即内核源代码目录，这个参数要根据自己的情况而定）。这个 M= 选项使Makefile在构造modules目标前，返回到模块源码目录。然后，modules目标指向obj-m变量中设定的模块。这里的编译规则的意思是：在包含内核源代码位置的地方进行make，然后再编译 $PWD （当前）目录下的modules。这里允许我们使用所有定义在内核源代码树下的所有规则来编译我们的内核模块。</p>
 <p>2、使用下面的Makefile来实现：<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(KERNELRELEASE)</span>,)</span><br><span class="line">	obj-m := hello.o</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">	KERNELDIR ?= /lib/modules/<span class="variable">$(<span class="built_in">shell</span> uname -r)</span>/build</span><br><span class="line">	PWD :=<span class="variable">$(<span class="built_in">shell</span> pwd)</span></span><br><span class="line"><span class="section">default:</span></span><br><span class="line">	<span class="variable">$(MAKE)</span> -C <span class="variable">$(KERNELDIR)</span> M=<span class="variable">$(PWD)</span> modules</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure></p>
 <p>然后保存后，使用make命令。编译完毕之后，就会在源代码目录下生成hello.ko文件，这就是内核驱动模块了。我们使用下面的命令来加载hello模块。</p>
-<h2 id="1-3、效果"><a href="#1-3、效果" class="headerlink" title="1.3、效果"></a>1.3、效果</h2><pre><code>dmesg | tail
-</code></pre><p>这时，在终端里就会打印出内核信息了。同时，也可以使用lsmod命令来查看是否有加载了<br>    xuleilx@xuleilx-MS-7817:/opt# lsmod<br>    Module                  Size  Used by<br>    helloworld             12448  0 </p>
+<h2 id="1-3、效果"><a href="#1-3、效果" class="headerlink" title="1.3、效果"></a>1.3、效果</h2><blockquote>
+<p>dmesg | tail</p>
+</blockquote>
+<p>这时，在终端里就会打印出内核信息了。同时，也可以使用lsmod命令来查看是否有加载了</p>
+<blockquote>
+<p>xuleilx@xuleilx-MS-7817:/opt# lsmod<br>Module                  Size  Used by<br>helloworld             12448  0 </p>
+</blockquote>
 <p>至此，一个最简单的内核模块驱动程序就完成了。^_^</p>
 <h1 id="2、总结"><a href="#2、总结" class="headerlink" title="2、总结"></a>2、总结</h1><pre><code>至此，打开通往内核的大门。
 下一步计划：编写字符设备驱动，可以存放一些数值。
