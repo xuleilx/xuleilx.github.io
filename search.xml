@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[USB学习]]></title>
+    <url>%2F2020%2F07%2F27%2FUSB%E5%AD%A6%E4%B9%A0%2F</url>
+    <content type="text"><![CDATA[USB学习1. 动机从事汽车电子行业以来，了解到了诸多之前没有接触过的领域，对于一个一直从事中间件开发的我来说，受益匪浅。工作的中心主要是手机互联相关业务，所涉及的领域比较多，多媒体，gstreamer，alsa，USB驱动，iap协议等。自觉除了USB驱动，其他内容都有略知一二，出问题都能从容应对，唯有USB驱动仍是软肋，一直在心中作梗。遂借工作之余，打算探个究竟。 2. 方法应用出生，当然是从应用入手，大概了解了内核驱动实现之后，觉得对USB的理解还是稍有欠缺。遂想到一句古话：纸上得来终觉浅，绝知此事要躬行。 USB in a NutShell https://www.beyondlogic.org/usbnutshell/usb1.shtml 大概了解USB的整体框架 《圈圈教你玩USB》 不可多得的好书，不过并不适合的零基础的人。要有51单片机的基础，USB相关知识。 参考该书实现一个USB外设，对USB有了更深的了解。做一个外设并不容易，还需要参考 《PDIUSBD12》和《AT89C52》手册，弄懂芯片的协议。 《Linux那些事儿之我是USB》 说实话，作者可能很懂USB，但是讲的内容并不像书的名字这么通俗易懂，可能驱动层就是这么难懂吧。可以协助阅读内核相关代码。 《usb_20》 当然，终极目标解释理解spec了，其他都是实现，这个还是内功。 3. 感悟说实话，互联网所谓的全栈工程师，跟嵌入式相比，感觉还是小巫见大巫了。单讲USB，从应用 - 驱动 - USB器件 - MCU(固件) - 设备(LED)。没有点基础还真吃不消。USB整体框图：]]></content>
+      <tags>
+        <tag>USB</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[概率相加]]></title>
     <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
     <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
@@ -25,6 +33,14 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[基本概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[独立事件的组合概率]]></title>
     <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
     <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
@@ -36,14 +52,6 @@
     <title><![CDATA[独立事件]]></title>
     <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
     <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[基本概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
