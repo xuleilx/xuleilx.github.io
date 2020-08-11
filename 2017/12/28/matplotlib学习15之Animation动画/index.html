@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/animation.gif">
-<meta property="og:updated_time" content="2018-01-07T04:38:03.530Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/animation.gif">
+<meta property="og:updated_time" content="2020-08-11T12:49:34.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="matplotlib学习15之Animation动画">
 <meta name="twitter:description" content="代码：123456789101112131415161718192021222324252627# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as npfrom matplotlib import animationfig,ax = plt.subplots()# 数据是一个0~2π内的正弦曲线x = np.a">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/animation.gif">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/animation.gif">
 
 
 
@@ -407,7 +407,7 @@
 
       
         <p>代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> animation</span><br><span class="line"></span><br><span class="line">fig,ax = plt.subplots()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据是一个0~2π内的正弦曲线</span></span><br><span class="line">x = np.arange(<span class="number">0</span>,<span class="number">2</span>*np.pi,<span class="number">0.1</span>)</span><br><span class="line">y= np.sin(x)</span><br><span class="line">line, = ax.plot(x,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 采用np.pi*i/30 方式更新，更流畅</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">animate</span><span class="params">(i)</span>:</span></span><br><span class="line">    line.set_ydata(np.sin(x+np.pi*i/<span class="number">30</span>))</span><br><span class="line">    <span class="keyword">return</span> line,</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">()</span>:</span></span><br><span class="line">    line.set_ydata(np.sin(x))</span><br><span class="line">    <span class="keyword">return</span> line,</span><br><span class="line"></span><br><span class="line"><span class="comment"># https://matplotlib.org/api/animation_api.html</span></span><br><span class="line">ani = animation.FuncAnimation(fig=fig,func=animate,frames=<span class="number">30</span>,init_func=init,blit=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># https://stackoverflow.com/questions/25140952/matplotlib-save-animation-in-gif-error</span></span><br><span class="line">ani.save(<span class="string">'/home/xuleilx/workspace/github/github_pages/public/images/animation.gif'</span>, writer=<span class="string">'imagemagick'</span>, fps=<span class="number">30</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="https://raw.githubusercontent.com/xuleilx/xuleilx.github.io/master/images/animation.gif" alt="animation"></p>
+<p>结果：<br><img src="https://xuleilx.github.io/images/animation.gif" alt="animation"></p>
 
       
     </div>
