@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[Linux内核完全注释_第三章]]></title>
+    <title><![CDATA[Linux内核完全注释_第三章 内核编程语言和环境]]></title>
     <url>%2F2020%2F08%2F21%2FLinux%E5%86%85%E6%A0%B8%E5%AE%8C%E5%85%A8%E6%B3%A8%E9%87%8A-%E7%AC%AC%E4%B8%89%E7%AB%A0%2F</url>
-    <content type="text"><![CDATA[第三章 内核编程语言和环境一、目标文件1.1 目标文件格式 a.out格式7个区的基本定义和用途：执行头（exec header）：该部分中含有一些参数（exec结构），是有关目标文件的整体结构信息。例如代码和数据区的长度、未初始化数据区的长度、对应源程序文件名以及目标文件创建时间等。内核使用这些参数把执行文件加载到内存中并执行，而链接程序（ld）使用这些参数将一些模块文件组合成一个可执行文件。这是目标文件唯一必要的组成部分。 执行头结构体 12345678910struct exec &#123; unsigned long a_magic // 执行文件魔数。使用 N_MAGIC 等宏访问。 unsigned a_text // 代码长度，字节数。 unsigned a_data // 数据长度，字节数。 unsigned a_bss // 文件中的未初始化数据区长度，字节数。 unsigned a_syms // 文件中的符号表长度，字节数。 unsigned a_entry // 执行开始地址。 unsigned a_trsize // 代码重定位信息长度，字节数。 unsigned a_drsize // 数据重定位信息长度，字节数。&#125; 代码区（text segment）：由编译器或汇编器生成的二进制指令代码和数据信息，含有程序执行时被加载到内存中的指令和相关数据。可以以只读形式被加载。 数据区（data segment）：由编译器或汇编器生成的二进制指令代码和数据信息，这部分含有已经初始化过的数据，总是被加载到可读写的内存中。 代码重定位（text relocations）：这部分含有供链接程序使用的记录数据。在组合目标模块文件时用于定位代码段中的指针或地址。当链接程序需要该表目标代码的地址时就需要修正和维护这些地方。 数据重定位（data relocations）：类似于代码重定位部分的作用，但是用于数据段中指针的重定位。 重定位结构体 : 123456789struct relocation_info&#123; int r_address; // 段内需要重定位的地址。 unsigned int r_symbolnum:24; // 含义与 r_extern 有关。指定符号表中一个符号或者一个段。 unsigned int r_pcrel:1; // 1 比特。 PC 相关标志。 unsigned int r_length:2; // 2 比特。指定要被重定位字段长度（2 的次方）。 unsigned int r_extern:1; // 外部标志位。 1 - 以符号的值重定位。 0 - 以段的地址重定位。 unsigned int r_pad:4; // 没有使用的 4 个比特位，但最好将它们复位掉。&#125;; 符号表（symbol table）：这部分同样含有供链接程序使用的记录数据。这些记录数据保保存着模块文件中定义的全局符号以及需要从其他模块文件中输入的符号，或者是由链接器定义的符号，用于在模块文件之间对命名的变量和函数（符号）进行交叉引用。 字符串表（string table）：该部分含有与符号名相对应的字符串。用于调试程序调试目标代码，与连接过程无关。这些信息科包含源程序代码和行号、局部符号以及数据结构描述信息等。1234567891011struct nlist &#123; union &#123; char *n_name; // 字符串指针， struct nlist *n_next; // 或者是指向另一个符号项结构的指针， long n_strx; // 或者是符号名称在字符串表中的字节偏移值。 &#125; n_un; unsigned char n_type; // 该字节分成 3 个字段，参见 a.out.h 文件 146-154 行。 char n_other; // 通常不用。 short n_desc; // unsigned long n_value; // 符号的值。&#125;; 对于一个指定的目标文件并非一定会包含所有以上信息。 1.2 可执行文件映射到进程逻辑地址空间 1.3 目标文件的链接操作 1.4 System.map文件链接（ld）时使用“-M”选项，或者使用nm，可以生成链接映像（link map）信息，即连接程序产生的目标程序内存地址映像信息。其中列出了程序段装入内存中的位置信息。有如下信息： 目标文件及符号信息映射到内存中的位置 公共符号如何放置 链接中包含的所有文件成员及其应用的符号 一般存放在： /boot/System.map/System.map/usr/src/linux/System.map 表 3-5 目标文件符号列表文件中的符号类型 符号类型 名称 说明 A Absolute 符号的值是绝对值，并且在进一步链接过程中不会被改变。 B BSS 符号在未初始化数据区或区（section） 中，即在 BSS 段中 C Common 符号是公共的。公共符号是未初始化的数据。在链接时，多个公共符号可能具 有同一名称。如果该符号定义在其他地方，则公共符号被看作是未定义的引用。 D Data 符号在已初始化数据区中。 G Global 符号是在小对象已初始化数据区中的符号。某些目标文件的格式允许对小数据 对象（例如一个全局整型变量）可进行更有效的访问 I Inderect 符号是对另一个符号的间接引用 N Debugging 符号是一个调试符号 R Read only 符号在一个只读数据区中 S Small 符号是小对象未初始化数据区中的符号 T Text 符号是代码区中的符号 U Undefined 符号是外部的，并且其值为 0（未定义） - Stabs 符号是 a.out 目标文件中的一个 stab 符号，用于保存调试信息 ? Unknwon 符号的类型未知，或者是与具体文件格式有关 二、MakeFile2.1 Makefile 文件中的规则12target（目标）...： prerequisites（先决条件）... command（命令） prerequisite（先决条件或称依赖对象）是用以创建 target 所必要或者依赖的一系列文件或其他目标。target 通常依赖于多个这样的必要文件或目标文件。 command（命令）是指 make 所执行的操作，通常就是一些 shell 命令，是生成 target 需要执行的操作。当先决条件中一个或多个文件的最后修改时间比 target 文件的要新时，规则的命令就会被执行。另外，一个规则中可以有多个命令，每个命令占用规则中单独一行。请注意，我们需要在写每个命令之前键入一个制表符（按 Tab 键产生）！12345678910edit : main.o files.o utils.o cc -o edit main.o files.o utils.omain.o : main.c defs.h cc -c main.cfiles.o : files.c defs.h buffer.h command.h cc -c files.cutils.o : utils.c defs.h cc -c utils.cclean : rm edit main.o files.o utils.o 2.2 让MakeFile自动推断命令12345678objects = main.o files.o utils.o #变量edit : $(objects) #自动推断命令 cc -o edit $(objects)main.o : defs.hfiles.o : defs.h buffer.h command.hutils.o : defs.hclean : rm edit $(objects) 2.3 隐含规则中的自动变量123# ↓ 第一个先决条件foo.o : foo.c defs.h hack.h cc -c $(CFLAGS) $&lt; -o $@ $^: 表示规则的所有先决条件，包括它们所处目录的名称；代表所有通过目录搜索得到的依赖文件的完整路径名（目录 + 一般文件名）列表 ；$&lt;: 表示规则中的第一个先决条件；如：替换成 foo.c$@: 表示目标对象；如：被替换为 foo.o 参考：GNU make中文手册 三、小结学习可执行文件的内存结构，复习MakeFile的语法。]]></content>
+    <content type="text"><![CDATA[一、目标文件1.1 目标文件格式 a.out格式7个区的基本定义和用途：执行头（exec header）：该部分中含有一些参数（exec结构），是有关目标文件的整体结构信息。例如代码和数据区的长度、未初始化数据区的长度、对应源程序文件名以及目标文件创建时间等。内核使用这些参数把执行文件加载到内存中并执行，而链接程序（ld）使用这些参数将一些模块文件组合成一个可执行文件。这是目标文件唯一必要的组成部分。 执行头结构体 12345678910struct exec &#123; unsigned long a_magic // 执行文件魔数。使用 N_MAGIC 等宏访问。 unsigned a_text // 代码长度，字节数。 unsigned a_data // 数据长度，字节数。 unsigned a_bss // 文件中的未初始化数据区长度，字节数。 unsigned a_syms // 文件中的符号表长度，字节数。 unsigned a_entry // 执行开始地址。 unsigned a_trsize // 代码重定位信息长度，字节数。 unsigned a_drsize // 数据重定位信息长度，字节数。&#125; 代码区（text segment）：由编译器或汇编器生成的二进制指令代码和数据信息，含有程序执行时被加载到内存中的指令和相关数据。可以以只读形式被加载。 数据区（data segment）：由编译器或汇编器生成的二进制指令代码和数据信息，这部分含有已经初始化过的数据，总是被加载到可读写的内存中。 代码重定位（text relocations）：这部分含有供链接程序使用的记录数据。在组合目标模块文件时用于定位代码段中的指针或地址。当链接程序需要该表目标代码的地址时就需要修正和维护这些地方。 数据重定位（data relocations）：类似于代码重定位部分的作用，但是用于数据段中指针的重定位。 重定位结构体 : 123456789struct relocation_info&#123; int r_address; // 段内需要重定位的地址。 unsigned int r_symbolnum:24; // 含义与 r_extern 有关。指定符号表中一个符号或者一个段。 unsigned int r_pcrel:1; // 1 比特。 PC 相关标志。 unsigned int r_length:2; // 2 比特。指定要被重定位字段长度（2 的次方）。 unsigned int r_extern:1; // 外部标志位。 1 - 以符号的值重定位。 0 - 以段的地址重定位。 unsigned int r_pad:4; // 没有使用的 4 个比特位，但最好将它们复位掉。&#125;; 符号表（symbol table）：这部分同样含有供链接程序使用的记录数据。这些记录数据保保存着模块文件中定义的全局符号以及需要从其他模块文件中输入的符号，或者是由链接器定义的符号，用于在模块文件之间对命名的变量和函数（符号）进行交叉引用。 字符串表（string table）：该部分含有与符号名相对应的字符串。用于调试程序调试目标代码，与连接过程无关。这些信息科包含源程序代码和行号、局部符号以及数据结构描述信息等。1234567891011struct nlist &#123; union &#123; char *n_name; // 字符串指针， struct nlist *n_next; // 或者是指向另一个符号项结构的指针， long n_strx; // 或者是符号名称在字符串表中的字节偏移值。 &#125; n_un; unsigned char n_type; // 该字节分成 3 个字段，参见 a.out.h 文件 146-154 行。 char n_other; // 通常不用。 short n_desc; // unsigned long n_value; // 符号的值。&#125;; 对于一个指定的目标文件并非一定会包含所有以上信息。 1.2 可执行文件映射到进程逻辑地址空间 1.3 目标文件的链接操作 1.4 System.map文件链接（ld）时使用“-M”选项，或者使用nm，可以生成链接映像（link map）信息，即连接程序产生的目标程序内存地址映像信息。其中列出了程序段装入内存中的位置信息。有如下信息： 目标文件及符号信息映射到内存中的位置 公共符号如何放置 链接中包含的所有文件成员及其应用的符号 一般存放在： /boot/System.map/System.map/usr/src/linux/System.map 表 3-5 目标文件符号列表文件中的符号类型 符号类型 名称 说明 A Absolute 符号的值是绝对值，并且在进一步链接过程中不会被改变。 B BSS 符号在未初始化数据区或区（section） 中，即在 BSS 段中 C Common 符号是公共的。公共符号是未初始化的数据。在链接时，多个公共符号可能具 有同一名称。如果该符号定义在其他地方，则公共符号被看作是未定义的引用。 D Data 符号在已初始化数据区中。 G Global 符号是在小对象已初始化数据区中的符号。某些目标文件的格式允许对小数据 对象（例如一个全局整型变量）可进行更有效的访问 I Inderect 符号是对另一个符号的间接引用 N Debugging 符号是一个调试符号 R Read only 符号在一个只读数据区中 S Small 符号是小对象未初始化数据区中的符号 T Text 符号是代码区中的符号 U Undefined 符号是外部的，并且其值为 0（未定义） - Stabs 符号是 a.out 目标文件中的一个 stab 符号，用于保存调试信息 ? Unknwon 符号的类型未知，或者是与具体文件格式有关 二、MakeFile2.1 Makefile 文件中的规则12target（目标）...： prerequisites（先决条件）... command（命令） prerequisite（先决条件或称依赖对象）是用以创建 target 所必要或者依赖的一系列文件或其他目标。target 通常依赖于多个这样的必要文件或目标文件。 command（命令）是指 make 所执行的操作，通常就是一些 shell 命令，是生成 target 需要执行的操作。当先决条件中一个或多个文件的最后修改时间比 target 文件的要新时，规则的命令就会被执行。另外，一个规则中可以有多个命令，每个命令占用规则中单独一行。请注意，我们需要在写每个命令之前键入一个制表符（按 Tab 键产生）！12345678910edit : main.o files.o utils.o cc -o edit main.o files.o utils.omain.o : main.c defs.h cc -c main.cfiles.o : files.c defs.h buffer.h command.h cc -c files.cutils.o : utils.c defs.h cc -c utils.cclean : rm edit main.o files.o utils.o 2.2 让MakeFile自动推断命令12345678objects = main.o files.o utils.o #变量edit : $(objects) #自动推断命令 cc -o edit $(objects)main.o : defs.hfiles.o : defs.h buffer.h command.hutils.o : defs.hclean : rm edit $(objects) 2.3 隐含规则中的自动变量123# ↓ 第一个先决条件foo.o : foo.c defs.h hack.h cc -c $(CFLAGS) $&lt; -o $@ $^: 表示规则的所有先决条件，包括它们所处目录的名称；代表所有通过目录搜索得到的依赖文件的完整路径名（目录 + 一般文件名）列表 ；$&lt;: 表示规则中的第一个先决条件；如：替换成 foo.c$@: 表示目标对象；如：被替换为 foo.o 参考：GNU make中文手册 三、小结学习可执行文件的内存结构，复习MakeFile的语法。]]></content>
   </entry>
   <entry>
     <title><![CDATA[USB笔记3_复合设备]]></title>
@@ -29,49 +29,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[基本概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[贝叶斯定理]]></title>
-    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
-    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[独立事件的组合概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[相依事件的概率]]></title>
     <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
     <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[扑克中的概率和文氏图]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
-    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -85,6 +45,14 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[排列组合]]></title>
     <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
     <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
@@ -93,9 +61,41 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[贝叶斯定理]]></title>
+    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
+    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[基本概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[以二项式系数概括]]></title>
     <url>%2F2019%2F03%2F19%2F%E4%BB%A5%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%E6%A6%82%E6%8B%AC%2F</url>
     <content type="text"><![CDATA[Fair Coin: Flip 4 times获得1个Head的概率P(exactly 1 “heads”) = P(HTTT) +P(THTT)+P(TTHT)+P(TTTH)= $\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$=1/4 获得2个Head的概率4次里面选2次 $C_4^2=\frac{43}{21} = 6$P(exactly 2 “heads”) =$\frac{C_4^2}{16}$ = 3/8 Fair Coin: Flip 5 flips获得3个Head的概率5次里面选3次 $C_5^3=\frac{543}{321} = 10$P(exactly 3 “heads”) =$\frac{C_5^3}{32} $ = 5/16 Fair Coin: Flip n flips获得k个Head的概率n次里面选k次 $C_n^k= \frac{\frac{n!}{(n-k!)}}{k!}=\frac{n(n-1)…(n-k+1)}{k(k-1)…1}$all the probability = $2^{n}$P(exactly k “heads”) =$\frac{n(n-1)…(n-k+1)}{2^{n}k*(k-1)…1}$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[独立事件的组合概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
