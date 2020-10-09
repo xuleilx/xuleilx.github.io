@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="matplotlib," />
+  <meta name="keywords" content="os," />
 
 
 
@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="代码： 1234567891011121314151617# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-1,1,50)#绘制直线y = x + 1plt.plot(x,y)#绘制曲线y = x**2plt.plot(x,y)#显示plt.show() 显示">
-<meta name="keywords" content="matplotlib">
+<meta name="description" content="基本概念BIOS启动过程以Intel 80386为例，计算机加电后，CPU从物理地址0xFFFFFFF0（由初始化的CS：EIP确定，此时CS和IP的值分别是0xF000和0xFFF0)）开始执行。在0xFFFFFFF0这里只是存放了一条跳转指令，通过跳转指令跳到BIOS例行程序起始点。BIOS做完计算机硬件自检和初始化后，会选择一个启动设备（例如软盘、硬盘、光盘等），并且读取该设备的第一扇区(即">
+<meta name="keywords" content="os">
 <meta property="og:type" content="article">
-<meta property="og:title" content="matplotlib学习1之直线曲线">
-<meta property="og:url" content="http://yoursite.com/2017/12/24/matplotlib学习1之直线曲线/index.html">
+<meta property="og:title" content="x86启动顺序">
+<meta property="og:url" content="http://yoursite.com/2020/10/09/x86启动顺序/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="代码： 1234567891011121314151617# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-1,1,50)#绘制直线y = x + 1plt.plot(x,y)#绘制曲线y = x**2plt.plot(x,y)#显示plt.show() 显示">
+<meta property="og:description" content="基本概念BIOS启动过程以Intel 80386为例，计算机加电后，CPU从物理地址0xFFFFFFF0（由初始化的CS：EIP确定，此时CS和IP的值分别是0xF000和0xFFF0)）开始执行。在0xFFFFFFF0这里只是存放了一条跳转指令，通过跳转指令跳到BIOS例行程序起始点。BIOS做完计算机硬件自检和初始化后，会选择一个启动设备（例如软盘、硬盘、光盘等），并且读取该设备的第一扇区(即">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://xuleilx.github.io/images/line_1.png">
-<meta property="og:updated_time" content="2020-08-11T12:49:34.456Z">
+<meta property="og:updated_time" content="2020-10-09T12:16:07.038Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="matplotlib学习1之直线曲线">
-<meta name="twitter:description" content="代码： 1234567891011121314151617# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-1,1,50)#绘制直线y = x + 1plt.plot(x,y)#绘制曲线y = x**2plt.plot(x,y)#显示plt.show() 显示">
-<meta name="twitter:image" content="https://xuleilx.github.io/images/line_1.png">
+<meta name="twitter:title" content="x86启动顺序">
+<meta name="twitter:description" content="基本概念BIOS启动过程以Intel 80386为例，计算机加电后，CPU从物理地址0xFFFFFFF0（由初始化的CS：EIP确定，此时CS和IP的值分别是0xF000和0xFFF0)）开始执行。在0xFFFFFFF0这里只是存放了一条跳转指令，通过跳转指令跳到BIOS例行程序起始点。BIOS做完计算机硬件自检和初始化后，会选择一个启动设备（例如软盘、硬盘、光盘等），并且读取该设备的第一扇区(即">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/24/matplotlib学习1之直线曲线/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/10/09/x86启动顺序/"/>
 
 
 
 
 
-  <title>matplotlib学习1之直线曲线 | 沧海一粟</title>
+  <title>x86启动顺序 | 沧海一粟</title>
   
 
 
@@ -339,7 +337,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习1之直线曲线/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/09/x86启动顺序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -356,7 +354,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">matplotlib学习1之直线曲线</h1>
+          <h1 class="post-title" itemprop="name headline">x86启动顺序</h1>
         
 
         <div class="post-meta">
@@ -368,8 +366,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T10:34:56+08:00">
-                2017-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-09T20:14:44+08:00">
+                2020-10-09
               </time>
             
 
@@ -406,9 +404,47 @@
       
 
       
-        <p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># 产生数据</span><br><span class="line">x = np.linspace(-1,1,50)</span><br><span class="line"></span><br><span class="line">#绘制直线</span><br><span class="line">y = x + 1</span><br><span class="line">plt.plot(x,y)</span><br><span class="line"></span><br><span class="line">#绘制曲线</span><br><span class="line">y = x**2</span><br><span class="line">plt.plot(x,y)</span><br><span class="line"></span><br><span class="line">#显示</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p>显示结果：<br><img src="https://xuleilx.github.io/images/line_1.png" alt="image"></p>
+        <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="BIOS启动过程"><a href="#BIOS启动过程" class="headerlink" title="BIOS启动过程"></a>BIOS启动过程</h2><p>以Intel 80386为例，计算机加电后，CPU从物理地址0xFFFFFFF0（由初始化的CS：EIP确定，此时CS和IP的值分别是0xF000和0xFFF0)）开始执行。在0xFFFFFFF0这里只是存放了一条跳转指令，通过跳转指令跳到BIOS例行程序起始点。BIOS做完计算机硬件自检和初始化后，会选择一个启动设备（例如软盘、硬盘、光盘等），并且读取该设备的第一扇区(即主引导扇区或启动扇区)到内存一个特定的地址0x7c00处，然后CPU控制权会转移到那个地址继续执行。至此BIOS的初始化工作做完了，进一步的工作交给了ucore的bootloader。</p>
+<p>Intel的CPU具有很好的向后兼容性。在16位的8086 CPU时代，内存限制在1MB范围内，且BIOS的代码固化在EPROM中。在基于Intel的8086 CPU的PC机中的EPROM被编址在1ＭB内存地址空间的最高64KB中。PC加电后，CS寄存器初始化为0xF000，IP寄存器初始化为0xFFF0，所以CPU要执行的第一条指令的地址为CS:IP=0xF000:0XFFF0（Segment:Offset 表示）=0xFFFF0（Linear表示）。这个地址位于被固化EPROM中，指令是一个长跳转指令JMP F000:E05B。这样就开启了BIOS的执行过程。</p>
+<p>到了32位的80386 CPU时代，内存空间扩大到了4G，多了段机制和页机制，但Intel依然很好地保证了80386向后兼容8086。地址空间的变化导致无法直接采用8086的启动约定。如果把BIOS启动固件编址在0xF000起始的64KB内存地址空间内，就会把整个物理内存地址空间隔离成不连续的两段，一段是0xF000以前的地址，一段是1MB以后的地址，这很不协调。为此，intel采用了一个折中的方案：默认将执行BIOS ROM编址在32位内存地址空间的最高端，即位于4GB地址的最后一个64KB内。在PC系统开机复位时，CPU进入实模式，并将CS寄存器设置成0xF000，将它的shadow register的Base值初始化设置为0xFFFF0000，EIP寄存器初始化设置为0x0000FFF0。所以机器执行的第一条指令的物理地址是0xFFFFFFF0。80386的BIOS代码也要和以前8086的BIOS代码兼容，故地址0xFFFFFFF0处的指令还是一条长跳转指令<code>jmp F000:E05B</code>。注意，这个长跳转指令会触发更新CS寄存器和它的shadow register，即执行<code>jmp F000 : E05B</code>后，CS将被更新成0xF000。表面上看CS其实没有变化，但CS的shadow register被更新为另外一个值了，它的Base域被更新成0x000F0000，此时形成的物理地址为Base+EIP=0x000FE05B，这就是CPU执行的第二条指令的地址。此时这条指令的地址已经是1M以内了，且此地址不再位于BIOS ROM中，而是位于RAM空间中。由于Intel设计了一种映射机制，将内存高端的BIOS ROM映射到1MB以内的RAM空间里，并且可以使这一段被映射的RAM空间具有与ROM类似的只读属性。所以PC机启动时将开启这种映射机制，让4GB地址空间的最高一个64KB的内容等同于1MB地址空间的最高一个64K的内容，从而使得执行了长跳转指令后，其实是回到了早期的8086 CPU初始化控制流，保证了向下兼容。</p>
+<h2 id="Bootloader启动过程"><a href="#Bootloader启动过程" class="headerlink" title="Bootloader启动过程"></a>Bootloader启动过程</h2><p>BIOS将通过读取硬盘主引导扇区到内存，并转跳到对应内存中的位置执行bootloader。bootloader完成的工作包括：</p>
+<p>切换到保护模式，启用分段机制<br>读磁盘中ELF执行文件格式的ucore操作系统到内存<br>显示字符串信息<br>把控制权交给ucore操作系统</p>
+<h2 id="操作系统启动过程"><a href="#操作系统启动过程" class="headerlink" title="操作系统启动过程"></a>操作系统启动过程</h2><p>当bootloader通过读取硬盘扇区把ucore在系统加载到内存后，就转跳到ucore操作系统在内存中的入口位置（kern/init.c中的kern_init函数的起始地址），这样ucore就接管了整个控制权。当前的ucore功能很简单，只完成基本的内存管理和外设中断管理。ucore主要完成的工作包括：</p>
+<p>初始化终端；<br>显示字符串；<br>显示堆栈中的多层函数调用关系；<br>切换到保护模式，启用分段机制；<br>初始化中断控制器，设置中断描述符表，初始化时钟中断，使能整个系统的中断机制；<br>执行while（1）死循环。</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><h2 id="第一个地址"><a href="#第一个地址" class="headerlink" title="第一个地址"></a>第一个地址</h2><p>机器启动后有个固定启动地址CS:EIP</p>
+<p>CS=F000H,EIP=FFF0H<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info r</span><br><span class="line">eax            0x0      0</span><br><span class="line">ecx            0x0      0</span><br><span class="line">edx            0x663    1635</span><br><span class="line">ebx            0x0      0</span><br><span class="line">esp            0x0      0x0</span><br><span class="line">ebp            0x0      0x0</span><br><span class="line">esi            0x0      0</span><br><span class="line">edi            0x0      0</span><br><span class="line">eip            0xfff0   0xfff0</span><br><span class="line">eflags         0x2      [ ]</span><br><span class="line">cs             0xf000   61440</span><br><span class="line">ss             0x0      0</span><br><span class="line">ds             0x0      0</span><br><span class="line">es             0x0      0</span><br><span class="line">fs             0x0      0</span><br><span class="line">gs             0x0      0</span><br></pre></td></tr></table></figure></p>
+<p>早期16位实模式下，CS左移4位+EIP</p>
+<p>32位80386，实际地址：</p>
+<p>Base+EIP = FFFF0000H+0000FFF0H=FFFFFFF0H</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) x/x 0xffff0</span><br><span class="line">0xffff0:        0x00e05bea</span><br><span class="line">(gdb) si</span><br><span class="line">=&gt; 0xe05b:      add    %al,(%bx,%si)</span><br><span class="line">0x0000e05b in ?? ()</span><br><span class="line">(gdb) x /2i $pc</span><br><span class="line">=&gt; 0xe05b:      add    %al,(%bx,%si)</span><br><span class="line">   0xe05d:      add    %al,(%bx,%si)</span><br></pre></td></tr></table></figure>
+<h2 id="BIOS到Bootloader"><a href="#BIOS到Bootloader" class="headerlink" title="BIOS到Bootloader"></a>BIOS到Bootloader</h2><p>BIOS加载存储设备（比如软盘、硬盘、光盘、USB盘）上的第一个扇区（主引导扇区，Master Boot Record or MBR）的512字节到内存0x7c00，然后跳转到@0x7c00的第一条指令开始执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b *0x7c00</span><br><span class="line">Breakpoint 1 at 0x7c00</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 1, 0x00007c00 in ?? ()</span><br><span class="line">(gdb) x /2i $pc</span><br><span class="line">=&gt; 0x7c00:      cli   &lt;-- bootasm.S</span><br><span class="line">   0x7c01:      cld</span><br></pre></td></tr></table></figure>
+<h3 id="保护模式和分段机制"><a href="#保护模式和分段机制" class="headerlink" title="保护模式和分段机制"></a>保护模式和分段机制</h3><p>Bootloader中需要完成从实模式到保护模式的切换</p>
+<p><strong>实模式</strong>只有1M的寻址空间，每个地址对应真实的物理地址</p>
+<p><strong>保护模式</strong>可以寻址4G字节，对应逻辑地址</p>
+<p>通过修改A20地址线可以完成从实模式到保护模式的转换。</p>
+<p>保护模式下，有两个段表：GDT（Global Descriptor Table）和LDT（Local Descriptor Table），每一张段表可以包含8192 (2^13)个描述符[1]，因而最多可以同时存在2 * 2^13 = 2^14个段。</p>
+<ul>
+<li>CPL：当前特权级（Current Privilege Level) 保存在CS段寄存器（选择子）的最低两位，CPL就是当前活动代码段的特权级，并且它定义了当前所执行程序的特权级别）</li>
+<li>DPL：描述符特权（Descriptor Privilege Level） 存储在段描述符中的权限位，用于描述对应段所属的特权等级，也就是段本身能被访问的真正特权级。</li>
+<li>RPL：请求特权级RPL(Request Privilege Level) RPL保存在选择子的最低两位。RPL说明的是进程对段访问的请求权限，意思是当前进程想要的请求权限。RPL的值可自由设置，并不一定要求RPL&gt;=CPL，但是当RPL&lt;CPL时，实际起作用的就是CPL了，因为访问时的特权级保护检查要判断：max(RPL,CPL)&lt;=DPL是否成立。所以RPL可以看成是每次访问时的附加限制，RPL=0时附加限制最小，RPL=3时附加限制最大。</li>
+</ul>
+<p><strong>分析bootloader 进入保护模式的过程</strong></p>
+<p>从<code>%cs=0 $pc=0x7c00</code>，进入后</p>
+<p>首先清理环境：包括将flag置0和将段寄存器置0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.code16</span><br><span class="line">    cli</span><br><span class="line">    cld</span><br><span class="line">    xorw %ax, %ax</span><br><span class="line">    movw %ax, %ds</span><br><span class="line">    movw %ax, %es</span><br><span class="line">    movw %ax, %ss</span><br></pre></td></tr></table></figure></p>
+<p>开启A20：通过将键盘控制器上的A20线置于高电位，全部32条地址线可用，<br>可以访问4G的内存空间。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">seta20.1:               # 等待8042键盘控制器不忙</span><br><span class="line">    inb $0x64, %al      # </span><br><span class="line">    testb $0x2, %al     #</span><br><span class="line">    jnz seta20.1        #</span><br><span class="line"></span><br><span class="line">    movb $0xd1, %al     # 发送写8042输出端口的指令</span><br><span class="line">    outb %al, $0x64     #</span><br><span class="line"></span><br><span class="line">seta20.1:               # 等待8042键盘控制器不忙</span><br><span class="line">    inb $0x64, %al      # </span><br><span class="line">    testb $0x2, %al     #</span><br><span class="line">    jnz seta20.1        #</span><br><span class="line"></span><br><span class="line">    movb $0xdf, %al     # 打开A20</span><br><span class="line">    outb %al, $0x60     #</span><br></pre></td></tr></table></figure></p>
+<p>初始化GDT表：一个简单的GDT表和其描述符已经静态储存在引导区中，载入即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lgdt gdtdesc</span><br></pre></td></tr></table></figure></p>
+<p>进入保护模式：通过将cr0寄存器PE位置1便开启了保护模式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">movl %cr0, %eax</span><br><span class="line">orl $CR0_PE_ON, %eax</span><br><span class="line">movl %eax, %cr0</span><br></pre></td></tr></table></figure></p>
+<p>通过长跳转更新cs的基地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> ljmp $PROT_MODE_CSEG, $protcseg</span><br><span class="line">.code32</span><br><span class="line">protcseg:</span><br></pre></td></tr></table></figure></p>
+<p>设置段寄存器，并建立堆栈<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">movw $PROT_MODE_DSEG, %ax</span><br><span class="line">movw %ax, %ds</span><br><span class="line">movw %ax, %es</span><br><span class="line">movw %ax, %fs</span><br><span class="line">movw %ax, %gs</span><br><span class="line">movw %ax, %ss</span><br><span class="line">movl $0x0, %ebp</span><br><span class="line">movl $start, %esp</span><br></pre></td></tr></table></figure></p>
+<p>转到保护模式完成，进入boot主方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call bootmain</span><br></pre></td></tr></table></figure></p>
+<p><strong>分析bootloader加载ELF格式的OS的过程</strong></p>
+<p>首先看readsect函数，<br><code>readsect</code>从设备的第secno扇区读取数据到dst位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static void</span><br><span class="line">readsect(void *dst, uint32_t secno) &#123;</span><br><span class="line">    waitdisk();</span><br><span class="line"></span><br><span class="line">    outb(0x1F2, 1);                         // 设置读取扇区的数目为1</span><br><span class="line">    outb(0x1F3, secno &amp; 0xFF);</span><br><span class="line">    outb(0x1F4, (secno &gt;&gt; 8) &amp; 0xFF);</span><br><span class="line">    outb(0x1F5, (secno &gt;&gt; 16) &amp; 0xFF);</span><br><span class="line">    outb(0x1F6, ((secno &gt;&gt; 24) &amp; 0xF) | 0xE0);</span><br><span class="line">        // 上面四条指令联合制定了扇区号</span><br><span class="line">        // 在这4个字节线联合构成的32位参数中</span><br><span class="line">        //   29-31位强制设为1</span><br><span class="line">        //   28位(=0)表示访问&quot;Disk 0&quot;</span><br><span class="line">        //   0-27位是28位的偏移量</span><br><span class="line">    outb(0x1F7, 0x20);                      // 0x20命令，读取扇区</span><br><span class="line"></span><br><span class="line">    waitdisk();</span><br><span class="line"></span><br><span class="line">    insl(0x1F0, dst, SECTSIZE / 4);         // 读取到dst位置，</span><br><span class="line">                                            // 幻数4因为这里以DW为单位</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>readseg简单包装了readsect，可以从设备读取任意长度的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">static void</span><br><span class="line">readseg(uintptr_t va, uint32_t count, uint32_t offset) &#123;</span><br><span class="line">    uintptr_t end_va = va + count;</span><br><span class="line"></span><br><span class="line">    va -= offset % SECTSIZE;</span><br><span class="line"></span><br><span class="line">    uint32_t secno = (offset / SECTSIZE) + 1; </span><br><span class="line">    // 加1因为0扇区被引导占用</span><br><span class="line">    // ELF文件从1扇区开始</span><br><span class="line"></span><br><span class="line">    for (; va &lt; end_va; va += SECTSIZE, secno ++) &#123;</span><br><span class="line">        readsect((void *)va, secno);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在bootmain函数中，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">void</span><br><span class="line">bootmain(void) &#123;</span><br><span class="line">    // 首先读取ELF的头部</span><br><span class="line">    readseg((uintptr_t)ELFHDR, SECTSIZE * 8, 0);</span><br><span class="line"></span><br><span class="line">    // 通过储存在头部的幻数判断是否是合法的ELF文件</span><br><span class="line">    if (ELFHDR-&gt;e_magic != ELF_MAGIC) &#123;</span><br><span class="line">        goto bad;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    struct proghdr *ph, *eph;</span><br><span class="line"></span><br><span class="line">    // ELF头部有描述ELF文件应加载到内存什么位置的描述表，</span><br><span class="line">    // 先将描述表的头地址存在ph</span><br><span class="line">    ph = (struct proghdr *)((uintptr_t)ELFHDR + ELFHDR-&gt;e_phoff);</span><br><span class="line">    eph = ph + ELFHDR-&gt;e_phnum;</span><br><span class="line"></span><br><span class="line">    // 按照描述表将ELF文件中数据载入内存</span><br><span class="line">    for (; ph &lt; eph; ph ++) &#123;</span><br><span class="line">        readseg(ph-&gt;p_va &amp; 0xFFFFFF, ph-&gt;p_memsz, ph-&gt;p_offset);</span><br><span class="line">    &#125;</span><br><span class="line">    // ELF文件0x1000位置后面的0xd1ec比特被载入内存0x00100000</span><br><span class="line">    // ELF文件0xf000位置后面的0x1d20比特被载入内存0x0010e000</span><br><span class="line"></span><br><span class="line">    // 根据ELF头部储存的入口信息，找到内核的入口</span><br><span class="line">    ((void (*)(void))(ELFHDR-&gt;e_entry &amp; 0xFFFFFF))();</span><br><span class="line"></span><br><span class="line">bad:</span><br><span class="line">    outw(0x8A00, 0x8A00);</span><br><span class="line">    outw(0x8A00, 0x8E00);</span><br><span class="line">    while (1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="实现函数调用堆栈跟踪函数"><a href="#实现函数调用堆栈跟踪函数" class="headerlink" title="实现函数调用堆栈跟踪函数"></a>实现函数调用堆栈跟踪函数</h2><p>ss:ebp指向的堆栈位置储存着caller的ebp，以此为线索可以得到所有使用堆栈的函数ebp。<br>ss:ebp+4指向caller调用时的eip，ss:ebp+8等是（可能的）参数。</p>
+<p>输出中，堆栈最深一层为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ebp:0x00007bf8 eip:0x00007d68 \</span><br><span class="line">	args:0x00000000 0x00000000 0x00000000 0x00007c4f</span><br><span class="line">    &lt;unknow&gt;: -- 0x00007d67 --</span><br></pre></td></tr></table></figure></p>
+<p>其对应的是第一个使用堆栈的函数，bootmain.c中的bootmain。<br>bootloader设置的堆栈从0x7c00开始，使用”call bootmain”转入bootmain函数。<br>call指令压栈，所以bootmain中ebp为0x7bf8。</p>
 
       
     </div>
@@ -455,7 +491,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/matplotlib/" rel="tag"># matplotlib</a>
+            <a href="/tags/os/" rel="tag"># os</a>
           
         </div>
       
@@ -468,8 +504,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/17/tensorflow学习之二次曲线/" rel="next" title="tensorflow学习之二次曲线">
-                <i class="fa fa-chevron-left"></i> tensorflow学习之二次曲线
+              <a href="/2020/08/21/Linux内核完全注释-第三章/" rel="next" title="Linux内核完全注释_第三章 内核编程语言和环境">
+                <i class="fa fa-chevron-left"></i> Linux内核完全注释_第三章 内核编程语言和环境
               </a>
             
           </div>
@@ -477,10 +513,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/24/matplotlib学习2之figure/" rel="prev" title="matplotlib学习2之figure">
-                matplotlib学习2之figure <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,8 +566,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -654,6 +695,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x57FA;&#x672C;&#x6982;&#x5FF5;" class="headerlink" title="&#x57FA;&#x672C;&#x6982;&#x5FF5;"></a>&#x57FA;&#x672C;&#x6982;&#x5FF5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#BIOS启动过程"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#BIOS&#x542F;&#x52A8;&#x8FC7;&#x7A0B;" class="headerlink" title="BIOS&#x542F;&#x52A8;&#x8FC7;&#x7A0B;"></a>BIOS&#x542F;&#x52A8;&#x8FC7;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootloader启动过程"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#Bootloader&#x542F;&#x52A8;&#x8FC7;&#x7A0B;" class="headerlink" title="Bootloader&#x542F;&#x52A8;&#x8FC7;&#x7A0B;"></a>Bootloader&#x542F;&#x52A8;&#x8FC7;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作系统启动过程"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x542F;&#x52A8;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x542F;&#x52A8;&#x8FC7;&#x7A0B;"></a>&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x542F;&#x52A8;&#x8FC7;&#x7A0B;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4EE3;&#x7801;&#x5B9E;&#x73B0;" class="headerlink" title="&#x4EE3;&#x7801;&#x5B9E;&#x73B0;"></a>&#x4EE3;&#x7801;&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一个地址"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x7B2C;&#x4E00;&#x4E2A;&#x5730;&#x5740;" class="headerlink" title="&#x7B2C;&#x4E00;&#x4E2A;&#x5730;&#x5740;"></a>&#x7B2C;&#x4E00;&#x4E2A;&#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BIOS到Bootloader"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#BIOS&#x5230;Bootloader" class="headerlink" title="BIOS&#x5230;Bootloader"></a>BIOS&#x5230;Bootloader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#保护模式和分段机制"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#&#x4FDD;&#x62A4;&#x6A21;&#x5F0F;&#x548C;&#x5206;&#x6BB5;&#x673A;&#x5236;" class="headerlink" title="&#x4FDD;&#x62A4;&#x6A21;&#x5F0F;&#x548C;&#x5206;&#x6BB5;&#x673A;&#x5236;"></a>&#x4FDD;&#x62A4;&#x6A21;&#x5F0F;&#x548C;&#x5206;&#x6BB5;&#x673A;&#x5236;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现函数调用堆栈跟踪函数"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x51FD;&#x6570;" class="headerlink" title="&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x51FD;&#x6570;"></a>&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x5806;&#x6808;&#x8DDF;&#x8E2A;&#x51FD;&#x6570;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
