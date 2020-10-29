@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="虚拟内存管理虚拟内存虚拟内存的起因   存储器层次结构 访问时间     Registers 1 nsec   Cache 2 nsec   Main Memory 10 nsec   Magnetic disk 10 msec   Magnetic tape 100 sec    覆盖技术覆盖技术：相互之间没有调用关系的程序模块之间。 1.对于一个进程，不需要一开始就把程序的全部指令和数据都装入">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1734701/201911/1734701-20191122163549323-1363685626.png">
-<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1603888910891&di=909b39334d409ada9eae6944e9f7519c&imgtype=0&src=http%3A%2F%2Fimg-blog.csdnimg.cn%2F20181103221921617.png%3Fx-oss-process%3Dimage%2Fwatermark%2Ctype_ZmFuZ3poZW5naGVpdGk%2Cshadow_10%2Ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbGlsdW5p%2Csize_16%2Ccolor_FFFFFF%2Ct_70">
-<meta property="og:updated_time" content="2020-10-29T14:57:01.904Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/覆盖技术.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/timg.jpg">
+<meta property="og:updated_time" content="2020-10-29T15:09:49.969Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="虚拟内存管理">
 <meta name="twitter:description" content="虚拟内存管理虚拟内存虚拟内存的起因   存储器层次结构 访问时间     Registers 1 nsec   Cache 2 nsec   Main Memory 10 nsec   Magnetic disk 10 msec   Magnetic tape 100 sec    覆盖技术覆盖技术：相互之间没有调用关系的程序模块之间。 1.对于一个进程，不需要一开始就把程序的全部指令和数据都装入">
-<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/1734701/201911/1734701-20191122163549323-1363685626.png">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/覆盖技术.png">
 
 
 
@@ -439,7 +439,7 @@
 </table>
 <h3 id="覆盖技术"><a href="#覆盖技术" class="headerlink" title="覆盖技术"></a>覆盖技术</h3><p>覆盖技术：相互之间没有调用关系的程序模块之间。</p>
 <p>1.对于一个进程，不需要一开始就把程序的全部指令和数据都装入内存再执行。<br>2.程序划分为若干个功能上相对独立的程序段，按照程序逻辑结构让那些<strong>不需要同时执行</strong>的程序段共享同一块内存区<br>3.当有关程序段的先头程序段已经执行结束后，再把后续程序段从外存调入内存覆盖前面的程序段</p>
-<p><img src="https://img2018.cnblogs.com/blog/1734701/201911/1734701-20191122163549323-1363685626.png" alt="img"></p>
+<p><img src="https://xuleilx.github.io/images/覆盖技术.png" alt="img"></p>
 <h3 id="交换技术"><a href="#交换技术" class="headerlink" title="交换技术"></a>交换技术</h3><p>swap技术：swap out、swap in。内存和硬盘之间。</p>
 <p>对象是进程，等待状态的进程驻留内存会造成存储空间的浪费。因此，有必要把处于等待状态的进程换出内存。</p>
 <h3 id="虚存技术"><a href="#虚存技术" class="headerlink" title="虚存技术"></a>虚存技术</h3><p>利用程序的局部性。一页4K大小。<br>基本特征：<br>1.大的用户空间：物理内存+外存<br>2.部分交换<br>3.不连续性：分配不连续，使用不连续</p>
@@ -466,7 +466,7 @@
 </ol>
 <p>操作系统需要在并发水平和缺页率之间达到一个平衡</p>
 <p>选择适当的程序数目和进程需要的物理页数目</p>
-<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1603888910891&amp;di=909b39334d409ada9eae6944e9f7519c&amp;imgtype=0&amp;src=http%3A%2F%2Fimg-blog.csdnimg.cn%2F20181103221921617.png%3Fx-oss-process%3Dimage%2Fwatermark%2Ctype_ZmFuZ3poZW5naGVpdGk%2Cshadow_10%2Ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbGlsdW5p%2Csize_16%2Ccolor_FFFFFF%2Ct_70" alt="img"></p>
+<p><img src="https://xuleilx.github.io/images/timg.jpg" alt="img"></p>
 
       
     </div>

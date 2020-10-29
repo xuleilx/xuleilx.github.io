@@ -56,17 +56,25 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+    <title><![CDATA[概率相加]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
+    <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[贝叶斯定理]]></title>
-    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
-    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
+    <title><![CDATA[排列组合]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
+    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[独立事件的组合概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -88,25 +96,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[排列组合]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
-    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[概率相加]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
-    <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[独立事件的组合概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
+    <title><![CDATA[以二项式系数概括]]></title>
+    <url>%2F2019%2F03%2F19%2F%E4%BB%A5%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%E6%A6%82%E6%8B%AC%2F</url>
+    <content type="text"><![CDATA[Fair Coin: Flip 4 times获得1个Head的概率P(exactly 1 “heads”) = P(HTTT) +P(THTT)+P(TTHT)+P(TTTH)= $\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$=1/4 获得2个Head的概率4次里面选2次 $C_4^2=\frac{43}{21} = 6$P(exactly 2 “heads”) =$\frac{C_4^2}{16}$ = 3/8 Fair Coin: Flip 5 flips获得3个Head的概率5次里面选3次 $C_5^3=\frac{543}{321} = 10$P(exactly 3 “heads”) =$\frac{C_5^3}{32} $ = 5/16 Fair Coin: Flip n flips获得k个Head的概率n次里面选k次 $C_n^k= \frac{\frac{n!}{(n-k!)}}{k!}=\frac{n(n-1)…(n-k+1)}{k(k-1)…1}$all the probability = $2^{n}$P(exactly k “heads”) =$\frac{n(n-1)…(n-k+1)}{2^{n}k*(k-1)…1}$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -120,9 +112,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[以二项式系数概括]]></title>
-    <url>%2F2019%2F03%2F19%2F%E4%BB%A5%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%E6%A6%82%E6%8B%AC%2F</url>
-    <content type="text"><![CDATA[Fair Coin: Flip 4 times获得1个Head的概率P(exactly 1 “heads”) = P(HTTT) +P(THTT)+P(TTHT)+P(TTTH)= $\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$=1/4 获得2个Head的概率4次里面选2次 $C_4^2=\frac{43}{21} = 6$P(exactly 2 “heads”) =$\frac{C_4^2}{16}$ = 3/8 Fair Coin: Flip 5 flips获得3个Head的概率5次里面选3次 $C_5^3=\frac{543}{321} = 10$P(exactly 3 “heads”) =$\frac{C_5^3}{32} $ = 5/16 Fair Coin: Flip n flips获得k个Head的概率n次里面选k次 $C_n^k= \frac{\frac{n!}{(n-k!)}}{k!}=\frac{n(n-1)…(n-k+1)}{k(k-1)…1}$all the probability = $2^{n}$P(exactly k “heads”) =$\frac{n(n-1)…(n-k+1)}{2^{n}k*(k-1)…1}$]]></content>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[贝叶斯定理]]></title>
+    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
+    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
