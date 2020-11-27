@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="gdb," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于gst_element_set_state死锁问题调查■现象gst_element_set_state 变更GST_STATE_NULL状态时deadlock。 ■再现步骤1.Carlife语音识别时说”鲜花”2.在VR语音提示音的时候播放过程中，按radio硬按键切源 更普遍的再现方法：(也就是说该问题是普遍性问题，与Carlife无直接关系)1.插入U盘播放音乐2.音乐播放过程中，点击暂停">
+<meta name="keywords" content="gdb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于gst_element_set_state死锁问题调查">
+<meta property="og:url" content="http://yoursite.com/2020/11/26/关于gst-element-set-state死锁问题调查/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="关于gst_element_set_state死锁问题调查■现象gst_element_set_state 变更GST_STATE_NULL状态时deadlock。 ■再现步骤1.Carlife语音识别时说”鲜花”2.在VR语音提示音的时候播放过程中，按radio硬按键切源 更普遍的再现方法：(也就是说该问题是普遍性问题，与Carlife无直接关系)1.插入U盘播放音乐2.音乐播放过程中，点击暂停">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xuleilx.github.io/images/声卡无法写入.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/声卡无法写入.png">
+<meta property="og:updated_time" content="2020-11-27T07:54:17.502Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于gst_element_set_state死锁问题调查">
+<meta name="twitter:description" content="关于gst_element_set_state死锁问题调查■现象gst_element_set_state 变更GST_STATE_NULL状态时deadlock。 ■再现步骤1.Carlife语音识别时说”鲜花”2.在VR语音提示音的时候播放过程中，按radio硬按键切源 更普遍的再现方法：(也就是说该问题是普遍性问题，与Carlife无直接关系)1.插入U盘播放音乐2.音乐播放过程中，点击暂停">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/声卡无法写入.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/26/关于gst-element-set-state死锁问题调查/"/>
+
+
+
+
+
+  <title>关于gst_element_set_state死锁问题调查 | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/26/关于gst-element-set-state死锁问题调查/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于gst_element_set_state死锁问题调查</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-26T23:53:16-08:00">
+                2020-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="关于gst-element-set-state死锁问题调查"><a href="#关于gst-element-set-state死锁问题调查" class="headerlink" title="关于gst_element_set_state死锁问题调查"></a>关于gst_element_set_state死锁问题调查</h1><h2 id="■现象"><a href="#■现象" class="headerlink" title="■现象"></a>■现象</h2><p><em>gst_element_set_state</em> 变更GST_STATE_NULL状态时deadlock。</p>
+<h2 id="■再现步骤"><a href="#■再现步骤" class="headerlink" title="■再现步骤"></a>■再现步骤</h2><p>1.Carlife语音识别时说”鲜花”<br>2.在VR语音提示音的时候播放过程中，按radio硬按键切源</p>
+<p><strong>更普遍的再现方法：<br>(也就是说该问题是普遍性问题，与Carlife无直接关系)</strong><br>1.插入U盘播放音乐<br>2.音乐播放过程中，点击暂停<br>3.使用gst-launch-1.0 playbin uri=file:///media/disk/Track02.mp3 播放音乐<br>4.步骤3音乐播放过程中按radio硬按键切源<br>5.按Ctrl+C 结束步骤3的音乐播放，发现无法结束，终端输出以下内容后hangup。<br><strong>Setting pipeline to PAUSED …</strong></p>
+<h2 id="■直接原因"><a href="#■直接原因" class="headerlink" title="■直接原因"></a>■直接原因</h2><p>调用 <em>gst_element_set_state()</em> 函数暂停播放时会调用到alsasink的 <em>gst_alsasink_reset()</em> 函数来重置PCM流，该函数会获取alsa_lock锁，以保证当前正在处理的Buffer中的数据处理结束后重置PCM流。<br>由于alsasink的 <em>gst_alsasink_write()</em> 函数获取alsa_lock锁之后，无法写入最后一包数据，导致该锁无法释放，最终导致 <em>gst_element_set_state()</em> 死锁。<br>也就是说<strong>问题发生的时候，声卡的文件句柄无法正常写入</strong>。<br><img src="https://xuleilx.github.io/images/声卡无法写入.png" alt="声卡无法写入"><br><em>err = snd_pcm_writei()</em> 的返回值是：-11。<br><em>snd_strerror(err)</em> 打印出来的含义是：”Resource temporarily unavailable”。</p>
+<h2 id="■根本原因"><a href="#■根本原因" class="headerlink" title="■根本原因"></a>■根本原因</h2><p>切源的时候DSP那边通路被切走，导致alsa的最后一包数据写不进去。<br>此时可以关声卡，但是不能写入数据。通路再切回来就能正常写入，声卡就可以关闭结束。</p>
+<h2 id="■调查详细"><a href="#■调查详细" class="headerlink" title="■调查详细"></a>■调查详细</h2><h3 id="1）由于Carlife服务线程较多，为了准确定位是哪个线程，设置了线程名”SetNameForA7”"><a href="#1）由于Carlife服务线程较多，为了准确定位是哪个线程，设置了线程名”SetNameForA7”" class="headerlink" title="1）由于Carlife服务线程较多，为了准确定位是哪个线程，设置了线程名”SetNameForA7”"></a>1）由于Carlife服务线程较多，为了准确定位是哪个线程，设置了线程名”SetNameForA7”</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info threads</span><br><span class="line">  Id   Target Id         Frame </span><br><span class="line">  15   Thread 0xb6588450 (LWP 2718) "SetNameForA7" 0xb6f6e6ee in recv ()  ★</span><br><span class="line">    at ../sysdeps/unix/syscall-template.S:81</span><br><span class="line">  14   Thread 0xb5d88450 (LWP 2719) "CarlifeDaemon" __libc_do_syscall ()</span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br><span class="line">...略...</span><br><span class="line">  2    Thread 0xae47a450 (LWP 2993) "TinyVpuDec:src" __libc_do_syscall ()</span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br><span class="line">* 1    Thread 0xb658a000 (LWP 2717) "CarlifeDaemon" __libc_do_syscall ()</span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br></pre></td></tr></table></figure>
+<p>★处是我们要找的”SetNameForA7”线程</p>
+<h3 id="2）正常情况下线程2718的状态"><a href="#2）正常情况下线程2718的状态" class="headerlink" title="2）正常情况下线程2718的状态"></a>2）正常情况下线程2718的状态</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(gdb) thread 18</span><br><span class="line">[Switching to thread 18 (Thread 0xb6588450 (LWP 2718))]</span><br><span class="line"><span class="meta">#</span><span class="bash">0  0xb6f6e6ee <span class="keyword">in</span> recv () at ../sysdeps/unix/syscall-template.S:81</span></span><br><span class="line">81	../sysdeps/unix/syscall-template.S: No such file or directory.</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="meta">#</span><span class="bash">0  0xb6f6e6ee <span class="keyword">in</span> recv () at ../sysdeps/unix/syscall-template.S:81</span></span><br><span class="line"><span class="meta">#</span><span class="bash">1  0xb6e64f64 <span class="keyword">in</span> Socket::recv(unsigned char*, unsigned int) const ()</span></span><br><span class="line">   from /usr/app/carlife/lib/libcarlifevehicle.so ★</span><br><span class="line"><span class="meta">#</span><span class="bash">2  0xb6e639fa <span class="keyword">in</span> CConnectManager::readCmdData(unsigned char*, unsigned int) ()</span></span><br><span class="line">   from /usr/app/carlife/lib/libcarlifevehicle.so</span><br><span class="line">...略...</span><br><span class="line"><span class="meta">#</span><span class="bash">10 0xb6d54ee4 <span class="keyword">in</span> ?? () from /usr/app/carlife/lib/libboost_thread.so.1.59.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash">11 0xb6f6845e <span class="keyword">in</span> start_thread (arg=0xb6588910) at pthread_create.c:314</span></span><br><span class="line"><span class="meta">#</span><span class="bash">12 0xb6905d9c <span class="keyword">in</span> ?? ()</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/nptl/../clone.S:92</span><br><span class="line">   from /lib/arm-linux-gnueabihf/libc.so.6</span><br><span class="line">Backtrace stopped: previous frame identical to this frame (corrupt stack?)</span><br></pre></td></tr></table></figure>
+<p>该线程用于接收来自手机Carlife的命令通道的消息，recv是阻塞式函数，无消息时阻塞在recv处，属于正常情况。</p>
+<h3 id="3）出问题的时候，线程2718的状态"><a href="#3）出问题的时候，线程2718的状态" class="headerlink" title="3）出问题的时候，线程2718的状态"></a>3）出问题的时候，线程2718的状态</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(gdb) thread 17</span><br><span class="line">[Switching to thread 17 (Thread 0xb6588450 (LWP 2718))]</span><br><span class="line"><span class="meta">#</span><span class="bash">0  __libc_do_syscall ()</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br><span class="line">43	in ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="meta">#</span><span class="bash">0  __libc_do_syscall ()</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br><span class="line"><span class="meta">#</span><span class="bash">1  0xb6f6dffc <span class="keyword">in</span> __lll_lock_wait (futex=futex@entry=0x835fd8, private=0)</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/nptl/lowlevellock.c:46</span><br><span class="line"><span class="meta">#</span><span class="bash">2  0xb6f6a3aa <span class="keyword">in</span> __GI___pthread_mutex_lock (mutex=0x835fd8)</span></span><br><span class="line">    at pthread_mutex_lock.c:134</span><br><span class="line"><span class="meta">#</span><span class="bash">3  0xb6b88de2 <span class="keyword">in</span> g_mutex_lock () from /usr/lib/libglib-2.0.so.0 ★</span></span><br><span class="line"><span class="meta">#</span><span class="bash">4  0xae4e56a2 <span class="keyword">in</span> ?? () from /usr/lib/gstreamer-1.0/libgstalsa.so</span></span><br><span class="line">Backtrace stopped: previous frame identical to this frame (corrupt stack?)</span><br></pre></td></tr></table></figure>
+<p>可以看出是libgstalsa.so中获取互斥锁的地方deadlock了，此时由于gstreamer的调试信息未打开，所以无法看到完整的调用关系。</p>
+<h3 id="4）重新编译gstreamer1-0-plugins-base插件，加-g参数增加调试信息，重新打印堆栈回溯"><a href="#4）重新编译gstreamer1-0-plugins-base插件，加-g参数增加调试信息，重新打印堆栈回溯" class="headerlink" title="4）重新编译gstreamer1.0-plugins-base插件，加-g参数增加调试信息，重新打印堆栈回溯"></a>4）重新编译gstreamer1.0-plugins-base插件，加-g参数增加调试信息，重新打印堆栈回溯</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">(gdb) bt</span><br><span class="line"><span class="meta">#</span><span class="bash">0  __libc_do_syscall ()</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S:43</span><br><span class="line"><span class="meta">#</span><span class="bash">1  0xb6eb0ffc <span class="keyword">in</span> __lll_lock_wait (futex=futex@entry=0x1fe0f30, private=0)</span></span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/nptl/lowlevellock.c:46</span><br><span class="line"><span class="meta">#</span><span class="bash">2  0xb6ead3aa <span class="keyword">in</span> __GI___pthread_mutex_lock (mutex=0x1fe0f30)</span></span><br><span class="line">    at pthread_mutex_lock.c:134</span><br><span class="line"><span class="meta">#</span><span class="bash">3  0xb6acbde2 <span class="keyword">in</span> g_mutex_lock () from /usr/lib/libglib-2.0.so.0 ★</span></span><br><span class="line"><span class="meta">#</span><span class="bash">4  0xac4b86a2 <span class="keyword">in</span> gst_alsasink_reset (asink=0x1fcede8)</span></span><br><span class="line">    at /workspace/MR3/F516/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/ext/alsa/gstalsasink.c:1122</span><br><span class="line"><span class="meta">#</span><span class="bash">5  0xb03a3a1a <span class="keyword">in</span> gst_audio_sink_ring_buffer_pause (buf=&lt;optimized out&gt;)</span></span><br><span class="line">    at /workspace/MR3/F516/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/audio/gstaudiosink.c:545</span><br><span class="line"><span class="meta">#</span><span class="bash">6  0xb0387082 <span class="keyword">in</span> gst_audio_ring_buffer_pause_unlocked (</span></span><br><span class="line">    buf=buf@entry=0x1fd4388)</span><br><span class="line">    at /workspace/MR3/F516/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/audio/gstaudioringbuffer.c:1006</span><br><span class="line"><span class="meta">#</span><span class="bash">7  0xb038966c <span class="keyword">in</span> gst_audio_ring_buffer_pause (buf=0x1fd4388)</span></span><br><span class="line">    at /workspace/MR3/F516/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/audio/gstaudioringbuffer.c:1049</span><br><span class="line"><span class="meta">#</span><span class="bash">8  0xb03a0746 <span class="keyword">in</span> gst_audio_base_sink_change_state (element=0x1fcede8, </span></span><br><span class="line">    transition=GST_STATE_CHANGE_PLAYING_TO_PAUSED)</span><br><span class="line">    at /workspace/MR3/F516/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gst---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">reamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/audio/gstaudiobasesink.c:2471</span><br><span class="line"><span class="meta">#</span><span class="bash">9  0xb6702ba2 <span class="keyword">in</span> gst_element_change_state ()</span></span><br><span class="line">   from /usr/lib/libgstreamer-1.0.so.0</span><br><span class="line"><span class="meta">#</span><span class="bash">10 0xb6703004 <span class="keyword">in</span> ?? () from /usr/lib/libgstreamer-1.0.so.0</span></span><br><span class="line">Backtrace stopped: previous frame identical to this frame (corrupt stack?)</span><br></pre></td></tr></table></figure>
+<p>此时可以看出完整的Gstreamer设置管道状态的调用顺序。</p>
+<h3 id="5）通过阅读alsasink插件的代码-发现只有gst-alsasink-write-，gst-alsasink-reset-两个函数会获取alsa-lock锁。"><a href="#5）通过阅读alsasink插件的代码-发现只有gst-alsasink-write-，gst-alsasink-reset-两个函数会获取alsa-lock锁。" class="headerlink" title="5）通过阅读alsasink插件的代码,发现只有gst_alsasink_write()，gst_alsasink_reset()两个函数会获取alsa_lock锁。"></a>5）通过阅读alsasink插件的代码,发现只有gst_alsasink_write()，gst_alsasink_reset()两个函数会获取alsa_lock锁。</h3><p>通过代码分析，唯一可能的原因是 <em>gst_alsasink_write()</em> 中调用 <em>snd_pcm_writei()</em> 函数一直失败。</p>
+<h3 id="6）使用”-export-GST-DEBUG-3-alsa-7”打开alsa插件的日志，下面的日志证实了步骤5）的猜想。"><a href="#6）使用”-export-GST-DEBUG-3-alsa-7”打开alsa插件的日志，下面的日志证实了步骤5）的猜想。" class="headerlink" title="6）使用” export GST_DEBUG=3,alsa:7”打开alsa插件的日志，下面的日志证实了步骤5）的猜想。"></a>6）使用” export GST_DEBUG=3,alsa:7”打开alsa插件的日志，下面的日志证实了步骤5）的猜想。</h3><p><img src="https://xuleilx.github.io/images/声卡无法写入.png" alt="声卡无法写入"></p>
+<h2 id="■附录："><a href="#■附录：" class="headerlink" title="■附录："></a>■附录：</h2><p>下面是 <em>gst_alsasink_write()</em> 和 <em>gst_alsasink_reset()</em> 函数的代码。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">gst_alsasink_reset (GstAudioSink * asink)</span><br><span class="line">&#123;</span><br><span class="line">  GstAlsaSink *alsa;</span><br><span class="line">  gint err;</span><br><span class="line"></span><br><span class="line">  alsa = GST_ALSA_SINK (asink);</span><br><span class="line"></span><br><span class="line">  GST_ALSA_SINK_LOCK (asink);</span><br><span class="line">  GST_DEBUG_OBJECT (alsa, <span class="string">"drop"</span>);</span><br><span class="line">  CHECK (snd_pcm_drop (alsa-&gt;handle), drop_error);</span><br><span class="line">  GST_DEBUG_OBJECT (alsa, <span class="string">"prepare"</span>);</span><br><span class="line">  CHECK (snd_pcm_prepare (alsa-&gt;handle), prepare_error);</span><br><span class="line">  GST_DEBUG_OBJECT (alsa, <span class="string">"reset done"</span>);</span><br><span class="line">  GST_ALSA_SINK_UNLOCK (asink);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* ERRORS */</span></span><br><span class="line">drop_error:</span><br><span class="line">  &#123;</span><br><span class="line">    GST_ERROR_OBJECT (alsa, <span class="string">"alsa-reset: pcm drop error: %s"</span>,</span><br><span class="line">        snd_strerror (err));</span><br><span class="line">    GST_ALSA_SINK_UNLOCK (asink);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">prepare_error:</span><br><span class="line">  &#123;</span><br><span class="line">    GST_ERROR_OBJECT (alsa, <span class="string">"alsa-reset: pcm prepare error: %s"</span>,</span><br><span class="line">        snd_strerror (err));</span><br><span class="line">    GST_ALSA_SINK_UNLOCK (asink);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> gint</span><br><span class="line">gst_alsasink_write (GstAudioSink * asink, gpointer data, guint length)</span><br><span class="line">&#123;</span><br><span class="line">  GstAlsaSink *alsa;</span><br><span class="line">  gint err;</span><br><span class="line">  gint cptr;</span><br><span class="line">  guint8 *ptr = data;</span><br><span class="line"></span><br><span class="line">  alsa = GST_ALSA_SINK (asink);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (alsa-&gt;iec958 &amp;&amp; alsa-&gt;need_swap) &#123;</span><br><span class="line">    guint i;</span><br><span class="line">    guint16 *ptr_tmp = (guint16 *) ptr;</span><br><span class="line"></span><br><span class="line">    GST_DEBUG_OBJECT (asink, <span class="string">"swapping bytes"</span>);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length / <span class="number">2</span>; i++) &#123;</span><br><span class="line">      ptr_tmp[i] = GUINT16_SWAP_LE_BE (ptr_tmp[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  GST_LOG_OBJECT (asink, <span class="string">"received audio samples buffer of %u bytes"</span>, length);</span><br><span class="line"></span><br><span class="line">  cptr = length / alsa-&gt;bpf;</span><br><span class="line"></span><br><span class="line">  GST_ALSA_SINK_LOCK (asink);</span><br><span class="line">  <span class="keyword">while</span> (cptr &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">/* start by doing a blocking wait for free space. Set the timeout</span></span><br><span class="line"><span class="comment">     * to 4 times the period time */</span></span><br><span class="line">    err = snd_pcm_wait (alsa-&gt;handle, (<span class="number">4</span> * alsa-&gt;period_time / <span class="number">1000</span>));</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      GST_DEBUG_OBJECT (asink, <span class="string">"wait error, %d"</span>, err);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      GST_DELAY_SINK_LOCK (asink);</span><br><span class="line">      err = snd_pcm_writei (alsa-&gt;handle, ptr, cptr);</span><br><span class="line">      GST_DELAY_SINK_UNLOCK (asink);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    GST_DEBUG_OBJECT (asink, <span class="string">"written %d frames out of %d"</span>, err, cptr);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      GST_DEBUG_OBJECT (asink, <span class="string">"Write error: %s"</span>, snd_strerror (err));</span><br><span class="line">      <span class="keyword">if</span> (err == -EAGAIN) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (err == -ENODEV) &#123;</span><br><span class="line">        <span class="keyword">goto</span> device_disappeared;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (xrun_recovery (alsa, alsa-&gt;handle, err) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">goto</span> write_error;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ptr += snd_pcm_frames_to_bytes (alsa-&gt;handle, err);</span><br><span class="line">    cptr -= err;</span><br><span class="line">  &#125;</span><br><span class="line">  GST_ALSA_SINK_UNLOCK (asink);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> length - (cptr * alsa-&gt;bpf);</span><br><span class="line"></span><br><span class="line">write_error:</span><br><span class="line">  &#123;</span><br><span class="line">    GST_ALSA_SINK_UNLOCK (asink);</span><br><span class="line">    <span class="keyword">return</span> length;              <span class="comment">/* skip one period */</span></span><br><span class="line">  &#125;</span><br><span class="line">device_disappeared:</span><br><span class="line">  &#123;</span><br><span class="line">    GST_ELEMENT_ERROR (asink, RESOURCE, WRITE,</span><br><span class="line">        (_(<span class="string">"Error outputting to audio device. "</span></span><br><span class="line">                <span class="string">"The device has been disconnected."</span>)), (<span class="literal">NULL</span>));</span><br><span class="line">    <span class="keyword">goto</span> write_error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gdb/" rel="tag"># gdb</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/26/全局变量导致fwrite崩溃问题分析/" rel="next" title="全局变量导致fwrite崩溃问题分析">
+                <i class="fa fa-chevron-left"></i> 全局变量导致fwrite崩溃问题分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="MultiStone" />
+            
+              <p class="site-author-name" itemprop="name">MultiStone</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于gst-element-set-state死锁问题调查"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;gst-element-set-state&#x6B7B;&#x9501;&#x95EE;&#x9898;&#x8C03;&#x67E5;" class="headerlink" title="&#x5173;&#x4E8E;gst_element_set_state&#x6B7B;&#x9501;&#x95EE;&#x9898;&#x8C03;&#x67E5;"></a>&#x5173;&#x4E8E;gst_element_set_state&#x6B7B;&#x9501;&#x95EE;&#x9898;&#x8C03;&#x67E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#■现象"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x25A0;&#x73B0;&#x8C61;" class="headerlink" title="&#x25A0;&#x73B0;&#x8C61;"></a>&#x25A0;&#x73B0;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■再现步骤"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;" class="headerlink" title="&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;"></a>&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■直接原因"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x25A0;&#x76F4;&#x63A5;&#x539F;&#x56E0;" class="headerlink" title="&#x25A0;&#x76F4;&#x63A5;&#x539F;&#x56E0;"></a>&#x25A0;&#x76F4;&#x63A5;&#x539F;&#x56E0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■根本原因"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;" class="headerlink" title="&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;"></a>&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■调查详细"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;" class="headerlink" title="&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;"></a>&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1）由于Carlife服务线程较多，为了准确定位是哪个线程，设置了线程名”SetNameForA7”"><span class="nav-number">1.5.1.</span> <span class="nav-text"><a href="#1&#xFF09;&#x7531;&#x4E8E;Carlife&#x670D;&#x52A1;&#x7EBF;&#x7A0B;&#x8F83;&#x591A;&#xFF0C;&#x4E3A;&#x4E86;&#x51C6;&#x786E;&#x5B9A;&#x4F4D;&#x662F;&#x54EA;&#x4E2A;&#x7EBF;&#x7A0B;&#xFF0C;&#x8BBE;&#x7F6E;&#x4E86;&#x7EBF;&#x7A0B;&#x540D;&#x201D;SetNameForA7&#x201D;" class="headerlink" title="1&#xFF09;&#x7531;&#x4E8E;Carlife&#x670D;&#x52A1;&#x7EBF;&#x7A0B;&#x8F83;&#x591A;&#xFF0C;&#x4E3A;&#x4E86;&#x51C6;&#x786E;&#x5B9A;&#x4F4D;&#x662F;&#x54EA;&#x4E2A;&#x7EBF;&#x7A0B;&#xFF0C;&#x8BBE;&#x7F6E;&#x4E86;&#x7EBF;&#x7A0B;&#x540D;&#x201D;SetNameForA7&#x201D;"></a>1&#xFF09;&#x7531;&#x4E8E;Carlife&#x670D;&#x52A1;&#x7EBF;&#x7A0B;&#x8F83;&#x591A;&#xFF0C;&#x4E3A;&#x4E86;&#x51C6;&#x786E;&#x5B9A;&#x4F4D;&#x662F;&#x54EA;&#x4E2A;&#x7EBF;&#x7A0B;&#xFF0C;&#x8BBE;&#x7F6E;&#x4E86;&#x7EBF;&#x7A0B;&#x540D;&#x201D;SetNameForA7&#x201D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2）正常情况下线程2718的状态"><span class="nav-number">1.5.2.</span> <span class="nav-text"><a href="#2&#xFF09;&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;" class="headerlink" title="2&#xFF09;&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;"></a>2&#xFF09;&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3）出问题的时候，线程2718的状态"><span class="nav-number">1.5.3.</span> <span class="nav-text"><a href="#3&#xFF09;&#x51FA;&#x95EE;&#x9898;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;" class="headerlink" title="3&#xFF09;&#x51FA;&#x95EE;&#x9898;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;"></a>3&#xFF09;&#x51FA;&#x95EE;&#x9898;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x7EBF;&#x7A0B;2718&#x7684;&#x72B6;&#x6001;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4）重新编译gstreamer1-0-plugins-base插件，加-g参数增加调试信息，重新打印堆栈回溯"><span class="nav-number">1.5.4.</span> <span class="nav-text"><a href="#4&#xFF09;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;gstreamer1-0-plugins-base&#x63D2;&#x4EF6;&#xFF0C;&#x52A0;-g&#x53C2;&#x6570;&#x589E;&#x52A0;&#x8C03;&#x8BD5;&#x4FE1;&#x606F;&#xFF0C;&#x91CD;&#x65B0;&#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;" class="headerlink" title="4&#xFF09;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;gstreamer1.0-plugins-base&#x63D2;&#x4EF6;&#xFF0C;&#x52A0;-g&#x53C2;&#x6570;&#x589E;&#x52A0;&#x8C03;&#x8BD5;&#x4FE1;&#x606F;&#xFF0C;&#x91CD;&#x65B0;&#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;"></a>4&#xFF09;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;gstreamer1.0-plugins-base&#x63D2;&#x4EF6;&#xFF0C;&#x52A0;-g&#x53C2;&#x6570;&#x589E;&#x52A0;&#x8C03;&#x8BD5;&#x4FE1;&#x606F;&#xFF0C;&#x91CD;&#x65B0;&#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5）通过阅读alsasink插件的代码-发现只有gst-alsasink-write-，gst-alsasink-reset-两个函数会获取alsa-lock锁。"><span class="nav-number">1.5.5.</span> <span class="nav-text"><a href="#5&#xFF09;&#x901A;&#x8FC7;&#x9605;&#x8BFB;alsasink&#x63D2;&#x4EF6;&#x7684;&#x4EE3;&#x7801;-&#x53D1;&#x73B0;&#x53EA;&#x6709;gst-alsasink-write-&#xFF0C;gst-alsasink-reset-&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x4F1A;&#x83B7;&#x53D6;alsa-lock&#x9501;&#x3002;" class="headerlink" title="5&#xFF09;&#x901A;&#x8FC7;&#x9605;&#x8BFB;alsasink&#x63D2;&#x4EF6;&#x7684;&#x4EE3;&#x7801;,&#x53D1;&#x73B0;&#x53EA;&#x6709;gst_alsasink_write()&#xFF0C;gst_alsasink_reset()&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x4F1A;&#x83B7;&#x53D6;alsa_lock&#x9501;&#x3002;"></a>5&#xFF09;&#x901A;&#x8FC7;&#x9605;&#x8BFB;alsasink&#x63D2;&#x4EF6;&#x7684;&#x4EE3;&#x7801;,&#x53D1;&#x73B0;&#x53EA;&#x6709;gst_alsasink_write()&#xFF0C;gst_alsasink_reset()&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x4F1A;&#x83B7;&#x53D6;alsa_lock&#x9501;&#x3002;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6）使用”-export-GST-DEBUG-3-alsa-7”打开alsa插件的日志，下面的日志证实了步骤5）的猜想。"><span class="nav-number">1.5.6.</span> <span class="nav-text"><a href="#6&#xFF09;&#x4F7F;&#x7528;&#x201D;-export-GST-DEBUG-3-alsa-7&#x201D;&#x6253;&#x5F00;alsa&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#xFF0C;&#x4E0B;&#x9762;&#x7684;&#x65E5;&#x5FD7;&#x8BC1;&#x5B9E;&#x4E86;&#x6B65;&#x9AA4;5&#xFF09;&#x7684;&#x731C;&#x60F3;&#x3002;" class="headerlink" title="6&#xFF09;&#x4F7F;&#x7528;&#x201D; export GST_DEBUG=3,alsa:7&#x201D;&#x6253;&#x5F00;alsa&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#xFF0C;&#x4E0B;&#x9762;&#x7684;&#x65E5;&#x5FD7;&#x8BC1;&#x5B9E;&#x4E86;&#x6B65;&#x9AA4;5&#xFF09;&#x7684;&#x731C;&#x60F3;&#x3002;"></a>6&#xFF09;&#x4F7F;&#x7528;&#x201D; export GST_DEBUG=3,alsa:7&#x201D;&#x6253;&#x5F00;alsa&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#xFF0C;&#x4E0B;&#x9762;&#x7684;&#x65E5;&#x5FD7;&#x8BC1;&#x5B9E;&#x4E86;&#x6B65;&#x9AA4;5&#xFF09;&#x7684;&#x731C;&#x60F3;&#x3002;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■附录："><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#&#x25A0;&#x9644;&#x5F55;&#xFF1A;" class="headerlink" title="&#x25A0;&#x9644;&#x5F55;&#xFF1A;"></a>&#x25A0;&#x9644;&#x5F55;&#xFF1A;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MultiStone</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
