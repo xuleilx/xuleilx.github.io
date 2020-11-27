@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="AndroidFramework," />
+  <meta name="keywords" content="USB," />
 
 
 
@@ -79,18 +79,24 @@
 
 
 
-<meta name="description" content="作为一名开发者，Linux内核源码必定是其追求的终极目标。自觉愚钝，一直未敢染指Linux 内核源码。工作八年有余，解决Bug无数，设计模式，重构，STL库等也熟知一二，然对于一 些涉及底层的问题未能深入剖析，自觉功力不足。  近几年机器学习嫣然成为风口浪尖的弄潮儿，于是自学半年有余，略有心得，自觉入门。然在 实际工作和运用中缺乏实战机会，且与自己的职业生涯规划略有出入，遂放缓脚步，寻找更好 的学">
-<meta name="keywords" content="AndroidFramework">
+<meta name="description" content="OTG roleswitch(Apple CarPlay)关于roleswitch驱动层状态机变化流程插入时的状态 车机作为 a_host 手机作为 b_peripheral 车机枚举手机，完成正常的USB枚举。  roleswitch时的状态 车机发送私有协议（见下图）给手机，通知手机切成 b_host。  此时VBUS仍然是车机供电。手机会一直枚举车机。只要车机状态变更到 a_peripher">
+<meta name="keywords" content="USB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AndroidFramework学习之旅">
-<meta property="og:url" content="http://yoursite.com/2018/09/11/AndroidFrameWork学习之旅/index.html">
+<meta property="og:title" content="OTG_roleswitch">
+<meta property="og:url" content="http://yoursite.com/2020/11/26/OTG-roleswitch/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="作为一名开发者，Linux内核源码必定是其追求的终极目标。自觉愚钝，一直未敢染指Linux 内核源码。工作八年有余，解决Bug无数，设计模式，重构，STL库等也熟知一二，然对于一 些涉及底层的问题未能深入剖析，自觉功力不足。  近几年机器学习嫣然成为风口浪尖的弄潮儿，于是自学半年有余，略有心得，自觉入门。然在 实际工作和运用中缺乏实战机会，且与自己的职业生涯规划略有出入，遂放缓脚步，寻找更好 的学">
+<meta property="og:description" content="OTG roleswitch(Apple CarPlay)关于roleswitch驱动层状态机变化流程插入时的状态 车机作为 a_host 手机作为 b_peripheral 车机枚举手机，完成正常的USB枚举。  roleswitch时的状态 车机发送私有协议（见下图）给手机，通知手机切成 b_host。  此时VBUS仍然是车机供电。手机会一直枚举车机。只要车机状态变更到 a_peripher">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-11T12:44:54.000Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/A_Device.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/B_Device.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/requestAppleToHost.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/requestAppleToHost2.jpg">
+<meta property="og:image" content="https://xuleilx.github.io/images/内核状态机日志开关.png">
+<meta property="og:updated_time" content="2020-11-27T07:16:52.038Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AndroidFramework学习之旅">
-<meta name="twitter:description" content="作为一名开发者，Linux内核源码必定是其追求的终极目标。自觉愚钝，一直未敢染指Linux 内核源码。工作八年有余，解决Bug无数，设计模式，重构，STL库等也熟知一二，然对于一 些涉及底层的问题未能深入剖析，自觉功力不足。  近几年机器学习嫣然成为风口浪尖的弄潮儿，于是自学半年有余，略有心得，自觉入门。然在 实际工作和运用中缺乏实战机会，且与自己的职业生涯规划略有出入，遂放缓脚步，寻找更好 的学">
+<meta name="twitter:title" content="OTG_roleswitch">
+<meta name="twitter:description" content="OTG roleswitch(Apple CarPlay)关于roleswitch驱动层状态机变化流程插入时的状态 车机作为 a_host 手机作为 b_peripheral 车机枚举手机，完成正常的USB枚举。  roleswitch时的状态 车机发送私有协议（见下图）给手机，通知手机切成 b_host。  此时VBUS仍然是车机供电。手机会一直枚举车机。只要车机状态变更到 a_peripher">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/A_Device.png">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/11/AndroidFrameWork学习之旅/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/11/26/OTG-roleswitch/"/>
 
 
 
 
 
-  <title>AndroidFramework学习之旅 | 沧海一粟</title>
+  <title>OTG_roleswitch | 沧海一粟</title>
   
 
 
@@ -337,7 +343,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/11/AndroidFrameWork学习之旅/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/26/OTG-roleswitch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -354,7 +360,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">AndroidFramework学习之旅</h1>
+          <h1 class="post-title" itemprop="name headline">OTG_roleswitch</h1>
         
 
         <div class="post-meta">
@@ -366,8 +372,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-11T20:34:19-07:00">
-                2018-09-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-26T23:15:39-08:00">
+                2020-11-26
               </time>
             
 
@@ -404,37 +410,33 @@
       
 
       
-        <pre><code>作为一名开发者，Linux内核源码必定是其追求的终极目标。自觉愚钝，一直未敢染指Linux
-内核源码。工作八年有余，解决Bug无数，设计模式，重构，STL库等也熟知一二，然对于一
-些涉及底层的问题未能深入剖析，自觉功力不足。
+        <h1 id="OTG-roleswitch-Apple-CarPlay"><a href="#OTG-roleswitch-Apple-CarPlay" class="headerlink" title="OTG roleswitch(Apple CarPlay)"></a>OTG roleswitch(Apple CarPlay)</h1><h2 id="关于roleswitch驱动层状态机变化流程"><a href="#关于roleswitch驱动层状态机变化流程" class="headerlink" title="关于roleswitch驱动层状态机变化流程"></a>关于roleswitch驱动层状态机变化流程</h2><h3 id="插入时的状态"><a href="#插入时的状态" class="headerlink" title="插入时的状态"></a>插入时的状态</h3><ol>
+<li>车机作为 a_host</li>
+<li>手机作为 b_peripheral</li>
+<li>车机枚举手机，完成正常的USB枚举。</li>
+</ol>
+<h3 id="roleswitch时的状态"><a href="#roleswitch时的状态" class="headerlink" title="roleswitch时的状态"></a>roleswitch时的状态</h3><ol>
+<li><p>车机发送私有协议（见下图）给手机，通知手机切成 b_host。 </p>
+<p>此时VBUS仍然是车机供电。手机会一直枚举车机。只要车机状态变更到 a_peripheral，就能枚举成功。</p>
+</li>
+<li><p>车机触发状态机进行状态机变换，最终切到 a_periphera l状态。</p>
+</li>
+<li><p>手机枚举车机，完成一次正常的USB枚举。</p>
+</li>
+</ol>
+<h3 id="拔出后的状态"><a href="#拔出后的状态" class="headerlink" title="拔出后的状态"></a>拔出后的状态</h3><ol>
+<li>车机切回 a_wait_bcon 状态。</li>
+<li>手机切回 b_wait_acon 状态。</li>
+</ol>
+<h2 id="OTG-状态机转换"><a href="#OTG-状态机转换" class="headerlink" title="OTG 状态机转换"></a>OTG 状态机转换</h2><h3 id="A-Device状态机"><a href="#A-Device状态机" class="headerlink" title="A Device状态机"></a>A Device状态机</h3><p><img src="https://xuleilx.github.io/images/A_Device.png" alt="A_Device"></p>
+<h3 id="B-Device状态机"><a href="#B-Device状态机" class="headerlink" title="B Device状态机"></a>B Device状态机</h3><p><img src="https://xuleilx.github.io/images/B_Device.png" alt="B_Device"></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="苹果roleswitch私有协议"><a href="#苹果roleswitch私有协议" class="headerlink" title="苹果roleswitch私有协议"></a>苹果roleswitch私有协议</h3><h4 id="文档说明"><a href="#文档说明" class="headerlink" title="文档说明"></a>文档说明</h4><p><img src="https://xuleilx.github.io/images/requestAppleToHost.png" alt="requestAppleToHost"></p>
+<h4 id="ATS-抓包数据"><a href="#ATS-抓包数据" class="headerlink" title="ATS 抓包数据"></a>ATS 抓包数据</h4><p><img src="https://xuleilx.github.io/images/requestAppleToHost2.jpg" alt="requestAppleToHost2"></p>
+<h3 id="内核状态机日志开关"><a href="#内核状态机日志开关" class="headerlink" title="内核状态机日志开关"></a>内核状态机日志开关</h3><p><img src="https://xuleilx.github.io/images/内核状态机日志开关.png" alt="内核状态机日志开关"></p>
+<h3 id="一次完整的roleswitch过程日志"><a href="#一次完整的roleswitch过程日志" class="headerlink" title="一次完整的roleswitch过程日志"></a>一次完整的roleswitch过程日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 插入手机前</span><br><span class="line">[ 2318.493379] Set state: a_wait_bcon</span><br><span class="line">[ 2318.496097] usb 1-1: USB disconnect, device number 12</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 插入手机</span><br><span class="line">[ 2321.151592] Set state: a_host</span><br><span class="line">[ 2321.424758] usb 1-1: new high-speed USB device number 13 using ci_hdrc</span><br><span class="line">[ 2321.578095] usb 1-1: New USB device found, idVendor=05ac, idProduct=12a8</span><br><span class="line">[ 2321.581955] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3</span><br><span class="line">[ 2321.593696] usb 1-1: Product: iPhone</span><br><span class="line">[ 2321.594498] usb 1-1: Manufacturer: Apple Inc.</span><br><span class="line">[ 2321.603727] usb 1-1: SerialNumber: 2330bb40ef6c37782d9675fe9d086467f49f031e</span><br><span class="line">[ 2321.610365] usb 1-1: Second configuration choosed for Apple MFi device.</span><br><span class="line">[ 2321.627515] usb 1-1: 1:1: cannot get freq at ep 0x81</span><br><span class="line">[ 2321.650139] hid-generic 0003:05AC:12A8.000C: device has no listeners, quitting</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 触发roleswitch</span><br><span class="line">[ 2348.700349] Set state: a_suspend</span><br><span class="line">[ 2348.700929] usb 1-1: USB disconnect, device number 13                       q</span><br><span class="line">[ 2348.825643] Set state: a_peripherallatform/devices/ci_hdrc.0/inputs/a_bus_req </span><br><span class="line">[ 2348.826318] ci_hdrc ci_hdrc.0: remove, state 1</span><br><span class="line">[ 2348.830757] usb usb1: USB disconnect, device number 1</span><br><span class="line">[ 2348.847613] ci_hdrc ci_hdrc.0: USB bus 1 deregistered</span><br><span class="line">[ 2348.849891] ci_otg_start_host  off </span><br><span class="line">[ 2348.853548] ci_otg_start_gadget  on </span><br><span class="line">[ 2349.038270] g_ncm gadget: high-speed config #1: CDC Ethernet (NCM)</span><br><span class="line">[ 2349.041631] g_ncm gadget: source/sink enabled, alt intf 0</span><br><span class="line">[ 2349.046989] g_ncm gadget: init ncm ctrl 1</span><br><span class="line">[ 2349.050985] g_ncm gadget: notify speed 425984000</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 拔出手机</span><br><span class="line">[ 2867.624758] g_ncm gadget: suspend</span><br><span class="line">[ 2868.123519] Set state: a_wait_bcon</span><br><span class="line">[ 2868.124092] g_ncm gadget: reset config</span><br><span class="line">[ 2868.127819] g_ncm gadget: ncm deactivated</span><br><span class="line">[ 2868.131941] ci_otg_start_gadget  off </span><br><span class="line">[ 2868.136118] ci_hdrc ci_hdrc.0: EHCI Host Controller</span><br><span class="line">[ 2868.140452] ci_hdrc ci_hdrc.0: new USB bus registered, assigned bus number 1</span><br><span class="line">[ 2868.164755] ci_hdrc ci_hdrc.0: USB 2.0 started, EHCI 1.00</span><br><span class="line">[ 2868.167567] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002</span><br><span class="line">[ 2868.174095] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1</span><br><span class="line">[ 2868.181399] usb usb1: Product: EHCI Host Controller</span><br><span class="line">[ 2868.186288] usb usb1: Manufacturer: Linux 3.18.41 ehci_hcd</span><br><span class="line">[ 2868.191621] usb usb1: SerialNumber: ci_hdrc.0</span><br><span class="line">[ 2868.198254] hub 1-0:1.0: USB hub found</span><br><span class="line">[ 2868.199797] hub 1-0:1.0: 1 port detected</span><br><span class="line">[ 2868.206021] ci_otg_start_host  on</span><br></pre></td></tr></table></figure>
+<h3 id="内核各种状态的查询方法"><a href="#内核各种状态的查询方法" class="headerlink" title="内核各种状态的查询方法"></a>内核各种状态的查询方法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@atlas7-arm:/sys/kernel/debug/ci_hdrc.0# cat otg </span><br><span class="line">OTG state: a_host</span><br><span class="line"></span><br><span class="line">a_bus_drop: 0</span><br><span class="line">a_bus_req: 1</span><br><span class="line">a_srp_det: 0</span><br><span class="line">a_vbus_vld: 1</span><br><span class="line">b_conn: 1</span><br><span class="line">adp_change: 0</span><br><span class="line">power_up: 0</span><br><span class="line">a_bus_resume: 0</span><br><span class="line">a_bus_suspend: 0</span><br><span class="line">a_conn: 0</span><br><span class="line">b_bus_req: 0</span><br><span class="line">b_bus_suspend: 0</span><br><span class="line">b_se0_srp: 0</span><br><span class="line">b_ssend_srp: 0</span><br><span class="line">b_sess_vld: 0</span><br><span class="line">b_srp_done: 0</span><br><span class="line">drv_vbus: 1</span><br><span class="line">loc_conn: 0</span><br><span class="line">loc_sof: 1</span><br><span class="line">adp_prb: 0</span><br><span class="line">id: 0</span><br><span class="line">protocol: 1</span><br></pre></td></tr></table></figure>
+<h3 id="内核个节点含义"><a href="#内核个节点含义" class="headerlink" title="内核个节点含义"></a>内核个节点含义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-platform-chipidea-usb-otg</span><br><span class="line"></span><br><span class="line">What:		/sys/bus/platform/devices/ci_hdrc.0/inputs/a_bus_req</span><br><span class="line">Date:		Feb 2014</span><br><span class="line">Contact:	Li Jun &lt;jun.li@nxp.com&gt;</span><br><span class="line">Description:</span><br><span class="line">		Can be set and read.</span><br><span class="line">		Set a_bus_req(A-device bus request) input to be 1 if</span><br><span class="line">		the application running on the A-device wants to use the bus,</span><br><span class="line">		and to be 0 when the application no longer wants to use</span><br><span class="line">		the bus(or wants to work as peripheral). a_bus_req can also</span><br><span class="line">		be set to 1 by kernel in response to remote wakeup signaling</span><br><span class="line">		from the B-device, the A-device should decide to resume the bus.</span><br><span class="line"></span><br><span class="line">		Valid values are &quot;1&quot; and &quot;0&quot;.</span><br><span class="line"></span><br><span class="line">		Reading: returns 1 if the application running on the A-device</span><br><span class="line">		is using the bus as host role, otherwise 0.</span><br><span class="line"></span><br><span class="line">What:		/sys/bus/platform/devices/ci_hdrc.0/inputs/a_bus_drop</span><br><span class="line">Date:		Feb 2014</span><br><span class="line">Contact:	Li Jun &lt;jun.li@nxp.com&gt;</span><br><span class="line">Description:</span><br><span class="line">		Can be set and read</span><br><span class="line">		The a_bus_drop(A-device bus drop) input is 1 when the</span><br><span class="line">		application running on the A-device wants to power down</span><br><span class="line">		the bus, and is 0 otherwise, When a_bus_drop is 1, then</span><br><span class="line">		the a_bus_req shall be 0.</span><br><span class="line"></span><br><span class="line">		Valid values are &quot;1&quot; and &quot;0&quot;.</span><br><span class="line"></span><br><span class="line">		Reading: returns 1 if the bus is off(vbus is turned off) by</span><br><span class="line">			 A-device, otherwise 0.</span><br><span class="line"></span><br><span class="line">What:		/sys/bus/platform/devices/ci_hdrc.0/inputs/b_bus_req</span><br><span class="line">Date:		Feb 2014</span><br><span class="line">Contact:	Li Jun &lt;jun.li@nxp.com&gt;</span><br><span class="line">Description:</span><br><span class="line">		Can be set and read.</span><br><span class="line">		The b_bus_req(B-device bus request) input is 1 during the time</span><br><span class="line">		that the application running on the B-device wants to use the</span><br><span class="line">		bus as host, and is 0 when the application no longer wants to</span><br><span class="line">		work as host and decides to switch back to be peripheral.</span><br><span class="line"></span><br><span class="line">		Valid values are &quot;1&quot; and &quot;0&quot;.</span><br><span class="line"></span><br><span class="line">		Reading: returns if the application running on the B device</span><br><span class="line">		is using the bus as host role, otherwise 0.</span><br><span class="line"></span><br><span class="line">What:		/sys/bus/platform/devices/ci_hdrc.0/inputs/a_clr_err</span><br><span class="line">Date:		Feb 2014</span><br><span class="line">Contact:	Li Jun &lt;jun.li@nxp.com&gt;</span><br><span class="line">Description:</span><br><span class="line">		Only can be set.</span><br><span class="line">		The a_clr_err(A-device Vbus error clear) input is used to clear</span><br><span class="line">		vbus error, then A-device will power down the bus.</span><br><span class="line"></span><br><span class="line">		Valid value is &quot;1&quot;</span><br></pre></td></tr></table></figure>
 
-近几年机器学习嫣然成为风口浪尖的弄潮儿，于是自学半年有余，略有心得，自觉入门。然在
-实际工作和运用中缺乏实战机会，且与自己的职业生涯规划略有出入，遂放缓脚步，寻找更好
-的学习点。
-
-Android系统一直是Linux开发者鄙夷的对象，愚随大流，以勉Android代码为耻，然
-Android数年以来表现依然如此强势，尤近年来车载行业对于Android系统的接纳，传统车载
-行业必然会受到一定的冲击，Android系统的架构也是经受过数年的考验，其架构的成熟性以
-及通用性耳目共睹，遂决定开始学习Android系统架构。
-
-于是开始我的Android系统的学习之旅，对于学习这件事，随着年龄的增长，也有了自己独特
-的一套方法。一般会去知乎上搜索一些对于一门技术的学习方法或是推荐书籍，于是检索到：
-https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++和Linux系统知识
-的要求后信心倍增，自觉对于这些方面的知识很有自信。
-
-第一阶段打算跟着&quot;老罗的Android之旅&quot;，学完之后也应该有自己的一套知识体系了。先从内
-核入手，不求甚解，能够摸索出内核代码的阅读方法，就已经足够，也不指望看一遍书就能摸
-透。根据 老罗的Android之旅 提到的《Linux Kernel Development》、
-《Understanding the Linux Kernel》、《Linux Device Drivers》和
-《Linux内核源代码情景分析》开始入手内核。
-
-分成两个阶段：内核学习，安卓FrameWork
-第一阶段，开始我的内核学习之旅：
-1.编译Android系统代码 2018/08/27 ~ 
-2.《Linux Kernel Development》 2018/08/27 ~ 2018/09/07
-3.字符设备驱动程序 2018/09/11 ~
-4.《LDD3》 2018/09/11 ~
-</code></pre>
       
     </div>
     
@@ -480,7 +482,7 @@ https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++�
       
         <div class="post-tags">
           
-            <a href="/tags/AndroidFramework/" rel="tag"># AndroidFramework</a>
+            <a href="/tags/USB/" rel="tag"># USB</a>
           
         </div>
       
@@ -493,8 +495,8 @@ https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/28/DataVisualisation/" rel="next" title="DataVisualisation">
-                <i class="fa fa-chevron-left"></i> DataVisualisation
+              <a href="/2020/11/26/ID3信息/" rel="next" title="ID3信息">
+                <i class="fa fa-chevron-left"></i> ID3信息
               </a>
             
           </div>
@@ -502,10 +504,6 @@ https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/17/HelloWorld驱动模块/" rel="prev" title="HelloWorld驱动模块">
-                HelloWorld驱动模块 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,8 +557,17 @@ https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++�
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -679,6 +686,22 @@ https://www.zhihu.com/question/19759722 看完这些文章所说的对于C/C++�
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OTG-roleswitch-Apple-CarPlay"><span class="nav-number">1.</span> <span class="nav-text"><a href="#OTG-roleswitch-Apple-CarPlay" class="headerlink" title="OTG roleswitch(Apple CarPlay)"></a>OTG roleswitch(Apple CarPlay)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于roleswitch驱动层状态机变化流程"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;roleswitch&#x9A71;&#x52A8;&#x5C42;&#x72B6;&#x6001;&#x673A;&#x53D8;&#x5316;&#x6D41;&#x7A0B;" class="headerlink" title="&#x5173;&#x4E8E;roleswitch&#x9A71;&#x52A8;&#x5C42;&#x72B6;&#x6001;&#x673A;&#x53D8;&#x5316;&#x6D41;&#x7A0B;"></a>&#x5173;&#x4E8E;roleswitch&#x9A71;&#x52A8;&#x5C42;&#x72B6;&#x6001;&#x673A;&#x53D8;&#x5316;&#x6D41;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入时的状态"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#&#x63D2;&#x5165;&#x65F6;&#x7684;&#x72B6;&#x6001;" class="headerlink" title="&#x63D2;&#x5165;&#x65F6;&#x7684;&#x72B6;&#x6001;"></a>&#x63D2;&#x5165;&#x65F6;&#x7684;&#x72B6;&#x6001;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#roleswitch时的状态"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#roleswitch&#x65F6;&#x7684;&#x72B6;&#x6001;" class="headerlink" title="roleswitch&#x65F6;&#x7684;&#x72B6;&#x6001;"></a>roleswitch&#x65F6;&#x7684;&#x72B6;&#x6001;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拔出后的状态"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#&#x62D4;&#x51FA;&#x540E;&#x7684;&#x72B6;&#x6001;" class="headerlink" title="&#x62D4;&#x51FA;&#x540E;&#x7684;&#x72B6;&#x6001;"></a>&#x62D4;&#x51FA;&#x540E;&#x7684;&#x72B6;&#x6001;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OTG-状态机转换"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#OTG-&#x72B6;&#x6001;&#x673A;&#x8F6C;&#x6362;" class="headerlink" title="OTG &#x72B6;&#x6001;&#x673A;&#x8F6C;&#x6362;"></a>OTG &#x72B6;&#x6001;&#x673A;&#x8F6C;&#x6362;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-Device状态机"><span class="nav-number">1.2.1.</span> <span class="nav-text"><a href="#A-Device&#x72B6;&#x6001;&#x673A;" class="headerlink" title="A Device&#x72B6;&#x6001;&#x673A;"></a>A Device&#x72B6;&#x6001;&#x673A;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Device状态机"><span class="nav-number">1.2.2.</span> <span class="nav-text"><a href="#B-Device&#x72B6;&#x6001;&#x673A;" class="headerlink" title="B Device&#x72B6;&#x6001;&#x673A;"></a>B Device&#x72B6;&#x6001;&#x673A;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x5176;&#x4ED6;" class="headerlink" title="&#x5176;&#x4ED6;"></a>&#x5176;&#x4ED6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#苹果roleswitch私有协议"><span class="nav-number">1.3.1.</span> <span class="nav-text"><a href="#&#x82F9;&#x679C;roleswitch&#x79C1;&#x6709;&#x534F;&#x8BAE;" class="headerlink" title="&#x82F9;&#x679C;roleswitch&#x79C1;&#x6709;&#x534F;&#x8BAE;"></a>&#x82F9;&#x679C;roleswitch&#x79C1;&#x6709;&#x534F;&#x8BAE;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文档说明"><span class="nav-number">1.3.1.1.</span> <span class="nav-text"><a href="#&#x6587;&#x6863;&#x8BF4;&#x660E;" class="headerlink" title="&#x6587;&#x6863;&#x8BF4;&#x660E;"></a>&#x6587;&#x6863;&#x8BF4;&#x660E;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ATS-抓包数据"><span class="nav-number">1.3.1.2.</span> <span class="nav-text"><a href="#ATS-&#x6293;&#x5305;&#x6570;&#x636E;" class="headerlink" title="ATS &#x6293;&#x5305;&#x6570;&#x636E;"></a>ATS &#x6293;&#x5305;&#x6570;&#x636E;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核状态机日志开关"><span class="nav-number">1.3.2.</span> <span class="nav-text"><a href="#&#x5185;&#x6838;&#x72B6;&#x6001;&#x673A;&#x65E5;&#x5FD7;&#x5F00;&#x5173;" class="headerlink" title="&#x5185;&#x6838;&#x72B6;&#x6001;&#x673A;&#x65E5;&#x5FD7;&#x5F00;&#x5173;"></a>&#x5185;&#x6838;&#x72B6;&#x6001;&#x673A;&#x65E5;&#x5FD7;&#x5F00;&#x5173;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一次完整的roleswitch过程日志"><span class="nav-number">1.3.3.</span> <span class="nav-text"><a href="#&#x4E00;&#x6B21;&#x5B8C;&#x6574;&#x7684;roleswitch&#x8FC7;&#x7A0B;&#x65E5;&#x5FD7;" class="headerlink" title="&#x4E00;&#x6B21;&#x5B8C;&#x6574;&#x7684;roleswitch&#x8FC7;&#x7A0B;&#x65E5;&#x5FD7;"></a>&#x4E00;&#x6B21;&#x5B8C;&#x6574;&#x7684;roleswitch&#x8FC7;&#x7A0B;&#x65E5;&#x5FD7;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核各种状态的查询方法"><span class="nav-number">1.3.4.</span> <span class="nav-text"><a href="#&#x5185;&#x6838;&#x5404;&#x79CD;&#x72B6;&#x6001;&#x7684;&#x67E5;&#x8BE2;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5185;&#x6838;&#x5404;&#x79CD;&#x72B6;&#x6001;&#x7684;&#x67E5;&#x8BE2;&#x65B9;&#x6CD5;"></a>&#x5185;&#x6838;&#x5404;&#x79CD;&#x72B6;&#x6001;&#x7684;&#x67E5;&#x8BE2;&#x65B9;&#x6CD5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核个节点含义"><span class="nav-number">1.3.5.</span> <span class="nav-text"><a href="#&#x5185;&#x6838;&#x4E2A;&#x8282;&#x70B9;&#x542B;&#x4E49;" class="headerlink" title="&#x5185;&#x6838;&#x4E2A;&#x8282;&#x70B9;&#x542B;&#x4E49;"></a>&#x5185;&#x6838;&#x4E2A;&#x8282;&#x70B9;&#x542B;&#x4E49;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
