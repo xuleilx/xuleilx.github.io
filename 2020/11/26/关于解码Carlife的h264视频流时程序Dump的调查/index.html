@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="关于解码Carlife的h264视频流时程序Dump的调查■现象carlife黑屏。 ■再现步骤1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象） 2.A7项目有carlife功能的车机 （目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象） 3.连接carlife成功后，点击手机home">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-11-27T07:35:18.930Z">
+<meta property="og:updated_time" content="2020-11-27T07:39:00.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于解码Carlife的h264视频流时程序Dump的调查">
 <meta name="twitter:description" content="关于解码Carlife的h264视频流时程序Dump的调查■现象carlife黑屏。 ■再现步骤1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象） 2.A7项目有carlife功能的车机 （目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象） 3.连接carlife成功后，点击手机home">
@@ -421,7 +421,7 @@
 <p>通过与高通沟通，得知Level 3.1（level-id：1F）和3.2（level-id：20）</p>
 <p>所支持的视频解析度范围不同，解码器一般会通过该值进行重新配置。</p>
 <p>相同解析度的情况下，如果从level 3.1 改成level 3.2不利于解码的稳定性。</p>
-<p><strong>根本原因</strong>:<br>待更新。需要高通调查。多半是程序的Bug。没有考虑视频播放过程中重新配置解码器的情况。</p>
+<p><strong>根本原因</strong>:<br>高通调查后承认自己解码器的Bug，提供walkaround方案。没有考虑视频播放过程中重新配置解码器的情况。</p>
 <h2 id="■调查详细"><a href="#■调查详细" class="headerlink" title="■调查详细"></a>■调查详细</h2><h3 id="调试小插曲"><a href="#调试小插曲" class="headerlink" title="调试小插曲"></a>调试小插曲</h3><ol>
 <li><p>一开始直接使用gdb解析CoreDump的时候发现，bt打出来的信息都是？号，无疑这是因为我们的程序没有带-g编译参数，没有符号导致的。</p>
 </li>
