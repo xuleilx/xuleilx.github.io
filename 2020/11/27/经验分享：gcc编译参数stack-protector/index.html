@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="gdb,gcc," />
 
 
 
@@ -79,14 +79,22 @@
 
 
 
-<meta name="keywords" content="Hexo, NexT">
-<meta property="og:type" content="website">
-<meta property="og:title" content="沧海一粟">
-<meta property="og:url" content="http://yoursite.com/page/6/index.html">
+<meta name="description" content="经验分享：gcc编译参数stack-protector前言 1     目的指导针对gcc编译选项stack-protector产生的core的解析，解决产品中的Bug。 2     适用范围C/C++程序开发者。 3     职责与权限针对 stack smashing detected 错误，使开发工程师在开发调试时明确调试与修改方向。 4     正文内容4.1  stack-protect">
+<meta name="keywords" content="gdb,gcc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="经验分享：gcc编译参数stack-protector">
+<meta property="og:url" content="http://yoursite.com/2020/11/27/经验分享：gcc编译参数stack-protector/index.html">
 <meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="经验分享：gcc编译参数stack-protector前言 1     目的指导针对gcc编译选项stack-protector产生的core的解析，解决产品中的Bug。 2     适用范围C/C++程序开发者。 3     职责与权限针对 stack smashing detected 错误，使开发工程师在开发调试时明确调试与修改方向。 4     正文内容4.1  stack-protect">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="file:///https://xuleilx.github.io/images/stack-protector-off.jpg">
+<meta property="og:image" content="file:///https://xuleilx.github.io/images/stack-protector-on.jpg">
+<meta property="og:image" content="file:///https://xuleilx.github.io/images/stack-protector-asm.jpg">
+<meta property="og:updated_time" content="2020-11-27T08:42:48.398Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="沧海一粟">
+<meta name="twitter:title" content="经验分享：gcc编译参数stack-protector">
+<meta name="twitter:description" content="经验分享：gcc编译参数stack-protector前言 1     目的指导针对gcc编译选项stack-protector产生的core的解析，解决产品中的Bug。 2     适用范围C/C++程序开发者。 3     职责与权限针对 stack smashing detected 错误，使开发工程师在开发调试时明确调试与修改方向。 4     正文内容4.1  stack-protect">
+<meta name="twitter:image" content="file:///https://xuleilx.github.io/images/stack-protector-off.jpg">
 
 
 
@@ -116,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/6/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/11/27/经验分享：gcc编译参数stack-protector/"/>
 
 
 
 
 
-  <title>沧海一粟</title>
+  <title>经验分享：gcc编译参数stack-protector | 沧海一粟</title>
   
 
 
@@ -151,8 +159,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -319,9 +326,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -334,7 +341,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习3之axis/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/27/经验分享：gcc编译参数stack-protector/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MultiStone">
@@ -351,9 +358,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/24/matplotlib学习3之axis/" itemprop="url">matplotlib学习3之axis</a></h1>
+          <h1 class="post-title" itemprop="name headline">经验分享：gcc编译参数stack-protector</h1>
         
 
         <div class="post-meta">
@@ -365,8 +370,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T12:50:16-08:00">
-                2017-12-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-27T00:38:12-08:00">
+                2020-11-27
               </time>
             
 
@@ -403,18 +408,26 @@
       
 
       
-        
-          
-          代码：123456789101112131415161718192021222324252627282930313233343536# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/24/matplotlib学习3之axis/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <h1 id="经验分享：gcc编译参数stack-protector"><a href="#经验分享：gcc编译参数stack-protector" class="headerlink" title="经验分享：gcc编译参数stack-protector"></a>经验分享：gcc编译参数stack-protector</h1><p>前言</p>
+<h2 id="1-目的"><a href="#1-目的" class="headerlink" title="1     目的"></a>1     目的</h2><p>指导针对gcc编译选项stack-protector产生的core的解析，解决产品中的Bug。</p>
+<h2 id="2-适用范围"><a href="#2-适用范围" class="headerlink" title="2     适用范围"></a>2     适用范围</h2><p>C/C++程序开发者。</p>
+<h2 id="3-职责与权限"><a href="#3-职责与权限" class="headerlink" title="3     职责与权限"></a>3     职责与权限</h2><p>针对 <strong>stack smashing detected</strong> 错误，使开发工程师在开发调试时明确调试与修改方向。</p>
+<h2 id="4-正文内容"><a href="#4-正文内容" class="headerlink" title="4     正文内容"></a>4     正文内容</h2><h3 id="4-1-stack-protector介绍"><a href="#4-1-stack-protector介绍" class="headerlink" title="4.1  stack-protector介绍"></a>4.1  stack-protector介绍</h3><p>Stack overflow攻击是一种很常见的代码攻击，armcc和gcc等编译器都实现了stack protector来避免stack overflow攻击。虽然armcc和gcc在汇编代码生成有些不同，但其原理是相同的。这篇文章以armcc为例，看一看编译器的stack protector。</p>
+<p>armcc提供了三个编译选项来打开/关闭stack protector。</p>
+<p>-fno-stack-protector 关闭stack protector  man gcc没有找到，gcc版本相关？</p>
+<p>-fstack-protector 为armcc认为危险的函数打开stack protector</p>
+<p>-fstack-protector-all 为所有的函数打开stack protector</p>
+<h3 id="4-2-如何防止stack-overflow攻击？"><a href="#4-2-如何防止stack-overflow攻击？" class="headerlink" title="4.2  如何防止stack overflow攻击？"></a>4.2  如何防止stack overflow攻击？</h3><p>armcc在函数栈中的上下文和局部变量之间插入了一个数字来监控堆栈破坏，这个值一般被称作为canary word，在armcc中将这个值定义为<strong>stack_chk_guard。当函数返回之前，函数会去检查canary word是否被修改，如果canary word被修改了，那么证明函数栈被破坏了，这个时候armcc就会去调用一个函数来处理这种栈破坏行为，armcc为我们提供了</strong>stack_chk_fail这个回调函数来处理栈破坏。</p>
+<p>因此，在armcc打开-fstack-protector之前需要在代码中设置<strong>stack_chk_guard和</strong>stack_chk_fail。我从ARM的官网上摘抄了一段它们的描述。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *__stack_chk_guard</span><br><span class="line"></span><br><span class="line">You must provide <span class="keyword">this</span> variable with a suitable value, such as a random value. The value can change during the life of the program. For example, a suitable implementation might be to have the value constantly changed by another thread.</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> __stack_chk_fail(<span class="keyword">void</span>)</span><br><span class="line"></span><br><span class="line">It is called by the checking code on detection of corruption of the guard. In general, such a function would <span class="built_in">exit</span>, possibly after reporting a fault.</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-3-stack-protector产生了什么代码来防止stack-overflow？"><a href="#4-3-stack-protector产生了什么代码来防止stack-overflow？" class="headerlink" title="4.3  stack protector产生了什么代码来防止stack overflow？"></a>4.3  stack protector产生了什么代码来防止stack overflow？</h3><p>首先来看一下写的一个c代码片段， 代码很简单，<strong>stack_chk_guard 设置为一个常数，当然这只是一个例子，最好的方法是设置这个值为随机数。然后重写了</strong>stack_chk_fail这个回调接口。test_stack_overflow这个函数很简单，仅仅在函数栈上分配了i和c_arr这两个局部变量，并对部分成员赋值。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> __stack_chk_fail()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"__stack_chk_fail()\n"</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *__stack_chk_guard = (<span class="keyword">void</span> *)<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test_stack_overflow</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c, <span class="keyword">int</span> d, <span class="keyword">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> c_arr[<span class="number">15</span>];</span><br><span class="line">    <span class="keyword">int</span> *p = c_arr;</span><br><span class="line">    i = <span class="number">15</span>;</span><br><span class="line">    c_arr[<span class="number">0</span>] = <span class="number">2</span>;</span><br><span class="line">    c_arr[<span class="number">1</span>] = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"before test_stack_overflow\n"</span>);</span><br><span class="line">    test_stack_overflow(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"after test_stack_overflow\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>没有打开-fstack-protector选项时：<br><img src="file:///https://xuleilx.github.io/images/stack-protector-off.jpg" alt="img"><br>打开-fstack-protector选项时：<br><img src="file:///https://xuleilx.github.io/images/stack-protector-on.jpg" alt="img"> </p>
+<p>在函数返回的时候，检测__stack_chk_guard的值。</p>
+<p>下图左边是没有打开-fstack-protector，右边是打开-fstack-protector的汇编代码：</p>
+<p><img src="file:///https://xuleilx.github.io/images/stack-protector-asm.jpg" alt="img"></p>
+<p>4.4示例代码</p>
+<p>test_overflow.c<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">check_password</span><span class="params">(<span class="keyword">char</span> *password)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> buffer[<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">strcpy</span>(buffer, password);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(buffer, <span class="string">"mypass"</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">strcmp</span>(buffer, <span class="string">"yourpass"</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc &gt;= <span class="number">2</span>)&#123;</span><br><span class="line">	    <span class="keyword">if</span>(check_password(argv[<span class="number">1</span>]))&#123;</span><br><span class="line">	        <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"Access granted\n"</span>);</span><br><span class="line">	    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	        <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"Access denied\n"</span>);</span><br><span class="line">	    &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    	<span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"Please enter password!\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># gcc test_overflow.c -g -fstack-protector</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
@@ -424,272 +437,70 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习2之figure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="MultiStone">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沧海一粟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/24/matplotlib学习2之figure/" itemprop="url">matplotlib学习2之figure</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T12:17:26-08:00">
-                2017-12-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/gdb-gcc/" rel="tag"># gdb,gcc</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          
-          代码：123456789101112131415161718192021222324# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-3,3,50)#绘制直线y
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/24/matplotlib学习2之figure/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/27/关于StackSmashingDetected问题调查/" rel="next" title="关于StackSmashingDetected问题调查">
+                <i class="fa fa-chevron-left"></i> 关于StackSmashingDetected问题调查
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/24/matplotlib学习1之直线曲线/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="MultiStone">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沧海一粟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/24/matplotlib学习1之直线曲线/" itemprop="url">matplotlib学习1之直线曲线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T10:34:56-08:00">
-                2017-12-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-          代码：
-1234567891011121314151617# -*- coding: utf-8 -*-import matplotlib.pyplot as pltimport numpy as np# 产生数据x = np.linspace(-1,1,50)#绘制直线y = x + 1plt.p
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/24/matplotlib学习1之直线曲线/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -699,141 +510,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/17/tensorflow学习之二次曲线/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="MultiStone">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沧海一粟">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/17/tensorflow学习之二次曲线/" itemprop="url">tensorflow学习之二次曲线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T20:59:17-08:00">
-                2017-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          代码：
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#coding:utf-8
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/17/tensorflow学习之二次曲线/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
-  </nav>
-
 
 
           </div>
@@ -841,6 +522,12 @@
 
 
           
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
 
         </div>
         
@@ -861,8 +548,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -982,6 +678,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#经验分享：gcc编译参数stack-protector"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector" class="headerlink" title="&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector"></a>&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-目的"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-&#x76EE;&#x7684;" class="headerlink" title="1     &#x76EE;&#x7684;"></a>1     &#x76EE;&#x7684;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-适用范围"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-&#x9002;&#x7528;&#x8303;&#x56F4;" class="headerlink" title="2     &#x9002;&#x7528;&#x8303;&#x56F4;"></a>2     &#x9002;&#x7528;&#x8303;&#x56F4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-职责与权限"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#3-&#x804C;&#x8D23;&#x4E0E;&#x6743;&#x9650;" class="headerlink" title="3     &#x804C;&#x8D23;&#x4E0E;&#x6743;&#x9650;"></a>3     &#x804C;&#x8D23;&#x4E0E;&#x6743;&#x9650;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-正文内容"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#4-&#x6B63;&#x6587;&#x5185;&#x5BB9;" class="headerlink" title="4     &#x6B63;&#x6587;&#x5185;&#x5BB9;"></a>4     &#x6B63;&#x6587;&#x5185;&#x5BB9;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-stack-protector介绍"><span class="nav-number">1.4.1.</span> <span class="nav-text"><a href="#4-1-stack-protector&#x4ECB;&#x7ECD;" class="headerlink" title="4.1  stack-protector&#x4ECB;&#x7ECD;"></a>4.1  stack-protector&#x4ECB;&#x7ECD;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-如何防止stack-overflow攻击？"><span class="nav-number">1.4.2.</span> <span class="nav-text"><a href="#4-2-&#x5982;&#x4F55;&#x9632;&#x6B62;stack-overflow&#x653B;&#x51FB;&#xFF1F;" class="headerlink" title="4.2  &#x5982;&#x4F55;&#x9632;&#x6B62;stack overflow&#x653B;&#x51FB;&#xFF1F;"></a>4.2  &#x5982;&#x4F55;&#x9632;&#x6B62;stack overflow&#x653B;&#x51FB;&#xFF1F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-stack-protector产生了什么代码来防止stack-overflow？"><span class="nav-number">1.4.3.</span> <span class="nav-text"><a href="#4-3-stack-protector&#x4EA7;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#x4EE3;&#x7801;&#x6765;&#x9632;&#x6B62;stack-overflow&#xFF1F;" class="headerlink" title="4.3  stack protector&#x4EA7;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#x4EE3;&#x7801;&#x6765;&#x9632;&#x6B62;stack overflow&#xFF1F;"></a>4.3  stack protector&#x4EA7;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#x4EE3;&#x7801;&#x6765;&#x9632;&#x6B62;stack overflow&#xFF1F;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -1100,6 +812,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -1128,6 +844,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
