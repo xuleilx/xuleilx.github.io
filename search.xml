@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[ID3信息]]></title>
+    <url>%2F2020%2F11%2F26%2FID3%E4%BF%A1%E6%81%AF%2F</url>
+    <content type="text"><![CDATA[ID3信息Taglib 网址：https://taglib.org/ 代码：https://github.com/xuleilx/taglib/ 实例：https://github.com/xuleilx/taglib/tree/master/examples 新增读取图片实例]]></content>
+      <tags>
+        <tag>Media</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2020%2F11%2F26%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[虚拟内存管理]]></title>
     <url>%2F2020%2F10%2F29%2F%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-md%2F</url>
     <content type="text"><![CDATA[虚拟内存管理虚拟内存虚拟内存的起因 存储器层次结构 访问时间 Registers 1 nsec Cache 2 nsec Main Memory 10 nsec Magnetic disk 10 msec Magnetic tape 100 sec 覆盖技术覆盖技术：相互之间没有调用关系的程序模块之间。 1.对于一个进程，不需要一开始就把程序的全部指令和数据都装入内存再执行。2.程序划分为若干个功能上相对独立的程序段，按照程序逻辑结构让那些不需要同时执行的程序段共享同一块内存区3.当有关程序段的先头程序段已经执行结束后，再把后续程序段从外存调入内存覆盖前面的程序段 交换技术swap技术：swap out、swap in。内存和硬盘之间。 对象是进程，等待状态的进程驻留内存会造成存储空间的浪费。因此，有必要把处于等待状态的进程换出内存。 虚存技术利用程序的局部性。一页4K大小。基本特征：1.大的用户空间：物理内存+外存2.部分交换3.不连续性：分配不连续，使用不连续 后备存储Backing Store（二级存储）数据，代码，动态库swap file ：程序运行过程中产生的数据 页面置换算法局部页面置换 最优置换算法（OPT）：预测未来，难以实现 先进先出（FIFO）：最简单，性能差 最近最久未使用（LRU）：由过去预测未来，接近OPT，开销大。 时钟算法（Clock）：性能接近LRU，高效，开销小 二次机会法（Enhanced Clock）：Clock算法的改进，增加读写位判断，减少写页被置换 最不常用算法（LFU） Belady现象：一些算法会导致导致不会因为物理页增加，内存访问减少。有时候反而增加内存访问。一般来讲，物理页增加，访问内存的次数会减少，极限情况物理页包含了所有内存。 全局页面置换 工作集置换算法 缺页率置换算法 针对多个程序同时运行，全局页面置换算法优于局部页面置换算法，全局页面置换算法可以动态调整分配给每个程序内存页的大小 内存抖动 进程太多，分配给每个进程的物理页面太少，不能包含工作集 造成大量缺页，频繁置换 进程运行速度变慢 操作系统需要在并发水平和缺页率之间达到一个平衡 选择适当的程序数目和进程需要的物理页数目 LAB3实验12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970// 给未被映射的地址映射上物理页/*LAB3 EXERCISE 1: YOUR CODE * Maybe you want help comment, BELOW comments can help you finish the code * * Some Useful MACROs and DEFINEs, you can use them in below implementation. * MACROs or Functions: * get_pte : get an pte and return the kernel virtual address of this pte for la * if the PT contians this pte didn't exist, alloc a page for PT (notice the 3th parameter '1') * pgdir_alloc_page : call alloc_page &amp; page_insert functions to allocate a page size memory &amp; setup * an addr map pa&lt;---&gt;la with linear address la and the PDT pgdir * DEFINES: * VM_WRITE : If vma-&gt;vm_flags &amp; VM_WRITE == 1/0, then the vma is writable/non writable * PTE_W 0x002 // page table/directory entry flags bit : Writeable * PTE_U 0x004 // page table/directory entry flags bit : User can access * VARIABLES: * mm-&gt;pgdir : the PDT of these vma * *//* * try to find a pte, if pte's PT(Page Table) isn't existed, then create a PT. * (notice the 3th parameter '1') */// 1. 页目录中找页表，如果没有就创建一个页表// 2. 页表中查找包含addr地址的页表项if ( (ptep = get_pte( mm-&gt;pgdir, addr, 1 ) ) == NULL )&#123; cprintf( "get_pte in do_pgfault failed\n" ); goto failed;&#125;// 如果找到的页表项为空，分配页并映射到页表中if ( *ptep == 0 ) /* if the phy addr isn't exist, then alloc a page &amp; map the phy addr with logical addr */&#123; if ( pgdir_alloc_page( mm-&gt;pgdir, addr, perm ) == NULL ) &#123; cprintf( "pgdir_alloc_page in do_pgfault failed\n" ); goto failed; &#125;&#125;else &#123; // 找到页表项 /*LAB3 EXERCISE 2: YOUR CODE * Now we think this pte is a swap entry, we should load data from disk to a page with phy addr, * and map the phy addr with logical addr, trigger swap manager to record the access situation of this page. * * Some Useful MACROs and DEFINEs, you can use them in below implementation. * MACROs or Functions: * swap_in(mm, addr, &amp;page) : alloc a memory page, then according to the swap entry in PTE for addr, * find the addr of disk page, read the content of disk page into this memroy page * page_insert ： build the map of phy addr of an Page with the linear addr la * swap_map_swappable ： set the page swappable */ /* * if this pte is a swap entry, then load data from disk to a page with phy addr * and call page_insert to map the phy addr with logical addr */ // 如果找到的页表项是需要swap的，swap it if ( swap_init_ok ) &#123; struct Page *page = NULL; if ( (ret = swap_in( mm, addr, &amp;page ) ) != 0 ) &#123; cprintf( "swap_in in do_pgfault failed\n" ); goto failed; &#125; page_insert( mm-&gt;pgdir, page, addr, perm ); swap_map_swappable( mm, addr, page, 1 ); &#125;else &#123; cprintf( "no swap_init_ok but ptep is %x, failed\n", *ptep ); goto failed; &#125;&#125; 12345678910111213141516171819202122232425262728293031323334353637383940// 基于FIFO的页面替换算法/* * (3)_fifo_map_swappable: According FIFO PRA, we should link the most recent arrival page at the back of pra_list_head qeueue */static int_fifo_map_swappable(struct mm_struct *mm, uintptr_t addr, struct Page *page, int swap_in)&#123; list_entry_t *head=(list_entry_t*) mm-&gt;sm_priv; list_entry_t *entry=&amp;(page-&gt;pra_page_link); assert(entry != NULL &amp;&amp; head != NULL); //record the page access situlation /*LAB3 EXERCISE 2: YOUR CODE*/ //(1)link the most recent arrival page at the back of the pra_list_head qeueue. list_add(head, entry); return 0;&#125;/* * (4)_fifo_swap_out_victim: According FIFO PRA, we should unlink the earliest arrival page in front of pra_list_head qeueue, * then set the addr of addr of this page to ptr_page. */static int_fifo_swap_out_victim(struct mm_struct *mm, struct Page ** ptr_page, int in_tick)&#123; list_entry_t *head=(list_entry_t*) mm-&gt;sm_priv; assert(head != NULL); assert(in_tick==0); /* Select the victim */ /*LAB3 EXERCISE 2: YOUR CODE*/ //(1) unlink the earliest arrival page in front of pra_list_head qeueue //(2) set the addr of addr of this page to ptr_page /* Select the tail */ list_entry_t *le = head-&gt;prev; assert(head!=le); struct Page *p = le2page(le, pra_page_link); list_del(le); assert(p !=NULL); *ptr_page = p; return 0;&#125;]]></content>
@@ -56,22 +69,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[相依事件的概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[贝叶斯定理]]></title>
-    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
-    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[以二项式系数概括]]></title>
     <url>%2F2019%2F03%2F19%2F%E4%BB%A5%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0%E6%A6%82%E6%8B%AC%2F</url>
     <content type="text"><![CDATA[Fair Coin: Flip 4 times获得1个Head的概率P(exactly 1 “heads”) = P(HTTT) +P(THTT)+P(TTHT)+P(TTTH)= $\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$+$\frac{1}{16}$=1/4 获得2个Head的概率4次里面选2次 $C_4^2=\frac{43}{21} = 6$P(exactly 2 “heads”) =$\frac{C_4^2}{16}$ = 3/8 Fair Coin: Flip 5 flips获得3个Head的概率5次里面选3次 $C_5^3=\frac{543}{321} = 10$P(exactly 3 “heads”) =$\frac{C_5^3}{32} $ = 5/16 Fair Coin: Flip n flips获得k个Head的概率n次里面选k次 $C_n^k= \frac{\frac{n!}{(n-k!)}}{k!}=\frac{n(n-1)…(n-k+1)}{k(k-1)…1}$all the probability = $2^{n}$P(exactly k “heads”) =$\frac{n(n-1)…(n-k+1)}{2^{n}k*(k-1)…1}$]]></content>
@@ -88,17 +85,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[概率相加]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
-    <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -112,9 +101,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[扑克中的概率和文氏图]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
-    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+    <title><![CDATA[概率相加]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
+    <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -123,6 +120,22 @@
     <title><![CDATA[独立事件的组合概率]]></title>
     <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
     <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[相依事件的概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[贝叶斯定理]]></title>
+    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
+    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -358,10 +371,5 @@
       <tags>
         <tag>tensorflow</tag>
       </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2017%2F12%2F17%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
   </entry>
 </search>
