@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Media," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="启动Siri导致车机卡死问题分析问题现象启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。 再现步骤启动Siri 根本原因直接原因录声音的时候用到snd_pcm_wait接口，来判断是否用数据即使没有数据snd_pcm_wait也会直接返回，_GetAvailDelayWithTimestamp函数中的snd_pcm_status循环调用ioctl判断有无数据，导致CPU">
+<meta name="keywords" content="Media">
+<meta property="og:type" content="article">
+<meta property="og:title" content="启动Siri导致车机卡死问题分析">
+<meta property="og:url" content="http://yoursite.com/2020/11/29/启动Siri导致车机卡死问题分析/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="启动Siri导致车机卡死问题分析问题现象启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。 再现步骤启动Siri 根本原因直接原因录声音的时候用到snd_pcm_wait接口，来判断是否用数据即使没有数据snd_pcm_wait也会直接返回，_GetAvailDelayWithTimestamp函数中的snd_pcm_status循环调用ioctl判断有无数据，导致CPU">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://xuleilx.github.io/images/Siri_gdb_bt.jpg">
+<meta property="og:image" content="https://xuleilx.github.io/images/snd_pcm_plugin_status.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/snd_pcm_rate_status.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/Siri_gdb_ioctl.jpg">
+<meta property="og:image" content="https://xuleilx.github.io/images/atomic_patch.jpg">
+<meta property="og:image" content="https://xuleilx.github.io/images/pcm_wait.jpg">
+<meta property="og:image" content="https://xuleilx.github.io/images/snd_pcm_dsnoop_open.jpg">
+<meta property="og:updated_time" content="2020-11-30T03:45:30.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="启动Siri导致车机卡死问题分析">
+<meta name="twitter:description" content="启动Siri导致车机卡死问题分析问题现象启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。 再现步骤启动Siri 根本原因直接原因录声音的时候用到snd_pcm_wait接口，来判断是否用数据即使没有数据snd_pcm_wait也会直接返回，_GetAvailDelayWithTimestamp函数中的snd_pcm_status循环调用ioctl判断有无数据，导致CPU">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/Siri_gdb_bt.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/29/启动Siri导致车机卡死问题分析/"/>
+
+
+
+
+
+  <title>启动Siri导致车机卡死问题分析 | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/29/启动Siri导致车机卡死问题分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">启动Siri导致车机卡死问题分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-29T19:44:28-08:00">
+                2020-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="启动Siri导致车机卡死问题分析"><a href="#启动Siri导致车机卡死问题分析" class="headerlink" title="启动Siri导致车机卡死问题分析"></a>启动Siri导致车机卡死问题分析</h1><h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。</p>
+<h2 id="再现步骤"><a href="#再现步骤" class="headerlink" title="再现步骤"></a>再现步骤</h2><p>启动Siri</p>
+<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p><strong>直接原因</strong><br>录声音的时候用到snd_pcm_wait接口，来判断是否用数据<br>即使没有数据snd_pcm_wait也会直接返回，<br>_GetAvailDelayWithTimestamp函数中的snd_pcm_status<br>循环调用ioctl判断有无数据，导致CPU 100%其他进程无法得到运行。</p>
+<p><strong>根本原因</strong><br>该项目音频架构变更，采用外置836的DSP。<br>怀疑alsa版本与新的音频架构不匹配导致。<br>也可以说是alsa的Bug，旧版本的alsa对外置的DSP适配不好。</p>
+<p><strong>对比：</strong><br>其他同平台高通原生内置dsp，无此问题，snd_pcm_wait会正常等待。</p>
+<h2 id="代码调用流程"><a href="#代码调用流程" class="headerlink" title="代码调用流程"></a>代码调用流程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">snd_pcm_wait  <span class="comment">// Wait for a PCM to become ready.</span></span><br><span class="line">snd_pcm_avail <span class="comment">// Return number of frames ready to be read (capture) / written (playback)</span></span><br><span class="line">snd_pcm_status <span class="comment">// Obtain status (runtime) information for PCM handle.</span></span><br><span class="line">	ioctl</span><br></pre></td></tr></table></figure>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p><strong>方案1：</strong><br>通过尝试替换alsa版本可以解决该问题，使用二分法找到修改该问题的版本。</p>
+<p>alsa修改版本<br><a href="https://www.alsa-project.org/wiki/Detailed_changes_v1.1.1_v1.1.2" target="_blank" rel="noopener">https://www.alsa-project.org/wiki/Detailed_changes_v1.1.1_v1.1.2</a></p>
+<p>最终方案，不是打单个patch，而是更新至最新稳定版alsa。</p>
+<p><strong>方案2：</strong><br>alsa修改 snd_pcm_wait 函数，强制poll等待数据</p>
+<p><strong>方案3：</strong><br>修改Carplay代码，主动释放cpu。该方案cpu依然很高，但是车机不会卡死。<br>可以作为规避方案。</p>
+<h2 id="分析详细"><a href="#分析详细" class="headerlink" title="分析详细"></a>分析详细</h2><p>下面我们开始抽丝剥茧：</p>
+<h3 id="gdb定位卡死点"><a href="#gdb定位卡死点" class="headerlink" title="gdb定位卡死点"></a>gdb定位卡死点</h3><p><img src="https://xuleilx.github.io/images/Siri_gdb_bt.jpg" alt="Siri_gdb_bt"></p>
+<p>在认知里，我们知道ioctl一般是直接返回的(消耗CPU资源)，一般释放时间片的操作如select，poll，nanosleep等。所以怀疑一直循环调用ioctl导致CPU使用率过高。</p>
+<p>对比之前的音频架构首先我们可以明确两个调查方向：</p>
+<ol>
+<li>为什么 snd_pcm_wait 没有等待 ？（根本原因，理论上就应该在改接口处等待PCM数据流）</li>
+<li>为什么 snd_pcm_status 会死循环 ？（直接原因）</li>
+</ol>
+<h3 id="为什么snd-pcm-status-会死循环-方案1"><a href="#为什么snd-pcm-status-会死循环-方案1" class="headerlink" title="为什么snd_pcm_status 会死循环(方案1)"></a>为什么snd_pcm_status 会死循环(方案1)</h3><p>由gdb调试结果可知，栈的调用关系是从snd_pcm_rate_status开始的，然后调用到snd_pcm_plugin_status，那我们看下新旧alsa版本这两个函数的差异：</p>
+<p><strong>snd_pcm_plugin_status：</strong></p>
+<p><img src="https://xuleilx.github.io/images/snd_pcm_plugin_status.png" alt="snd_pcm_plugin_status"></p>
+<p><strong>snd_pcm_rate_status：</strong></p>
+<p><img src="https://xuleilx.github.io/images/snd_pcm_rate_status.png" alt="snd_pcm_rate_status"><br>再看看 ioctl 究竟在干什么：<br><img src="https://xuleilx.github.io/images/Siri_gdb_ioctl.jpg" alt="Siri_gdb_ioctl"></p>
+<p>我们可以很明显的看到 _agian 的死循环。通过gdb单步执行可以确认的确在死循环。</p>
+<p>于是我们找到了这个alsa的patch：</p>
+<p><img src="https://xuleilx.github.io/images/atomic_patch.jpg" alt="atomic_patch"><br>打上patch确认有效。</p>
+<h3 id="为什么-snd-pcm-wait-没有等待-方案2"><a href="#为什么-snd-pcm-wait-没有等待-方案2" class="headerlink" title="为什么 snd_pcm_wait 没有等待(方案2)"></a>为什么 snd_pcm_wait 没有等待(方案2)</h3><p>通过增加日志打印，发现每次都是走的default。没有走 snd_pcm_wait_nocheck 函数，其实这个时候根本没有数据可以读。</p>
+<p><img src="https://xuleilx.github.io/images/pcm_wait.jpg" alt="pcm_wait"></p>
+<p>通过修改代码，强制让程序走一次 snd_pcm_wait_nocheck 亦可解决该问题。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改前</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"><span class="comment">// 修改后</span></span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">	<span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h2><p>不要以为故事已经结束了，其实才刚刚开始。开玩笑啦！<br>打完这个patch之后，其它的问题开始出现了，原则是修改任何问题必须最小改动，但是alsa版本跨度太大，patch之间也会有诸多依赖。<br>打完单个patch之后，发现高概率声卡打开会失败，报下面三个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ALSA lib pcm_dsnoop.c:584:(snd_pcm_dsnoop_open) unable to create IPC semaphore</span><br><span class="line"></span><br><span class="line">ALSA lib pcm_dsnoop.c:600:(snd_pcm_dsnoop_open) unable to create IPC shm instance</span><br><span class="line"></span><br><span class="line">ALSA lib pcm_dsnoop.c:666:(snd_pcm_dsnoop_open) unable to open slave</span><br></pre></td></tr></table></figure>
+<p>也就是说 snd_pcm_dsnoop_open 函数里面的这三处错误都遇到了。</p>
+<p><img src="https://xuleilx.github.io/images/snd_pcm_dsnoop_open.jpg" alt="snd_pcm_dsnoop_open"><br>当然，我们也找到了对应的patch：<br><a href="https://git.alsa-project.org/?p=alsa-lib.git;a=commit;h=dec428c352217010e4b8bd750d302b8062339d32" target="_blank" rel="noopener">https://git.alsa-project.org/?p=alsa-lib.git;a=commit;h=dec428c352217010e4b8bd750d302b8062339d32</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">author	Qing Cai &lt;bsiice@msn.com&gt;	</span><br><span class="line">Thu, 10 Mar 2016 20:40:51 +0800 (07:40 -0500)</span><br><span class="line">committer	Takashi Iwai &lt;tiwai@suse.de&gt;	</span><br><span class="line">Thu, 10 Mar 2016 22:34:36 +0800 (15:34 +0100)</span><br><span class="line"></span><br><span class="line">pcm: fix &apos;unable to create IPC shm instance&apos; caused by fork from a thread</span><br><span class="line"></span><br><span class="line">As stated in manpage SHMCTL(2), shm_nattch is &quot;No. of current attaches&quot;</span><br><span class="line">(i.e., number of processes attached to the shared memeory). If an</span><br><span class="line">application uses alsa-lib and invokes fork() from a thread of the</span><br><span class="line">application, there may be the following execution sequence:</span><br><span class="line"> 1. execute the following statement:</span><br><span class="line">      pcm_direct.c:110: dmix-&gt;shmptr = shmat(dmix-&gt;shmid, 0, 0)</span><br><span class="line">    (shm_nattch becomes 1)</span><br><span class="line"> 2. invoke fork() in some thread.</span><br><span class="line">    (shm_nattch becomes 2)</span><br><span class="line"> 3. execute the following statement:</span><br><span class="line">      pcm_direct.c:122: if (buf.shm_nattch == 1)</span><br><span class="line"> 4. execute the following statement:</span><br><span class="line">      pcm_direct.c:131: if (dmix-&gt;shmptr-&gt;magic != SND_PCM_DIRECT_MAGIC)</span><br><span class="line">    (As stated in manpage SHMGET(2), &quot;When a new shared memory segment</span><br><span class="line">     is created, its contents are initialized to zero values&quot;, so</span><br><span class="line">     dmix-&gt;shmptr-&gt;magic is 0)</span><br><span class="line"> 5. execute the following statements:</span><br><span class="line">      pcm_direct.c:132: snd_pcm_direct_shm_discard(dmix)</span><br><span class="line">      pcm_direct.c:133: return -EINVAL</span><br><span class="line">The above execution sequence will cause the following error:</span><br><span class="line">  unable to create IPC shm instance</span><br><span class="line">This error causes multimedia application has no sound. This error rarely</span><br><span class="line">occurs, probability is about 1%.</span><br><span class="line"></span><br><span class="line">More notes about this patch:</span><br><span class="line">this patch tries to address the race above by changing the condition</span><br><span class="line">to identify &quot;the first user&quot;.  Until now, the first user was</span><br><span class="line">identified by checking shm_nattch.  But this is racy, as stated in the</span><br><span class="line">above.</span><br><span class="line"></span><br><span class="line">In this version, we try to assign a shm at first without IPC_CREAT.</span><br><span class="line">If this succeeds, we are not alone, so we must not be the first user.</span><br><span class="line">Only when this fails, try to get a shmem with IPC_CREAT and IPC_EXCL.</span><br><span class="line">If this succeeds, we are the first user.  And, one more notable point</span><br><span class="line">is that the race of this function call itself is protected by</span><br><span class="line">semaphore in the caller side.  The only point to avoid is the race</span><br><span class="line">after shmget() and the first initialization, and this method should</span><br><span class="line">work around that.</span><br><span class="line"></span><br><span class="line">Signed-off-by: Qing Cai &lt;bsiice@msn.com&gt;</span><br><span class="line">Signed-off-by: Qing Cai &lt;caiqing@neusoft.com&gt;</span><br><span class="line">Signed-off-by: Takashi Iwai &lt;tiwai@suse.de&gt;</span><br></pre></td></tr></table></figure>
+<p>看到 neusoft 居然是东软，有点惊讶。敬佩这样一步步找根本原因，给开源代码提patch的共享者。向他们致敬。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Media/" rel="tag"># Media</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/27/关于Pop音解决方案/" rel="next" title="关于Pop音解决方案">
+                <i class="fa fa-chevron-left"></i> 关于Pop音解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/29/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="MultiStone" />
+            
+              <p class="site-author-name" itemprop="name">MultiStone</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#启动Siri导致车机卡死问题分析"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x542F;&#x52A8;Siri&#x5BFC;&#x81F4;&#x8F66;&#x673A;&#x5361;&#x6B7B;&#x95EE;&#x9898;&#x5206;&#x6790;" class="headerlink" title="&#x542F;&#x52A8;Siri&#x5BFC;&#x81F4;&#x8F66;&#x673A;&#x5361;&#x6B7B;&#x95EE;&#x9898;&#x5206;&#x6790;"></a>&#x542F;&#x52A8;Siri&#x5BFC;&#x81F4;&#x8F66;&#x673A;&#x5361;&#x6B7B;&#x95EE;&#x9898;&#x5206;&#x6790;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题现象"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x95EE;&#x9898;&#x73B0;&#x8C61;" class="headerlink" title="&#x95EE;&#x9898;&#x73B0;&#x8C61;"></a>&#x95EE;&#x9898;&#x73B0;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再现步骤"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x518D;&#x73B0;&#x6B65;&#x9AA4;" class="headerlink" title="&#x518D;&#x73B0;&#x6B65;&#x9AA4;"></a>&#x518D;&#x73B0;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根本原因"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x6839;&#x672C;&#x539F;&#x56E0;" class="headerlink" title="&#x6839;&#x672C;&#x539F;&#x56E0;"></a>&#x6839;&#x672C;&#x539F;&#x56E0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码调用流程"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x4EE3;&#x7801;&#x8C03;&#x7528;&#x6D41;&#x7A0B;" class="headerlink" title="&#x4EE3;&#x7801;&#x8C03;&#x7528;&#x6D41;&#x7A0B;"></a>&#x4EE3;&#x7801;&#x8C03;&#x7528;&#x6D41;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">1.5.</span> <span class="nav-text"><a href="#&#x89E3;&#x51B3;&#x65B9;&#x6848;" class="headerlink" title="&#x89E3;&#x51B3;&#x65B9;&#x6848;"></a>&#x89E3;&#x51B3;&#x65B9;&#x6848;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析详细"><span class="nav-number">1.6.</span> <span class="nav-text"><a href="#&#x5206;&#x6790;&#x8BE6;&#x7EC6;" class="headerlink" title="&#x5206;&#x6790;&#x8BE6;&#x7EC6;"></a>&#x5206;&#x6790;&#x8BE6;&#x7EC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gdb定位卡死点"><span class="nav-number">1.6.1.</span> <span class="nav-text"><a href="#gdb&#x5B9A;&#x4F4D;&#x5361;&#x6B7B;&#x70B9;" class="headerlink" title="gdb&#x5B9A;&#x4F4D;&#x5361;&#x6B7B;&#x70B9;"></a>gdb&#x5B9A;&#x4F4D;&#x5361;&#x6B7B;&#x70B9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么snd-pcm-status-会死循环-方案1"><span class="nav-number">1.6.2.</span> <span class="nav-text"><a href="#&#x4E3A;&#x4EC0;&#x4E48;snd-pcm-status-&#x4F1A;&#x6B7B;&#x5FAA;&#x73AF;-&#x65B9;&#x6848;1" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48;snd_pcm_status &#x4F1A;&#x6B7B;&#x5FAA;&#x73AF;(&#x65B9;&#x6848;1)"></a>&#x4E3A;&#x4EC0;&#x4E48;snd_pcm_status &#x4F1A;&#x6B7B;&#x5FAA;&#x73AF;(&#x65B9;&#x6848;1)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么-snd-pcm-wait-没有等待-方案2"><span class="nav-number">1.6.3.</span> <span class="nav-text"><a href="#&#x4E3A;&#x4EC0;&#x4E48;-snd-pcm-wait-&#x6CA1;&#x6709;&#x7B49;&#x5F85;-&#x65B9;&#x6848;2" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48; snd_pcm_wait &#x6CA1;&#x6709;&#x7B49;&#x5F85;(&#x65B9;&#x6848;2)"></a>&#x4E3A;&#x4EC0;&#x4E48; snd_pcm_wait &#x6CA1;&#x6709;&#x7B49;&#x5F85;(&#x65B9;&#x6848;2)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插曲"><span class="nav-number">1.7.</span> <span class="nav-text"><a href="#&#x63D2;&#x66F2;" class="headerlink" title="&#x63D2;&#x66F2;"></a>&#x63D2;&#x66F2;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MultiStone</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
