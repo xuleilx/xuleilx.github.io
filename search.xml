@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2020%2F11%2F29%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[启动Siri导致车机卡死问题分析]]></title>
     <url>%2F2020%2F11%2F29%2F%E5%90%AF%E5%8A%A8Siri%E5%AF%BC%E8%87%B4%E8%BD%A6%E6%9C%BA%E5%8D%A1%E6%AD%BB%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%2F</url>
     <content type="text"><![CDATA[启动Siri导致车机卡死问题分析问题现象启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。 再现步骤启动Siri 根本原因直接原因录声音的时候用到snd_pcm_wait接口，来判断是否用数据即使没有数据snd_pcm_wait也会直接返回，_GetAvailDelayWithTimestamp函数中的snd_pcm_status循环调用ioctl判断有无数据，导致CPU 100%其他进程无法得到运行。 根本原因该项目音频架构变更，采用外置836的DSP。怀疑alsa版本与新的音频架构不匹配导致。也可以说是alsa的Bug，旧版本的alsa对外置的DSP适配不好。 对比：其他同平台高通原生内置dsp，无此问题，snd_pcm_wait会正常等待。 代码调用流程1234snd_pcm_wait // Wait for a PCM to become ready.snd_pcm_avail // Return number of frames ready to be read (capture) / written (playback)snd_pcm_status // Obtain status (runtime) information for PCM handle. ioctl 解决方案方案1：通过尝试替换alsa版本可以解决该问题，使用二分法找到修改该问题的版本。 alsa修改版本https://www.alsa-project.org/wiki/Detailed_changes_v1.1.1_v1.1.2 最终方案，不是打单个patch，而是更新至最新稳定版alsa。 方案2：alsa修改 snd_pcm_wait 函数，强制poll等待数据 方案3：修改Carplay代码，主动释放cpu。该方案cpu依然很高，但是车机不会卡死。可以作为规避方案。 分析详细下面我们开始抽丝剥茧： gdb定位卡死点 在认知里，我们知道ioctl一般是直接返回的(消耗CPU资源)，一般释放时间片的操作如select，poll，nanosleep等。所以怀疑一直循环调用ioctl导致CPU使用率过高。 对比之前的音频架构首先我们可以明确两个调查方向： 为什么 snd_pcm_wait 没有等待 ？（根本原因，理论上就应该在改接口处等待PCM数据流） 为什么 snd_pcm_status 会死循环 ？（直接原因） 为什么snd_pcm_status 会死循环(方案1)由gdb调试结果可知，栈的调用关系是从snd_pcm_rate_status开始的，然后调用到snd_pcm_plugin_status，那我们看下新旧alsa版本这两个函数的差异： snd_pcm_plugin_status： snd_pcm_rate_status： 再看看 ioctl 究竟在干什么： 我们可以很明显的看到 _agian 的死循环。通过gdb单步执行可以确认的确在死循环。 于是我们找到了这个alsa的patch： 打上patch确认有效。 为什么 snd_pcm_wait 没有等待(方案2)通过增加日志打印，发现每次都是走的default。没有走 snd_pcm_wait_nocheck 函数，其实这个时候根本没有数据可以读。 通过修改代码，强制让程序走一次 snd_pcm_wait_nocheck 亦可解决该问题。 123456// 修改前default: return 1;// 修改后default: break; 插曲不要以为故事已经结束了，其实才刚刚开始。开玩笑啦！打完这个patch之后，其它的问题开始出现了，原则是修改任何问题必须最小改动，但是alsa版本跨度太大，patch之间也会有诸多依赖。打完单个patch之后，发现高概率声卡打开会失败，报下面三个错误： 12345ALSA lib pcm_dsnoop.c:584:(snd_pcm_dsnoop_open) unable to create IPC semaphoreALSA lib pcm_dsnoop.c:600:(snd_pcm_dsnoop_open) unable to create IPC shm instanceALSA lib pcm_dsnoop.c:666:(snd_pcm_dsnoop_open) unable to open slave 也就是说 snd_pcm_dsnoop_open 函数里面的这三处错误都遇到了。 当然，我们也找到了对应的patch：https://git.alsa-project.org/?p=alsa-lib.git;a=commit;h=dec428c352217010e4b8bd750d302b8062339d32 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849author Qing Cai &lt;bsiice@msn.com&gt; Thu, 10 Mar 2016 20:40:51 +0800 (07:40 -0500)committer Takashi Iwai &lt;tiwai@suse.de&gt; Thu, 10 Mar 2016 22:34:36 +0800 (15:34 +0100)pcm: fix &apos;unable to create IPC shm instance&apos; caused by fork from a threadAs stated in manpage SHMCTL(2), shm_nattch is &quot;No. of current attaches&quot;(i.e., number of processes attached to the shared memeory). If anapplication uses alsa-lib and invokes fork() from a thread of theapplication, there may be the following execution sequence: 1. execute the following statement: pcm_direct.c:110: dmix-&gt;shmptr = shmat(dmix-&gt;shmid, 0, 0) (shm_nattch becomes 1) 2. invoke fork() in some thread. (shm_nattch becomes 2) 3. execute the following statement: pcm_direct.c:122: if (buf.shm_nattch == 1) 4. execute the following statement: pcm_direct.c:131: if (dmix-&gt;shmptr-&gt;magic != SND_PCM_DIRECT_MAGIC) (As stated in manpage SHMGET(2), &quot;When a new shared memory segment is created, its contents are initialized to zero values&quot;, so dmix-&gt;shmptr-&gt;magic is 0) 5. execute the following statements: pcm_direct.c:132: snd_pcm_direct_shm_discard(dmix) pcm_direct.c:133: return -EINVALThe above execution sequence will cause the following error: unable to create IPC shm instanceThis error causes multimedia application has no sound. This error rarelyoccurs, probability is about 1%.More notes about this patch:this patch tries to address the race above by changing the conditionto identify &quot;the first user&quot;. Until now, the first user wasidentified by checking shm_nattch. But this is racy, as stated in theabove.In this version, we try to assign a shm at first without IPC_CREAT.If this succeeds, we are not alone, so we must not be the first user.Only when this fails, try to get a shmem with IPC_CREAT and IPC_EXCL.If this succeeds, we are the first user. And, one more notable pointis that the race of this function call itself is protected bysemaphore in the caller side. The only point to avoid is the raceafter shmget() and the first initialization, and this method shouldwork around that.Signed-off-by: Qing Cai &lt;bsiice@msn.com&gt;Signed-off-by: Qing Cai &lt;caiqing@neusoft.com&gt;Signed-off-by: Takashi Iwai &lt;tiwai@suse.de&gt; 看到 neusoft 居然是东软，有点惊讶。敬佩这样一步步找根本原因，给开源代码提patch的共享者。向他们致敬。]]></content>
@@ -71,11 +76,6 @@
       <tags>
         <tag>Media</tag>
       </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World]]></title>
-    <url>%2F2020%2F11%2F26%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
   </entry>
   <entry>
     <title><![CDATA[虚拟内存管理]]></title>
@@ -149,17 +149,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[扑克中的概率和文氏图]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
-    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+    <title><![CDATA[排列组合]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
+    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[排列组合]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
-    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^n_r=C^n_{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
       <tags>
         <tag>概率</tag>
       </tags>
