@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kaggle," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0、概述本篇主要记录本人在Kaggle的Digit Recognizer比赛中学习和用到的知识。 1、介绍    首先介绍一下数字识别(Digit Recognizer)，数字识别堪称机器学习领域的&amp;quot;Hello  World&amp;quot;，几乎可以说是每个学习机器学习的入门指南。不过，这个入门还是有门槛的，不像 学习编程语言的&amp;quot;Hello World&amp;quot;，如果一开始就一头">
+<meta name="keywords" content="Kaggle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DigitRecognizer">
+<meta property="og:url" content="http://yoursite.com/2018/06/12/DigitRecognizer/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="0、概述本篇主要记录本人在Kaggle的Digit Recognizer比赛中学习和用到的知识。 1、介绍    首先介绍一下数字识别(Digit Recognizer)，数字识别堪称机器学习领域的&amp;quot;Hello  World&amp;quot;，几乎可以说是每个学习机器学习的入门指南。不过，这个入门还是有门槛的，不像 学习编程语言的&amp;quot;Hello World&amp;quot;，如果一开始就一头">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-12T12:36:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DigitRecognizer">
+<meta name="twitter:description" content="0、概述本篇主要记录本人在Kaggle的Digit Recognizer比赛中学习和用到的知识。 1、介绍    首先介绍一下数字识别(Digit Recognizer)，数字识别堪称机器学习领域的&amp;quot;Hello  World&amp;quot;，几乎可以说是每个学习机器学习的入门指南。不过，这个入门还是有门槛的，不像 学习编程语言的&amp;quot;Hello World&amp;quot;，如果一开始就一头">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/12/DigitRecognizer/"/>
+
+
+
+
+
+  <title>DigitRecognizer | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/12/DigitRecognizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DigitRecognizer</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-12T20:26:31-07:00">
+                2018-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0、概述"><a href="#0、概述" class="headerlink" title="0、概述"></a>0、概述</h1><pre><code>本篇主要记录本人在Kaggle的Digit Recognizer比赛中学习和用到的知识。
+</code></pre><h1 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h1><pre><code>    首先介绍一下数字识别(Digit Recognizer)，数字识别堪称机器学习领域的&quot;Hello 
+World&quot;，几乎可以说是每个学习机器学习的入门指南。不过，这个入门还是有门槛的，不像
+学习编程语言的&quot;Hello World&quot;，如果一开始就一头扎进来，可能会摸不着头脑。
+    一开始接触机器学习的是看到有朋友圈里有人发TensorFlow相关的东西，于是在0基础
+的情况下，配置TensorFlow环境，模仿TensorFlow的例子开始了Digit Recognizer的
+实践，发现做下来不知道自己在做什么，例子的每一步不知道是在干什么，一头雾水。
+    后来看了一位朋友的博客，分享的是他本人学习机器学习的心路历程，以及一些推荐的公
+开课和书籍，撸完Coursera上吴恩达的视频后对机器学习有了初步认识，接着撸了李宏毅的
+台大课程，感觉思路豁然开朗，顿时理解了吴恩达讲解的很多内容，毕竟是国语嘛，学起来就
+是快。最近开始撸线代和概率论，但是总觉得缺点什么，想想大概是缺少实践吧。
+    寻找实践的突破口，发现项目中出现的Bug分配到各个担当是个费时费力的工作，如果能
+够通过Bug描述自动分类那不就可以节省大量人力成本了嘛。于是说干就干，撸起膀子加油
+干。文章分类很快想到了吴恩达老师讲的垃圾邮件分类问题，果断朴素贝叶斯算法。中文与英
+文不一样，英文通过空格可以分词，中文就没有那么简单了，于是调研了一下，发现github
+上有个很好的中文分分词库jieba。试了用一个项目的数据训练后去测试另一个项目的数据，
+准确率也就在50%左右，这样的准确率是无法忍受的，至少在90%以上的准确率才能当做产品
+使用吧。这个时候体会到了吴恩达老师的那句话，其实到最后机器学习工作者不是去实现什么
+牛逼的算法，因为已经有一大批专门研究算法的人每天从事着这样的工作，用实现好的算法库
+比自己实现的效率高，性能好。机器学习工作者主要的工作是：选择数据，选择模型，优化数
+据，优化配置，提高准确率。
+    于是参加了Kaggle比赛，学习各路大神是如何玩转机器学习的。说了这么多，回到我们
+的主题Digit Recognizer，分类的方法很多，我们将一一道来。
+</code></pre><h1 id="2、实现"><a href="#2、实现" class="headerlink" title="2、实现"></a>2、实现</h1><h2 id="2-1、SVM-实现数字识别-scikit-learn"><a href="#2-1、SVM-实现数字识别-scikit-learn" class="headerlink" title="2.1、SVM 实现数字识别(scikit-learn)"></a>2.1、SVM 实现数字识别(scikit-learn)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm,metrics</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将图片数据可视化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">showImgByRow</span><span class="params">(row,num=<span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    show pixel</span></span><br><span class="line"><span class="string">    :param row:pixel row np.array</span></span><br><span class="line"><span class="string">    :return: null</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    picture = row.reshape((num*<span class="number">28</span>,<span class="number">28</span>))</span><br><span class="line">    plt.imshow(picture,cmap=<span class="string">'gray'</span>)</span><br><span class="line">    plt.axis(<span class="string">'off'</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取训练数据</span></span><br><span class="line">trainFile = <span class="string">r'digit-recognizer/train.csv'</span></span><br><span class="line">trainDF = pd.read_csv(trainFile)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了save your life，我们只取前500组数据。其实这样做是可能有问题的，</span></span><br><span class="line"><span class="comment"># 如果数据不是随机分布的，前5000个数据都是某个数字，那就game over了</span></span><br><span class="line"><span class="comment"># 所以无论做何种预测，最好打印出所有的数据分布。</span></span><br><span class="line">images = trainDF.iloc[<span class="number">0</span>:<span class="number">5000</span>,<span class="number">1</span>:]</span><br><span class="line">labels = trainDF.iloc[<span class="number">0</span>:<span class="number">5000</span>,:<span class="number">1</span>]</span><br><span class="line">train_images, test_images,train_labels, test_labels = train_test_split(images, labels, train_size=<span class="number">0.8</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理输入数据</span></span><br><span class="line">X = train_images</span><br><span class="line">y = train_labels.values.ravel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization 正规化，归一化</span></span><br><span class="line"><span class="comment"># 对于数字识别来说，像素点的为0与非0是完全不同的意义，</span></span><br><span class="line"><span class="comment"># 如果取0~255，可能会让算法过渡关注数字的大小，导致识别率的下降</span></span><br><span class="line">X[X&gt;<span class="number">0</span>] = <span class="number">1</span> <span class="comment">#X/=255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建分类器</span></span><br><span class="line">clf = svm.SVC(decision_function_shape=<span class="string">'ovr'</span>,C = <span class="number">7</span>,gamma = <span class="number">0.009</span>)</span><br><span class="line"><span class="comment"># 喂数据</span></span><br><span class="line">clf.fit(X, y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理测试数据</span></span><br><span class="line">test_images[test_images&gt;<span class="number">0</span>] = <span class="number">1</span> <span class="comment">#test_images/=255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预测数据</span></span><br><span class="line">predicted = clf.predict(test_images)</span><br><span class="line">expected = test_labels</span><br><span class="line"></span><br><span class="line"><span class="comment">#准确率</span></span><br><span class="line">print(clf.score(test_images,test_labels))</span><br><span class="line">print(<span class="string">"Classification report for classifier %s:\n%s\n"</span></span><br><span class="line">      % (clf, metrics.classification_report(expected, predicted)))</span><br><span class="line">print(<span class="string">"Confusion matrix:\n%s"</span> % metrics.confusion_matrix(y, y))</span><br></pre></td></tr></table></figure>
+<h2 id="2-2、MLP（DNN）实现数字识别-scikit-learn"><a href="#2-2、MLP（DNN）实现数字识别-scikit-learn" class="headerlink" title="2.2、MLP（DNN）实现数字识别(scikit-learn)"></a>2.2、MLP（DNN）实现数字识别(scikit-learn)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neural_network <span class="keyword">import</span> MLPClassifier</span><br><span class="line">clf = MLPClassifier(hidden_layer_sizes=(<span class="number">50</span>,), max_iter=<span class="number">10</span>, alpha=<span class="number">1e-4</span>,</span><br><span class="line">                    solver=<span class="string">'sgd'</span>, verbose=<span class="number">10</span>, tol=<span class="number">1e-4</span>, random_state=<span class="number">1</span>,</span><br><span class="line">                    learning_rate_init=<span class="number">.1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="2-3、DNN实现数字识别-keras"><a href="#2-3、DNN实现数字识别-keras" class="headerlink" title="2.3、DNN实现数字识别(keras)"></a>2.3、DNN实现数字识别(keras)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense,Activation</span><br><span class="line"><span class="keyword">from</span> keras.utils <span class="keyword">import</span> to_categorical</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取训练数据</span></span><br><span class="line">trainFile = <span class="string">r'digit-recognizer/train.csv'</span></span><br><span class="line">trainDF = pd.read_csv(trainFile)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了save your life，我们只取前500组数据。其实这样做是可能有问题的，</span></span><br><span class="line"><span class="comment"># 如果数据不是随机分布的，前5000个数据都是某个数字，那就game over了</span></span><br><span class="line"><span class="comment"># 所以无论做何种预测，最好打印出所有的数据分布。</span></span><br><span class="line">images = trainDF.iloc[<span class="number">0</span>:,<span class="number">1</span>:]</span><br><span class="line">labels = trainDF.iloc[<span class="number">0</span>:,:<span class="number">1</span>]</span><br><span class="line">train_images, test_images,train_labels, test_labels = train_test_split(images, labels, train_size=<span class="number">0.9</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理输入数据</span></span><br><span class="line">X = images</span><br><span class="line">y = labels.values.ravel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization 正规化，归一化</span></span><br><span class="line"><span class="comment"># 对于数字识别来说，像素点的为0与非0是完全不同的意义，</span></span><br><span class="line"><span class="comment"># 如果取0~255，可能会让算法过渡关注数字的大小，导致识别率的下降</span></span><br><span class="line">X/=<span class="number">255</span> <span class="comment">#X[X&gt;0] = 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建分类器</span></span><br><span class="line">clf = Sequential()</span><br><span class="line">clf.add(Dense(output_dim=<span class="number">64</span>,input_dim=<span class="number">784</span>))</span><br><span class="line">clf.add(Activation(<span class="string">"relu"</span>))</span><br><span class="line">clf.add(Dense(output_dim=<span class="number">10</span>))</span><br><span class="line">clf.add(Activation(<span class="string">"softmax"</span>))</span><br><span class="line"></span><br><span class="line">clf.compile(optimizer=<span class="string">'rmsprop'</span>,</span><br><span class="line">              loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">              metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert labels to categorical one-hot encoding</span></span><br><span class="line">one_hot_labels = to_categorical(y, num_classes=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train the model, iterating on the data in batches of 32 samples</span></span><br><span class="line"><span class="comment"># 喂数据</span></span><br><span class="line">clf.fit(X, one_hot_labels, epochs=<span class="number">10</span>, batch_size=<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理测试数据</span></span><br><span class="line">test_images/=<span class="number">255</span> <span class="comment">#test_images[test_images&gt;0] = 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># evaluate数据</span></span><br><span class="line">expected = test_labels</span><br><span class="line">one_hot_test_labels = to_categorical(expected, num_classes=<span class="number">10</span>)</span><br><span class="line">score = clf.evaluate(test_images, one_hot_test_labels)</span><br><span class="line">print(score)</span><br></pre></td></tr></table></figure>
+<h2 id="2-4、CNN实现数字识别-keras"><a href="#2-4、CNN实现数字识别-keras" class="headerlink" title="2.4、CNN实现数字识别(keras)"></a>2.4、CNN实现数字识别(keras)</h2><p>参考李宏毅老师的教学视频，自己实现的卷积神经网络<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers.core <span class="keyword">import</span> Dense,Activation</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> MaxPooling2D,Convolution2D,Flatten</span><br><span class="line"><span class="keyword">from</span> keras.utils.np_utils <span class="keyword">import</span> to_categorical</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取训练数据</span></span><br><span class="line">trainFile = <span class="string">r'digit-recognizer/train.csv'</span></span><br><span class="line">trainDF = pd.read_csv(trainFile)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为了save your life，我们只取前500组数据。其实这样做是可能有问题的，</span></span><br><span class="line"><span class="comment"># 如果数据不是随机分布的，前5000个数据都是某个数字，那就game over了</span></span><br><span class="line"><span class="comment"># 所以无论做何种预测，最好打印出所有的数据分布。</span></span><br><span class="line">images = trainDF.iloc[<span class="number">0</span>:<span class="number">5000</span>,<span class="number">1</span>:]</span><br><span class="line">labels = trainDF.iloc[<span class="number">0</span>:<span class="number">5000</span>,:<span class="number">1</span>]</span><br><span class="line">train_images, test_images,train_labels, test_labels = train_test_split(images, labels, train_size=<span class="number">0.8</span>, random_state=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理输入数据</span></span><br><span class="line">X = train_images.values</span><br><span class="line">y = train_labels.values.ravel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization 正规化，归一化</span></span><br><span class="line"><span class="comment"># 对于数字识别来说，像素点的为0与非0是完全不同的意义，</span></span><br><span class="line"><span class="comment"># 如果取0~255，可能X会让算法过渡关注数字的大小，导致识别率的下降</span></span><br><span class="line"><span class="comment"># 此处采用正规化处理，减去平局值，除以标准差</span></span><br><span class="line">mean_px = X.mean().astype(np.float32)</span><br><span class="line">std_px = X.std().astype(np.float32)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">standardize</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> (x-mean_px)/std_px</span><br><span class="line"></span><br><span class="line">X = standardize(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建模型</span></span><br><span class="line">model = Sequential()</span><br><span class="line"><span class="comment"># 25个filter，每个大小是3*3.这样会得到25张图片，去掉边角图片变成26*26</span></span><br><span class="line">model.add(Convolution2D(<span class="number">25</span>,<span class="number">3</span>,<span class="number">3</span>,input_shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)))</span><br><span class="line"><span class="comment"># 用2*2的框去取最大值。13*13*25</span></span><br><span class="line">model.add(MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line"><span class="comment"># 越接近Output Filter越多，图包含的信息越多。11*11*50</span></span><br><span class="line">model.add(Convolution2D(<span class="number">50</span>,<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line"><span class="comment"># 用2*2的框去取最大值。5*5*50. 比如：去掉一半的像素点，不会改变原图像。</span></span><br><span class="line">model.add(MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line"><span class="comment"># 将图像拉直成1D</span></span><br><span class="line">model.add(Flatten())</span><br><span class="line"><span class="comment"># 以上是卷积过程，下面是DNN。100个neuron全连接</span></span><br><span class="line">model.add(Dense(output_dim=<span class="number">100</span>))</span><br><span class="line">model.add(Activation(<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dense(output_dim=<span class="number">10</span>))</span><br><span class="line">model.add(Activation(<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>,</span><br><span class="line">              loss=<span class="string">'categorical_crossentropy'</span>,</span><br><span class="line">              metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># Convert labels to categorical one-hot encoding</span></span><br><span class="line">one_hot_labels = to_categorical(y, num_classes=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train the model, iterating on the data in batches of 32 samples</span></span><br><span class="line"><span class="comment"># 喂数据</span></span><br><span class="line">model.fit(X.reshape(X.shape[<span class="number">0</span>],<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>), one_hot_labels, epochs=<span class="number">30</span>, batch_size=<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理测试数据</span></span><br><span class="line">test_images = test_images.values</span><br><span class="line">test_images = standardize(test_images)</span><br><span class="line"></span><br><span class="line"><span class="comment"># valuation</span></span><br><span class="line">expected = test_labels</span><br><span class="line">one_hot_test_labels = to_categorical(expected, num_classes=<span class="number">10</span>)</span><br><span class="line">score = model.evaluate(test_images.reshape(test_images.shape[<span class="number">0</span>],<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>), one_hot_test_labels)</span><br><span class="line">print(score)</span><br></pre></td></tr></table></figure></p>
+<p>Kaggle上Digit_Recognizer 的Kernel中评分最高的实现，主要的改善有：</p>
+<ol>
+<li>Dropout 随机丢掉若干神经元</li>
+<li>ReduceLROnPlateau当算法在最低点徘徊时，降低LR</li>
+<li>ImageDataGenerator手动创建更多的学习样本。★关键</li>
+<li>分别在训练和测试集上绘制loss和accuracy，观察算法的学习情况。★调整学习方法的依据<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.image <span class="keyword">as</span> mpimg</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"></span><br><span class="line">np.random.seed(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> keras.utils.np_utils <span class="keyword">import</span> to_categorical <span class="comment"># convert to one-hot-encoding</span></span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout, Flatten, Conv2D, MaxPool2D</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> RMSprop</span><br><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator</span><br><span class="line"><span class="keyword">from</span> keras.callbacks <span class="keyword">import</span> ReduceLROnPlateau</span><br><span class="line"></span><br><span class="line">sns.set(style=<span class="string">'white'</span>, context=<span class="string">'notebook'</span>, palette=<span class="string">'deep'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load the data</span></span><br><span class="line">train = pd.read_csv(<span class="string">r"digit-recognizer/train.csv"</span>)</span><br><span class="line">test = pd.read_csv(<span class="string">r"digit-recognizer/test.csv"</span>)</span><br><span class="line"></span><br><span class="line">Y_train = train[<span class="string">"label"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Drop 'label' column</span></span><br><span class="line">X_train = train.drop(labels = [<span class="string">"label"</span>],axis = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># free some space</span></span><br><span class="line"><span class="keyword">del</span> train</span><br><span class="line"></span><br><span class="line"><span class="comment"># g = sns.countplot(Y_train)</span></span><br><span class="line"></span><br><span class="line">Y_train.value_counts()</span><br><span class="line"></span><br><span class="line"><span class="comment"># plt.show()</span></span><br><span class="line"><span class="comment"># Check the data</span></span><br><span class="line">print(X_train.isnull().any().describe())</span><br><span class="line">print(test.isnull().any().describe())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Normalize the data</span></span><br><span class="line">X_train = X_train / <span class="number">255.0</span></span><br><span class="line">test = test / <span class="number">255.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Reshape image in 3 dimensions (height = 28px, width = 28px , canal = 1)</span></span><br><span class="line">X_train = X_train.values.reshape(<span class="number">-1</span>,<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)</span><br><span class="line">test = test.values.reshape(<span class="number">-1</span>,<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Encode labels to one hot vectors (ex : 2 -&gt; [0,0,1,0,0,0,0,0,0,0])</span></span><br><span class="line">Y_train = to_categorical(Y_train, num_classes = <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the random seed</span></span><br><span class="line">random_seed = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the train and the validation set for the fitting</span></span><br><span class="line">X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size = <span class="number">0.1</span>, random_state=random_seed)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Some examples</span></span><br><span class="line"><span class="comment"># g = plt.imshow(X_train[0][:,:,0])</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># plt.show()</span></span><br><span class="line"><span class="comment"># Set the CNN model</span></span><br><span class="line"><span class="comment"># my CNN architechture is In -&gt; [[Conv2D-&gt;relu]*2 -&gt; MaxPool2D -&gt; Dropout]*2 -&gt; Flatten -&gt; Dense -&gt; Dropout -&gt; Out</span></span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line"></span><br><span class="line">model.add(Conv2D(filters = <span class="number">32</span>, kernel_size = (<span class="number">5</span>,<span class="number">5</span>),padding = <span class="string">'Same'</span>,</span><br><span class="line">                 activation =<span class="string">'relu'</span>, input_shape = (<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>)))</span><br><span class="line">model.add(Conv2D(filters = <span class="number">32</span>, kernel_size = (<span class="number">5</span>,<span class="number">5</span>),padding = <span class="string">'Same'</span>,</span><br><span class="line">                 activation =<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPool2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Conv2D(filters = <span class="number">64</span>, kernel_size = (<span class="number">3</span>,<span class="number">3</span>),padding = <span class="string">'Same'</span>,</span><br><span class="line">                 activation =<span class="string">'relu'</span>))</span><br><span class="line">model.add(Conv2D(filters = <span class="number">64</span>, kernel_size = (<span class="number">3</span>,<span class="number">3</span>),padding = <span class="string">'Same'</span>,</span><br><span class="line">                 activation =<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPool2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>), strides=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">256</span>, activation = <span class="string">"relu"</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation = <span class="string">"softmax"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Define the optimizer</span></span><br><span class="line">optimizer = RMSprop(lr=<span class="number">0.001</span>, rho=<span class="number">0.9</span>, epsilon=<span class="number">1e-08</span>, decay=<span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compile the model</span></span><br><span class="line">model.compile(optimizer = optimizer , loss = <span class="string">"categorical_crossentropy"</span>, metrics=[<span class="string">"accuracy"</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set a learning rate annealer</span></span><br><span class="line">learning_rate_reduction = ReduceLROnPlateau(monitor=<span class="string">'val_acc'</span>,</span><br><span class="line">                                            patience=<span class="number">3</span>,</span><br><span class="line">                                            verbose=<span class="number">1</span>,</span><br><span class="line">                                            factor=<span class="number">0.5</span>,</span><br><span class="line">                                            min_lr=<span class="number">0.00001</span>)</span><br><span class="line"></span><br><span class="line">epochs = <span class="number">1</span> <span class="comment"># Turn epochs to 30 to get 0.9967 accuracy</span></span><br><span class="line">batch_size = <span class="number">64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># With data augmentation to prevent overfitting (accuracy 0.99286)</span></span><br><span class="line">datagen = ImageDataGenerator(</span><br><span class="line">        featurewise_center=<span class="keyword">False</span>,  <span class="comment"># set input mean to 0 over the dataset</span></span><br><span class="line">        samplewise_center=<span class="keyword">False</span>,  <span class="comment"># set each sample mean to 0</span></span><br><span class="line">        featurewise_std_normalization=<span class="keyword">False</span>,  <span class="comment"># divide inputs by std of the dataset</span></span><br><span class="line">        samplewise_std_normalization=<span class="keyword">False</span>,  <span class="comment"># divide each input by its std</span></span><br><span class="line">        zca_whitening=<span class="keyword">False</span>,  <span class="comment"># apply ZCA whitening</span></span><br><span class="line">        rotation_range=<span class="number">10</span>,  <span class="comment"># randomly rotate images in the range (degrees, 0 to 180)</span></span><br><span class="line">        zoom_range = <span class="number">0.1</span>, <span class="comment"># Randomly zoom image</span></span><br><span class="line">        width_shift_range=<span class="number">0.1</span>,  <span class="comment"># randomly shift images horizontally (fraction of total width)</span></span><br><span class="line">        height_shift_range=<span class="number">0.1</span>,  <span class="comment"># randomly shift images vertically (fraction of total height)</span></span><br><span class="line">        horizontal_flip=<span class="keyword">False</span>,  <span class="comment"># randomly flip images</span></span><br><span class="line">        vertical_flip=<span class="keyword">False</span>)  <span class="comment"># randomly flip images</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">datagen.fit(X_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the model</span></span><br><span class="line">history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),</span><br><span class="line">                              epochs = epochs, validation_data = (X_val,Y_val),</span><br><span class="line">                              verbose = <span class="number">2</span>, steps_per_epoch=X_train.shape[<span class="number">0</span>] // batch_size</span><br><span class="line">                              , callbacks=[learning_rate_reduction])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the loss and accuracy curves for training and validation</span></span><br><span class="line">fig, ax = plt.subplots(<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">ax[<span class="number">0</span>].plot(history.history[<span class="string">'loss'</span>], color=<span class="string">'b'</span>, label=<span class="string">"Training loss"</span>)</span><br><span class="line">ax[<span class="number">0</span>].plot(history.history[<span class="string">'val_loss'</span>], color=<span class="string">'r'</span>, label=<span class="string">"validation loss"</span>,axes =ax[<span class="number">0</span>])</span><br><span class="line">legend = ax[<span class="number">0</span>].legend(loc=<span class="string">'best'</span>, shadow=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">ax[<span class="number">1</span>].plot(history.history[<span class="string">'acc'</span>], color=<span class="string">'b'</span>, label=<span class="string">"Training accuracy"</span>)</span><br><span class="line">ax[<span class="number">1</span>].plot(history.history[<span class="string">'val_acc'</span>], color=<span class="string">'r'</span>,label=<span class="string">"Validation accuracy"</span>)</span><br><span class="line">legend = ax[<span class="number">1</span>].legend(loc=<span class="string">'best'</span>, shadow=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the confusion_matrix</span></span><br><span class="line"><span class="comment"># confusion_mtx = confusion_matrix(expected, predicted)</span></span><br><span class="line"><span class="comment"># df_cm = pd.DataFrame(confusion_mtx, index = [i for i in range(0,10)], columns = [i for i in range(0,10)])</span></span><br><span class="line"><span class="comment"># plt.figure(figsize = (6,5))</span></span><br><span class="line"><span class="comment"># conf_mat = sns.heatmap(df_cm, annot=True, cmap='Blues', fmt='g', cbar = False)</span></span><br><span class="line"><span class="comment"># conf_mat.set(xlabel='Predicts', ylabel='True')</span></span><br><span class="line"><span class="comment"># plt.show()</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="2-5、kNN实现数字识别"><a href="#2-5、kNN实现数字识别" class="headerlink" title="2.5、kNN实现数字识别"></a>2.5、kNN实现数字识别</h2><p>此处不再赘述，请参考前文：<br><a href="https://xuleilx.github.io/2018/04/12/k-%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">https://xuleilx.github.io/2018/04/12/k-%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/</a></p>
+<h1 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h1><pre><code>机器学习把复杂的数字识别问题的变成了简单的分类问题。通过本文可以发现同一个问题可以
+由不同的算法解决。本文主要用的是SVM、DNN、CNN、kNN四种算法，分别采用刚刚接触的
+Scikit-learn和Keras实现。这里尤其要说明一点的是，神经网络将传统机器学习的函数模
+型选择问题变成了搭建神经网络结构的问题。通过对loss和accuracy在样本集和测试集上的
+表现权衡bias和variance，成功图像识别问题变成了数据分析问题。这大概就是机器学习的
+魅力所在，将无形变成有形。
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kaggle/" rel="tag"># Kaggle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/29/Logistic回归/" rel="next" title="Logistic回归">
+                <i class="fa fa-chevron-left"></i> Logistic回归
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/19/机器学习总结/" rel="prev" title="机器学习总结">
+                机器学习总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="MultiStone" />
+            
+              <p class="site-author-name" itemprop="name">MultiStone</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0、概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#0&#x3001;&#x6982;&#x8FF0;" class="headerlink" title="0&#x3001;&#x6982;&#x8FF0;"></a>0&#x3001;&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、介绍"><span class="nav-number">2.</span> <span class="nav-text"><a href="#1&#x3001;&#x4ECB;&#x7ECD;" class="headerlink" title="1&#x3001;&#x4ECB;&#x7ECD;"></a>1&#x3001;&#x4ECB;&#x7ECD;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、实现"><span class="nav-number">3.</span> <span class="nav-text"><a href="#2&#x3001;&#x5B9E;&#x73B0;" class="headerlink" title="2&#x3001;&#x5B9E;&#x73B0;"></a>2&#x3001;&#x5B9E;&#x73B0;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1、SVM-实现数字识别-scikit-learn"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#2-1&#x3001;SVM-&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;-scikit-learn" class="headerlink" title="2.1&#x3001;SVM &#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(scikit-learn)"></a>2.1&#x3001;SVM &#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(scikit-learn)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2、MLP（DNN）实现数字识别-scikit-learn"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-2&#x3001;MLP&#xFF08;DNN&#xFF09;&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;-scikit-learn" class="headerlink" title="2.2&#x3001;MLP&#xFF08;DNN&#xFF09;&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(scikit-learn)"></a>2.2&#x3001;MLP&#xFF08;DNN&#xFF09;&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(scikit-learn)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3、DNN实现数字识别-keras"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#2-3&#x3001;DNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;-keras" class="headerlink" title="2.3&#x3001;DNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(keras)"></a>2.3&#x3001;DNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(keras)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4、CNN实现数字识别-keras"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#2-4&#x3001;CNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;-keras" class="headerlink" title="2.4&#x3001;CNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(keras)"></a>2.4&#x3001;CNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;(keras)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5、kNN实现数字识别"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#2-5&#x3001;kNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;" class="headerlink" title="2.5&#x3001;kNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;"></a>2.5&#x3001;kNN&#x5B9E;&#x73B0;&#x6570;&#x5B57;&#x8BC6;&#x522B;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、总结"><span class="nav-number">4.</span> <span class="nav-text"><a href="#3&#x3001;&#x603B;&#x7ED3;" class="headerlink" title="3&#x3001;&#x603B;&#x7ED3;"></a>3&#x3001;&#x603B;&#x7ED3;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MultiStone</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

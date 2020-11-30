@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0、概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;时隔半年有余，由于工作的原因没能更新机器学习方面的内容。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之间林林总总，看完了《UNIX网络编程卷1：套接字联网API（第3版）》，《Linux多线程服务端编程：使用muduo C++网络库》和《Net">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="i.Max6移植Movidius">
+<meta property="og:url" content="http://yoursite.com/2019/01/14/i.Max6移植Movidius/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="0、概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;时隔半年有余，由于工作的原因没能更新机器学习方面的内容。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之间林林总总，看完了《UNIX网络编程卷1：套接字联网API（第3版）》，《Linux多线程服务端编程：使用muduo C++网络库》和《Net">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-17T09:46:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="i.Max6移植Movidius">
+<meta name="twitter:description" content="0、概述&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;时隔半年有余，由于工作的原因没能更新机器学习方面的内容。&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之间林林总总，看完了《UNIX网络编程卷1：套接字联网API（第3版）》，《Linux多线程服务端编程：使用muduo C++网络库》和《Net">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/14/i.Max6移植Movidius/"/>
+
+
+
+
+
+  <title>i.Max6移植Movidius | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/i.Max6移植Movidius/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">i.Max6移植Movidius</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T20:26:31-08:00">
+                2019-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="0、概述"><a href="#0、概述" class="headerlink" title="0、概述"></a>0、概述</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时隔半年有余，由于工作的原因没能更新机器学习方面的内容。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;之间林林总总，看完了《UNIX网络编程卷1：套接字联网API（第3版）》，《Linux多线程服务端编程：使用muduo C++网络库》和《Netty权威指南》的部分章节，完成了Tbox Telemetics模块的设计和编码，在这之前其实已对网络编程有所了解，也尝试用MFC编写过类QQ的sample，只是功能简单，单客户端/单服务端之间的通信，然真正用于网络通信的协议未曾染指。网络编程方面的知识，在这次的开发工作中得以锻炼，略有心得一二。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;更换项目的间隙，中间有空闲二周，正直双十一，遂购架构书籍数本，看完《架构整洁之道》开始对于软件架构有了进一步的了解，科室读书会分享之，感觉功力倍增。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新年交替之际，开始AI实验室的预研，主要针对边缘计算，驾驶行为分析。嵌入式的硬件限制，只能外挂计算棒，开始研究Intel的Movidius，接触到了OpenVINO工具套件。本篇主要就是介绍一下NCS2在树莓派上的移植。</p>
+<h1 id="1、环境搭建"><a href="#1、环境搭建" class="headerlink" title="1、环境搭建"></a>1、环境搭建</h1><ol>
+<li>树莓派。系统Raspbian* 9 OS，官网<a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank" rel="noopener">下载</a>最新版本即可。</li>
+<li>The Intel™ Distribution of OpenVINO™ for Raspbian OS package to download is <a href="https://download.01.org/openvinotoolkit/2018_R5/packages/l_openvino_toolkit_ie_p_2018.5.445.tgz" target="_blank" rel="noopener">here</a> and the Installation document <a href="https://software.intel.com/en-us/articles/OpenVINO-Install-RaspberryPI" target="_blank" rel="noopener">here</a>.</li>
+</ol>
+<h1 id="2、步骤"><a href="#2、步骤" class="headerlink" title="2、步骤"></a>2、步骤</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This guide applies to 32-bit Raspbian<em> 9 OS, which is an official OS for Raspberry Pi</em> boards.</p>
+<blockquote>
+<p>IMPORTANT:</p>
+<ul>
+<li>All steps in this guide are required unless otherwise stated.</li>
+<li>The Intel® Distribution of OpenVINO™ toolkit for Raspbian* OS includes the MYRIAD plugin &gt;only. You can use it with the Intel® Movidius™ Neural Compute Stick (Intel® NCS) or the Intel® &gt;Neural Compute Stick 2 plugged in one of USB ports.</li>
+</ul>
+</blockquote>
+<p>###About the Intel® Distribution of OpenVINO™ Toolkit<br>The Intel® Distribution of OpenVINO™ toolkit quickly deploys applications and solutions that emulate human vision. Based on Convolutional Neural Networks (CNN), the toolkit extends computer vision (CV) workloads across Intel® hardware, maximizing performance. The Intel Distribution of OpenVINO toolkit includes the Intel® Deep Learning Deployment Toolkit (Intel® DLDT).</p>
+<p>###Included in the Installation Package<br>The Intel Distribution of OpenVINO toolkit for Raspbian OS is an archive with pre-installed header files and libraries. The following components are installed by default:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Component</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Inference Engine</td>
+<td style="text-align:left">This is the engine that runs the deep learning model. It includes a set of libraries for an easy inference integration into your applications.</td>
+</tr>
+<tr>
+<td style="text-align:left">OpenCV* version 4.0</td>
+<td style="text-align:left">OpenCV* community version compiled for Intel® hardware.</td>
+</tr>
+<tr>
+<td style="text-align:left">Sample Applications</td>
+<td style="text-align:left">A set of simple console applications demonstrating how to use the Inference Engine in your applications.</td>
+</tr>
+</tbody>
+</table>
+<p>###System Requirements</p>
+<p>###Hardware:</p>
+<p>Raspberry Pi* board with ARMv7-A CPU architecture<br>One of Intel® Movidius™ Visual Processing Units (VPU):<br>Intel® Movidius™ Neural Compute Stick<br>Intel® Neural Compute Stick 2</p>
+<p>###Operating Systems:</p>
+<p>Raspbian* Stretch, 32-bit</p>
+<h2 id="Install-the-Package"><a href="#Install-the-Package" class="headerlink" title="Install the Package"></a>Install the Package</h2><p>Open the Terminal* or your preferred console application.<br>Go to the directory in which you downloaded the Intel Distribution of OpenVINO toolkit. This document assumes this is your ~/Downloads directory. If not, replace ~/Downloads with the directory where the file is located.</p>
+<blockquote>
+<p>cd ~/Downloads/</p>
+</blockquote>
+<p>By default, the package file is saved as l_openvino_toolkit_ie_p_<version>.tgz.<br>Unpack the archive:</version></p>
+<blockquote>
+<p>tar -xf l_openvino_toolkit_ie_p_<version>.tgz</version></p>
+</blockquote>
+<p>Modify the setupvars.sh script by replacing <installdir> with the absolute path to the installation folder:</installdir></p>
+<blockquote>
+<p>sed -i “s|<installdir>|$(pwd)/inference_engine_vpu_arm|” </installdir></p>
+</blockquote>
+<p>inference_engine_vpu_arm/bin/setupvars.sh<br>Now the Intel Distribution of OpenVINO toolkit is ready to be used. Continue to the next sections to configure the environment and set up USB rules.</p>
+<h2 id="Set-the-Environment-Variables"><a href="#Set-the-Environment-Variables" class="headerlink" title="Set the Environment Variables"></a>Set the Environment Variables</h2><p>You must update several environment variables before you can compile and run Intel Distribution of OpenVINO toolkit applications. Run the following script to temporarily set the environment variables:</p>
+<blockquote>
+<p>source inference_engine_vpu_arm/bin/setupvars.sh</p>
+</blockquote>
+<p>(Optional) The Intel Distribution of OpenVINO environment variables are removed when you close the shell. As an option, you can permanently set the environment variables as follows:</p>
+<p>Open the .bashrc file in <user_directory>:</user_directory></p>
+<blockquote>
+<p>vi <user_directory>/.bashrc</user_directory></p>
+</blockquote>
+<p>Add this line to the end of the file:</p>
+<blockquote>
+<p>source ~/Downloads/inference_engine_vpu_arm/bin/setupvars.sh</p>
+</blockquote>
+<p>Save and close the file: press Esc and type :wq.<br>To test your change, open a new terminal.<br>You will see the following:</p>
+<blockquote>
+<p>[setupvars.sh] OpenVINO environment initialized</p>
+</blockquote>
+<h2 id="Add-USB-Rules"><a href="#Add-USB-Rules" class="headerlink" title="Add USB Rules"></a>Add USB Rules</h2><p>Add the current Linux user to the users group:</p>
+<blockquote>
+<p>sudo usermod -a -G users “$(whoami)”</p>
+</blockquote>
+<p>Log out and log in for it to take effect.</p>
+<p>To perform inference on the Intel® Movidius™ Neural Compute Stick or Intel® Neural Compute Stick 2, install the USB rules as follows:</p>
+<blockquote>
+<p>sh inference_engine_vpu_arm/install_dependencies/install_NCS_udev_rules.sh</p>
+</blockquote>
+<h2 id="Build-and-Run-Object-Detection-Sample"><a href="#Build-and-Run-Object-Detection-Sample" class="headerlink" title="Build and Run Object Detection Sample"></a>Build and Run Object Detection Sample</h2><p>Follow the next steps to run pre-trained Face Detection network using samples from Intel Distribution of OpenVINO toolkit:</p>
+<p>Go to the folder with samples source code:</p>
+<blockquote>
+<p>cd inference_engine_vpu_arm/deployment_tools/inference_engine/samples</p>
+</blockquote>
+<p>Create build directory:</p>
+<blockquote>
+<p>mkdir build &amp;&amp; cd build</p>
+</blockquote>
+<p>Build the Object Detection Sample:</p>
+<blockquote>
+<p>cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=”-march=armv7-a”<br>make -j2 object_detection_sample_ssd</p>
+</blockquote>
+<p>Download the pre-trained Face Detection model or copy it from a host machine:<br>To download the .bin file with weights:</p>
+<blockquote>
+<p>wget –no-check-certificate <a href="https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin" target="_blank" rel="noopener">https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin</a></p>
+</blockquote>
+<p>To download the .xml file with the network topology:</p>
+<blockquote>
+<p>wget –no-check-certificate <a href="https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml" target="_blank" rel="noopener">https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml</a></p>
+</blockquote>
+<p>Run the sample with specified path to the model:<br>Copy Code</p>
+<blockquote>
+<p>./armv7l/Release/object_detection_sample_ssd -m face-detection-adas-0001.xml -d MYRIAD -i <path_to_image></path_to_image></p>
+</blockquote>
+<h2 id="Run-Face-Detection-Model-Using-OpenCV-API"><a href="#Run-Face-Detection-Model-Using-OpenCV-API" class="headerlink" title="Run Face Detection Model Using OpenCV* API"></a>Run Face Detection Model Using OpenCV* API</h2><p>To validate OpenCV<em> installation, you may try to run OpenCV’s deep learning module with Inference Engine backend. Here is a Python</em> sample, which works with Face Detection model:</p>
+<p>Download the pre-trained Face Detection model or copy it from a host machine:<br>To download the .bin file with weights:</p>
+<blockquote>
+<p>wget –no-check-certificate <a href="https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin" target="_blank" rel="noopener">https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.bin</a></p>
+</blockquote>
+<p>To download the .xml file with the network topology:</p>
+<blockquote>
+<p>wget –no-check-certificate <a href="https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml" target="_blank" rel="noopener">https://download.01.org/openvinotoolkit/2018_R4/open_model_zoo/face-detection-adas-0001/FP16/face-detection-adas-0001.xml</a></p>
+</blockquote>
+<p>Create a new Python file named as openvino_fd_myriad.py and copy the following script there:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2 <span class="keyword">as</span> cv</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load the model </span></span><br><span class="line">net = cv.dnn.readNet(<span class="string">'face-detection-adas-0001.xml'</span>, <span class="string">'face-detection-adas-0001.bin'</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># Specify target device </span></span><br><span class="line">net.setPreferableTarget(cv.dnn.DNN_TARGET_MYRIAD)</span><br><span class="line">      </span><br><span class="line"><span class="comment"># Read an image </span></span><br><span class="line">frame = cv.imread(<span class="string">'/path/to/image'</span>)</span><br><span class="line">      </span><br><span class="line"><span class="comment"># Prepare input blob and perform an inference </span></span><br><span class="line">blob = cv.dnn.blobFromImage(frame, size=(<span class="number">672</span>, <span class="number">384</span>), ddepth=cv.CV_8U) net.setInput(blob) </span><br><span class="line">out = net.forward()</span><br><span class="line">      </span><br><span class="line"><span class="comment"># Draw detected faces on the frame </span></span><br><span class="line"><span class="keyword">for</span> detection <span class="keyword">in</span> out.reshape(<span class="number">-1</span>, <span class="number">7</span>): </span><br><span class="line">    confidence = float(detection[<span class="number">2</span>]) </span><br><span class="line">    xmin = int(detection[<span class="number">3</span>] * frame.shape[<span class="number">1</span>]) </span><br><span class="line">    ymin = int(detection[<span class="number">4</span>] * frame.shape[<span class="number">0</span>]) </span><br><span class="line">    xmax = int(detection[<span class="number">5</span>] * frame.shape[<span class="number">1</span>]) </span><br><span class="line">    ymax = int(detection[<span class="number">6</span>] * frame.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> confidence &gt; <span class="number">0.5</span>:</span><br><span class="line">        cv.rectangle(frame, (xmin, ymin), (xmax, ymax), color=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Save the frame to an image file </span></span><br><span class="line">cv.imwrite(<span class="string">'out.png'</span>, frame)</span><br></pre></td></tr></table></figure></p>
+<p>Run the script:</p>
+<blockquote>
+<p>python3 openvino_fd_myriad.py</p>
+</blockquote>
+<p>In this script, OpenCV* loads the Face Detection model in the Intermediate Representation (IR) format and an image. Then it runs the model and saves an image with detected faces.</p>
+<h1 id="3、i-Max6移植"><a href="#3、i-Max6移植" class="headerlink" title="3、i.Max6移植"></a>3、i.Max6移植</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理论上树莓派上编译的产物可以直接拷贝到相同处理器架构的i.Max6上(CPU都是ARMv7)，不过由于各个公司BSP对内核裁剪和集成编译的时候包含的软件包不同，需要修改的内容也不尽相同。这里写的是本司的开发板环境缺少的依赖：</p>
+<blockquote>
+<ul>
+<li>python3</li>
+<li>lsb_release</li>
+<li>libstdc++  -&gt; 3.4.22</li>
+<li>vi inference_engine_vpu_arm/install_dependencies/install_NCS_udev_rules.sh<br>:%s/sudo//g  #删除所有的sudo</li>
+<li>touch /etc/ld.so.conf</li>
+</ul>
+</blockquote>
+<h1 id="4、总结"><a href="#4、总结" class="headerlink" title="4、总结"></a>4、总结</h1><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初步了解OpenVINO发现其是一大宝藏，里面包含了几十种流行模型的，并且有大量sample可以参考学习，可以通过组合各个模型实现自己想要的功能。增加对机器学习的实战经验，加深对机器学习的理解。遗憾的是Intel的NCS2目前貌似只支持深度学习的预测，之于一般的机器学习模型是否也支持，有待考证。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/17/HelloWorld驱动模块/" rel="next" title="HelloWorld驱动模块">
+                <i class="fa fa-chevron-left"></i> HelloWorld驱动模块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/19/贝叶斯定理/" rel="prev" title="贝叶斯定理">
+                贝叶斯定理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="MultiStone" />
+            
+              <p class="site-author-name" itemprop="name">MultiStone</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0、概述"><span class="nav-number">1.</span> <span class="nav-text"><a href="#0&#x3001;&#x6982;&#x8FF0;" class="headerlink" title="0&#x3001;&#x6982;&#x8FF0;"></a>0&#x3001;&#x6982;&#x8FF0;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1、环境搭建"><span class="nav-number">2.</span> <span class="nav-text"><a href="#1&#x3001;&#x73AF;&#x5883;&#x642D;&#x5EFA;" class="headerlink" title="1&#x3001;&#x73AF;&#x5883;&#x642D;&#x5EFA;"></a>1&#x3001;&#x73AF;&#x5883;&#x642D;&#x5EFA;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、步骤"><span class="nav-number">3.</span> <span class="nav-text"><a href="#2&#x3001;&#x6B65;&#x9AA4;" class="headerlink" title="2&#x3001;&#x6B65;&#x9AA4;"></a>2&#x3001;&#x6B65;&#x9AA4;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-the-Package"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#Install-the-Package" class="headerlink" title="Install the Package"></a>Install the Package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-the-Environment-Variables"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#Set-the-Environment-Variables" class="headerlink" title="Set the Environment Variables"></a>Set the Environment Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-USB-Rules"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#Add-USB-Rules" class="headerlink" title="Add USB Rules"></a>Add USB Rules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-and-Run-Object-Detection-Sample"><span class="nav-number">3.5.</span> <span class="nav-text"><a href="#Build-and-Run-Object-Detection-Sample" class="headerlink" title="Build and Run Object Detection Sample"></a>Build and Run Object Detection Sample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Run-Face-Detection-Model-Using-OpenCV-API"><span class="nav-number">3.6.</span> <span class="nav-text"><a href="#Run-Face-Detection-Model-Using-OpenCV-API" class="headerlink" title="Run Face Detection Model Using OpenCV* API"></a>Run Face Detection Model Using OpenCV* API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3、i-Max6移植"><span class="nav-number">4.</span> <span class="nav-text"><a href="#3&#x3001;i-Max6&#x79FB;&#x690D;" class="headerlink" title="3&#x3001;i.Max6&#x79FB;&#x690D;"></a>3&#x3001;i.Max6&#x79FB;&#x690D;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4、总结"><span class="nav-number">5.</span> <span class="nav-text"><a href="#4&#x3001;&#x603B;&#x7ED3;" class="headerlink" title="4&#x3001;&#x603B;&#x7ED3;"></a>4&#x3001;&#x603B;&#x7ED3;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MultiStone</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

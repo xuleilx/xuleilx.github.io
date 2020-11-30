@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="USB笔记2_HID本篇主要浅谈HID Report 一、报告描述符简介1.1 Item介绍报告描述符比较复杂，它是以item形式排列组合而成，无固定长度，用户可以自定义长度以及每一bit的含义。item类型分三种：main，global和local，每种类型又可以分为多个tag： main： Input、Output、Feature、Collection、End Collection globa">
+<meta name="keywords" content="Hexo, NexT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="USB笔记2_HID">
+<meta property="og:url" content="http://yoursite.com/2020/08/17/USB笔记2-HID/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="USB笔记2_HID本篇主要浅谈HID Report 一、报告描述符简介1.1 Item介绍报告描述符比较复杂，它是以item形式排列组合而成，无固定长度，用户可以自定义长度以及每一bit的含义。item类型分三种：main，global和local，每种类型又可以分为多个tag： main： Input、Output、Feature、Collection、End Collection globa">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-08-17T12:32:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="USB笔记2_HID">
+<meta name="twitter:description" content="USB笔记2_HID本篇主要浅谈HID Report 一、报告描述符简介1.1 Item介绍报告描述符比较复杂，它是以item形式排列组合而成，无固定长度，用户可以自定义长度以及每一bit的含义。item类型分三种：main，global和local，每种类型又可以分为多个tag： main： Input、Output、Feature、Collection、End Collection globa">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/08/17/USB笔记2-HID/"/>
+
+
+
+
+
+  <title>USB笔记2_HID | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/USB笔记2-HID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MultiStone">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">USB笔记2_HID</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-17T20:31:22-07:00">
+                2020-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="USB笔记2-HID"><a href="#USB笔记2-HID" class="headerlink" title="USB笔记2_HID"></a>USB笔记2_HID</h1><p>本篇主要浅谈HID Report</p>
+<h2 id="一、报告描述符简介"><a href="#一、报告描述符简介" class="headerlink" title="一、报告描述符简介"></a>一、报告描述符简介</h2><h3 id="1-1-Item介绍"><a href="#1-1-Item介绍" class="headerlink" title="1.1 Item介绍"></a>1.1 Item介绍</h3><p>报告描述符比较复杂，它是以item形式排列组合而成，无固定长度，用户可以自定义长度以及每一bit的含义。item类型分三种：main，global和local，每种类型又可以分为多个tag：</p>
+<p><strong>main：</strong></p>
+<p>Input、Output、Feature、Collection、End Collection</p>
+<p><strong>global：</strong></p>
+<p>Usage Page、Logical Minimum、Logical Maximum、Physical Minimum、Physical Maximum、<br>Unit Exponent、Unit、Report Size、Report ID、Report Count、Push、Pop</p>
+<p><strong>local：</strong></p>
+<p>Usage、Usage Minimum、Usage Maximum、Designator Index、Designator Minimum、<br>Designator Maximum、String Index、String Minimum、String Maximum、Delimiter、Reserved</p>
+<h3 id="1-2-Item之间的关系"><a href="#1-2-Item之间的关系" class="headerlink" title="1.2 Item之间的关系"></a>1.2 Item之间的关系</h3><p>Main项目中的 input,ouput,feature三个卷标用来表示报告中数据的种类，这些是报告描述符中最主要的项目，其他项目都是用来修饰这三种项目。</p>
+<blockquote>
+<blockquote>
+<p>Input 项：表示设备操作输入到主机的数据模式。这个数据格式就形成一个输入报告，虽然输入报告可以用控制型管线以get report（input）来传输，但是通常用中断型输入管线来传输以确保在每一固定周期内都能将更新的输入报告传给主机。</p>
+<p>Output 项：表示由主机输出到装置操作的数据格式。这个数据格式就形成一个输出报告。输出报告通常不适用轮询的方式来传送给设备，而是由应用软件依实际需求以传令方式要求送出输出报告，所以大多用控制型管线以set report(output)指令来将报告送到设备。当然也可以选择用中断型输出管线来传送，只是通常不建议这样用。</p>
+<p>Feature 项：表示由主机送到设备的组态所需数据的数据格式。这个数据模式就形成一个特征报告。特征报告只能用控制型管线以get report(feature)和set report(feature)指令分别来取得和设定设备的特征值</p>
+</blockquote>
+</blockquote>
+<p>主项目用来定义报告中数据的种类和格式，而说明主项目之意义与用途为全局项目和区域项目。<br>顾名思义，区域性项目只能适用于列于其下的第一个主项目，不适用于其他主项目，若一个主项目之上有几个不同的卷标的区域性项目，则这些区域性项目皆适用于描述该主项目。<br>相反，全局性项目适用于其下方的所有主项目，除非另一个相同卷标的全局性项目出现！！！</p>
+<h3 id="1-3-实例"><a href="#1-3-实例" class="headerlink" title="1.3 实例"></a>1.3 实例</h3><p>以下是单点触摸屏的示例报告描述符和格式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">0x05, 0x0D, // Usage Page (Digitizer)</span><br><span class="line">0x09, 0x04, // Usage (Touch Screen)</span><br><span class="line">0xA1, 0x01, // Collection (Application)</span><br><span class="line">0x05, 0x0D, // Usage Page (Digitizer)</span><br><span class="line">0x09, 0x22, // Usage (Finger)</span><br><span class="line">0xA1, 0x02, // Collection (Logical)</span><br><span class="line">0x05, 0x0D, // Usage Page (Digitizer)</span><br><span class="line">0x09, 0x33, // Usage (Touch)</span><br><span class="line">0x15, 0x00, // Logical Minimum......... (0)</span><br><span class="line">0x25, 0x01, // Logical Maximum......... (1)</span><br><span class="line">0x75, 0x01, // Report Size............. (1)</span><br><span class="line">0x95, 0x01, // Report Count............ (1)</span><br><span class="line">0x81, 0x02, // Input...................(Data, Variable, Absolute)</span><br><span class="line">0x75, 0x07, // Report Size............. (7)</span><br><span class="line">0x95, 0x01, // Report Count............ (1)</span><br><span class="line">0x81, 0x01, // Input...................(Constant)</span><br><span class="line">0x05, 0x01, // Usage Page (Generic Desktop)</span><br><span class="line">0x09, 0x30, // Usage (X)</span><br><span class="line">0x15, 0x00, // Logical Minimum......... (0)</span><br><span class="line">0x26, 0x20, 0x03, // Logical Maximum......... (800)</span><br><span class="line">0x75, 0x10, // Report Size............. (16)</span><br><span class="line">0x95, 0x01, // Report Count............ (1)</span><br><span class="line">0x81, 0x02, // Input...................(Data, Variable, Absolute)</span><br><span class="line">0x09, 0x31, // Usage (Y)</span><br><span class="line">0x15, 0x00, // Logical Minimum......... (0)</span><br><span class="line">0x26, 0xE0, 0x01, // Logical Maximum......... (480)</span><br><span class="line">0x75, 0x10, // Report Size............. (16)</span><br><span class="line">0x95, 0x01, // Report Count............ (1)</span><br><span class="line">0x81, 0x02, // Input...................(Data, Variable, Absolute)</span><br><span class="line">0xC0, // End Collection</span><br><span class="line">0xC0, // End Collection</span><br></pre></td></tr></table></figure></p>
+<p>单点触摸屏的输入报告布局示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|Touch          |             X                 |             Y                 |</span><br><span class="line">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span><br><span class="line">|0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|0|1|2|3|4|5|6|7|</span><br><span class="line">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span><br><span class="line">|       0       |       1       |      2        |       3       |       4       |</span><br></pre></td></tr></table></figure></p>
+<h2 id="二、主机和设备之间的通信"><a href="#二、主机和设备之间的通信" class="headerlink" title="二、主机和设备之间的通信"></a>二、主机和设备之间的通信</h2><h3 id="2-1-获取报告描述符"><a href="#2-1-获取报告描述符" class="headerlink" title="2.1 获取报告描述符"></a>2.1 获取报告描述符</h3><p>  <strong>HID类请求（命令）包格式</strong></p>
+<table>
+<thead>
+<tr>
+<th>偏移量</th>
+<th>域</th>
+<th>大小</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>bmRequestType</td>
+<td>1</td>
+<td>HID设备类请求特性如下： 位7： 0＝从USB HOST到USB设备 1＝从USB设备到USB HOST 位6~5： 01＝请求类型为设备类请求 位4~0： 0001＝请求对象为接口（interface）因而，针对HID的设备类请求，仅仅10100001和00100001有效</td>
+</tr>
+<tr>
+<td>1</td>
+<td>bRequest</td>
+<td>1</td>
+<td>HID类请求（参考下表）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>wValue</td>
+<td>2</td>
+<td>高字节说明描述符的类型0x21：HID描述符 0x22：报告描述符 0x23：物理描述符低字节为非0值时被用来选定实体描述符。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>wIndex</td>
+<td>2</td>
+<td>2字节数值，根据不同的bRequest有不同的意义</td>
+</tr>
+<tr>
+<td>6</td>
+<td>wLength</td>
+<td>2</td>
+<td>该请求的数据段长度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-实例"><a href="#2-2-实例" class="headerlink" title="2.2 实例"></a>2.2 实例</h3><h4 id="2-2-1-主机端获取报告描述符（该描述符来自UsbMouse）"><a href="#2-2-1-主机端获取报告描述符（该描述符来自UsbMouse）" class="headerlink" title="2.2.1 主机端获取报告描述符（该描述符来自UsbMouse）"></a>2.2.1 主机端获取报告描述符（该描述符来自UsbMouse）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">USB端点0输出中断。</span><br><span class="line">读端点0缓冲区8字节。</span><br><span class="line">0x81 0x06 0x00 0x22 0x00 0x00 0x34 0x00 // 来自主机端的请求，HID类请求（命令）包，8个字节</span><br><span class="line">USB标准输入请求：获取描述符——报告描述符。		 // 报告描述符 52个字节</span><br><span class="line">写端点0缓冲区16字节。</span><br><span class="line">0x05 0x01 0x09 0x02 0xA1 0x01 0x09 0x01 0xA1 0x00 0x05 0x09 0x19 0x01 0x29 0x03 </span><br><span class="line">USB端点0输入中断。</span><br><span class="line">写端点0缓冲区16字节。</span><br><span class="line">0x15 0x00 0x25 0x01 0x95 0x03 0x75 0x01 0x81 0x02 0x95 0x01 0x75 0x05 0x81 0x03 </span><br><span class="line">USB端点0输入中断。</span><br><span class="line">写端点0缓冲区16字节。</span><br><span class="line">0x05 0x01 0x09 0x30 0x09 0x31 0x09 0x38 0x15 0x81 0x25 0x7F 0x75 0x08 0x95 0x03 </span><br><span class="line">USB端点0输入中断。</span><br><span class="line">写端点0缓冲区4字节。</span><br><span class="line">0x81 0x06 0xC0 0xC0</span><br></pre></td></tr></table></figure>
+<p>描述符相关的操作是通过端点0进行通信的，也是USB协议中必须要存在的端点。</p>
+<h4 id="2-2-2-设备端输入HID-Report"><a href="#2-2-2-设备端输入HID-Report" class="headerlink" title="2.2.2 设备端输入HID Report"></a>2.2.2 设备端输入HID Report</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">USB端点1输入中断。</span><br><span class="line">写端点1缓冲区4字节。</span><br><span class="line">0x00 0x00 0x01 0x00</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-2-设备端输入HID-Report-1"><a href="#2-2-2-设备端输入HID-Report-1" class="headerlink" title="2.2.2 设备端输入HID Report"></a>2.2.2 设备端输入HID Report</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">USB端点1输出中断。</span><br><span class="line">读端点1缓冲区4字节。</span><br><span class="line">0x00 0x00 0x01 0x00</span><br></pre></td></tr></table></figure>
+<p>Host端如果是Linux，调用接口libusb_interrupt_transfer()。可以看出HID控制消息是通过端点1来通信的。</p>
+<p>这里的端点1是之前配置描述符中定义的，用于传输真实数据的端点。主机端通过lsusb也可以看到对应的消息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">root@atlas7-arm:~# lsusb -vd 8888:0001</span><br><span class="line">Bus 002 Device 004: ID 8888:0001  </span><br><span class="line">Device Descriptor:</span><br><span class="line">  bLength                18</span><br><span class="line">  bDescriptorType         1</span><br><span class="line">  bcdUSB               1.10</span><br><span class="line">  bDeviceClass            0 (Defined at Interface level)</span><br><span class="line">  bDeviceSubClass         0 </span><br><span class="line">  bDeviceProtocol         0 </span><br><span class="line">  bMaxPacketSize0        16</span><br><span class="line">  idVendor           0x8888 </span><br><span class="line">  idProduct          0x0001 </span><br><span class="line">  bcdDevice            1.00</span><br><span class="line">  iManufacturer           1</span><br><span class="line">  iProduct                2</span><br><span class="line">  iSerial                 3</span><br><span class="line">  bNumConfigurations      1</span><br><span class="line">  Configuration Descriptor:</span><br><span class="line">    bLength                 9</span><br><span class="line">    bDescriptorType         2</span><br><span class="line">    wTotalLength           34</span><br><span class="line">    bNumInterfaces          1</span><br><span class="line">    bConfigurationValue     1</span><br><span class="line">    iConfiguration          0 </span><br><span class="line">    bmAttributes         0x80</span><br><span class="line">      (Bus Powered)</span><br><span class="line">    MaxPower              100mA</span><br><span class="line">    Interface Descriptor:</span><br><span class="line">      bLength                 9</span><br><span class="line">      bDescriptorType         4</span><br><span class="line">      bInterfaceNumber        0</span><br><span class="line">      bAlternateSetting       0</span><br><span class="line">      bNumEndpoints           1</span><br><span class="line">      bInterfaceClass         3 Human Interface Device</span><br><span class="line">      bInterfaceSubClass      1 Boot Interface Subclass</span><br><span class="line">      bInterfaceProtocol      2 Mouse</span><br><span class="line">      iInterface              0 </span><br><span class="line">        HID Device Descriptor:</span><br><span class="line">          bLength                 9</span><br><span class="line">          bDescriptorType        33</span><br><span class="line">          bcdHID               1.10</span><br><span class="line">          bCountryCode           33 US</span><br><span class="line">          bNumDescriptors         1</span><br><span class="line">          bDescriptorType        34 Report</span><br><span class="line">          wDescriptorLength      52</span><br><span class="line">         Report Descriptors: </span><br><span class="line">           ** UNAVAILABLE **</span><br><span class="line">      Endpoint Descriptor:</span><br><span class="line">        bLength                 7</span><br><span class="line">        bDescriptorType         5</span><br><span class="line">        bEndpointAddress     0x81  EP 1 IN</span><br><span class="line">        bmAttributes            3</span><br><span class="line">          Transfer Type            Interrupt</span><br><span class="line">          Synch Type               None</span><br><span class="line">          Usage Type               Data</span><br><span class="line">        wMaxPacketSize     0x0010  1x 16 bytes</span><br><span class="line">        bInterval              10</span><br><span class="line">Device Status:     0x1fd8</span><br><span class="line">  (Bus Powered)</span><br><span class="line">  Debug Mode</span><br></pre></td></tr></table></figure></p>
+<h2 id="三、QA"><a href="#三、QA" class="headerlink" title="三、QA"></a>三、QA</h2><p><strong>Q:内核报错usb 1-1: can’t set config #1, error -110</strong><br>A:设备端没有处理主机端发送过来的消息，收到消息需要回复ack</p>
+<p>SETUP数据包（SET_CONFIGURATION）</p>
+<p>正常：</p>
+<p>0x00 0x09 0x01 0x00 0x00 0x00 0x00 0x00 </p>
+<p>异常：</p>
+<p>0xC0 0x33 0x00 0x00 0x00 0x00 0x02 0x00 </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="MultiStone 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="MultiStone 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/11/USB笔记1-UsbMouse/" rel="next" title="USB笔记1_UsbMouse">
+                <i class="fa fa-chevron-left"></i> USB笔记1_UsbMouse
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/17/USB笔记3-复合设备/" rel="prev" title="USB笔记3_复合设备">
+                USB笔记3_复合设备 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.gif"
+                alt="MultiStone" />
+            
+              <p class="site-author-name" itemprop="name">MultiStone</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#USB笔记2-HID"><span class="nav-number">1.</span> <span class="nav-text"><a href="#USB&#x7B14;&#x8BB0;2-HID" class="headerlink" title="USB&#x7B14;&#x8BB0;2_HID"></a>USB&#x7B14;&#x8BB0;2_HID</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、报告描述符简介"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;" class="headerlink" title="&#x4E00;&#x3001;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;"></a>&#x4E00;&#x3001;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Item介绍"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#1-1-Item&#x4ECB;&#x7ECD;" class="headerlink" title="1.1 Item&#x4ECB;&#x7ECD;"></a>1.1 Item&#x4ECB;&#x7ECD;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Item之间的关系"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#1-2-Item&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;" class="headerlink" title="1.2 Item&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;"></a>1.2 Item&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-实例"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#1-3-&#x5B9E;&#x4F8B;" class="headerlink" title="1.3 &#x5B9E;&#x4F8B;"></a>1.3 &#x5B9E;&#x4F8B;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、主机和设备之间的通信"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x4E3B;&#x673A;&#x548C;&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x901A;&#x4FE1;" class="headerlink" title="&#x4E8C;&#x3001;&#x4E3B;&#x673A;&#x548C;&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x901A;&#x4FE1;"></a>&#x4E8C;&#x3001;&#x4E3B;&#x673A;&#x548C;&#x8BBE;&#x5907;&#x4E4B;&#x95F4;&#x7684;&#x901A;&#x4FE1;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-获取报告描述符"><span class="nav-number">1.2.1.</span> <span class="nav-text"><a href="#2-1-&#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;" class="headerlink" title="2.1 &#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;"></a>2.1 &#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-实例"><span class="nav-number">1.2.2.</span> <span class="nav-text"><a href="#2-2-&#x5B9E;&#x4F8B;" class="headerlink" title="2.2 &#x5B9E;&#x4F8B;"></a>2.2 &#x5B9E;&#x4F8B;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-主机端获取报告描述符（该描述符来自UsbMouse）"><span class="nav-number">1.2.2.1.</span> <span class="nav-text"><a href="#2-2-1-&#x4E3B;&#x673A;&#x7AEF;&#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;&#x8BE5;&#x63CF;&#x8FF0;&#x7B26;&#x6765;&#x81EA;UsbMouse&#xFF09;" class="headerlink" title="2.2.1 &#x4E3B;&#x673A;&#x7AEF;&#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;&#x8BE5;&#x63CF;&#x8FF0;&#x7B26;&#x6765;&#x81EA;UsbMouse&#xFF09;"></a>2.2.1 &#x4E3B;&#x673A;&#x7AEF;&#x83B7;&#x53D6;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;&#x8BE5;&#x63CF;&#x8FF0;&#x7B26;&#x6765;&#x81EA;UsbMouse&#xFF09;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-设备端输入HID-Report"><span class="nav-number">1.2.2.2.</span> <span class="nav-text"><a href="#2-2-2-&#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID-Report" class="headerlink" title="2.2.2 &#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID Report"></a>2.2.2 &#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID Report</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-设备端输入HID-Report-1"><span class="nav-number">1.2.2.3.</span> <span class="nav-text"><a href="#2-2-2-&#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID-Report-1" class="headerlink" title="2.2.2 &#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID Report"></a>2.2.2 &#x8BBE;&#x5907;&#x7AEF;&#x8F93;&#x5165;HID Report</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、QA"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;QA" class="headerlink" title="&#x4E09;&#x3001;QA"></a>&#x4E09;&#x3001;QA</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MultiStone</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
