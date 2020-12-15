@@ -8,4 +8,8 @@ hexo d --config source/_data/next.yml
 
 # 启动本地服务：
 hexo s --config source/_data/next.yml
+
+# Before upload source 
+hexo clean
+git push origin master
 ```

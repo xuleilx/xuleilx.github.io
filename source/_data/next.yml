@@ -78,7 +78,8 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:xuleilx/xuleilx.github.io.git
+  repo: https://github.com/xuleilx/xuleilx.github.io
+  #repo: git@github.com:xuleilx/xuleilx.github.io.git
   branch: master
 # ---------------------------------------------------------------
 # Theme Core Configuration Settings
