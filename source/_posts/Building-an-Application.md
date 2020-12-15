@@ -1,7 +1,7 @@
 ---
 title: Building an Application
 date: 2020-12-14 16:55:42
-tags: Gstreamer MultiMedia
+tags: Gstreamer,Media
 ---
 # Initializing GStreamer
 
