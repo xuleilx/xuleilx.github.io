@@ -1,7 +1,9 @@
 ---
 title: About GStreamer
 date: 2020-12-14 16:55:26
-tags: Gstreamer, Media
+tags: 
+  - Gstreamer
+  - Media
 ---
 # What is GStreamer?
 
