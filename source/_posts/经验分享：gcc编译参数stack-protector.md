@@ -92,15 +92,15 @@ int main(int argc,char* argv[])
 
 
 没有打开-fstack-protector选项时：
-![img](file:///https://xuleilx.github.io/images/stack-protector-off.jpg) 
+![img](https://xuleilx.github.io/images/stack-protector-off.jpg) 
 打开-fstack-protector选项时：
-![img](file:///https://xuleilx.github.io/images/stack-protector-on.jpg) 
+![img](https://xuleilx.github.io/images/stack-protector-on.jpg) 
 
 在函数返回的时候，检测__stack_chk_guard的值。
 
 下图左边是没有打开-fstack-protector，右边是打开-fstack-protector的汇编代码：
 
-![img](file:///https://xuleilx.github.io/images/stack-protector-asm.jpg)
+![img](https://xuleilx.github.io/images/stack-protector-asm.jpg)
 
 
 
