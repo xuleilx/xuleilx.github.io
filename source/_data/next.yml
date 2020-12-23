@@ -6,7 +6,7 @@
 title: 沧海一粟
 subtitle: 只要路是对的，就不怕路远
 description:
-author: MultiStone 
+author: Alex 
 language: zh-Hans
 timezone:
 
@@ -224,7 +224,7 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: /images/avatar.gif
+avatar: /images/avatar.jpg
 
 # Table Of Contents in the Sidebar
 toc:
