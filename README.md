@@ -20,6 +20,11 @@ git add source themes
 git commit
 git push origin hexo
 ```
+# VPN设置代理
+1.设置全局代理 setting -> networking
+2. git设置代理
+git config --global http.proxy http://192.168.152.1:1080
+git config --global https.proxy https://192.168.152.1:1080
 
 # 添加多个tags
 tags:
