@@ -108,7 +108,7 @@ gst_element_link_many ()
 
  动态添加元素时，需要单独设置状态。when adding elements dynamically to an already-running pipeline, e.g. from within a "pad-added" signal callback, you need to set it to the desired target state yourself using `gst_element_set_state ()` or `gst_element_sync_state_with_parent ()`.
 
-![image-20201214110946392](C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20201214110946392.png)
+![gstreamer状态变更](https://xuleilx.github.io/images/gstreamer状态变更.png)
 
 # Bins
 
