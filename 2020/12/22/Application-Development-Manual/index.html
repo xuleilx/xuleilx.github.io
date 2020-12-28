@@ -90,10 +90,10 @@
 <meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/gstreamer-overview.png">
 <meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/communication.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190812141200931.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvdXhpYW9uaTAx,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20201214110946392.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/gstreamer状态变更.png">
 <meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-buffering.png">
 <meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-synchronizing.png">
-<meta property="og:updated_time" content="2020-12-23T06:39:04.347Z">
+<meta property="og:updated_time" content="2020-12-28T07:30:39.724Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Application Development Manual">
 <meta name="twitter:description" content="What is GStreamer?GStreamer plug-ins could be classified into  protocols handling sources: for audio and video (involves protocol plugins) formats: parsers, formaters, muxers, demuxers, metadata, subt">
@@ -465,7 +465,7 @@
 </ul>
 <p><a href="https://gstreamer.freedesktop.org/documentation/gstreamer/gstelement.html#GST_STATE_READY" target="_blank" rel="noopener">GST_STATE_READY</a> or <a href="https://gstreamer.freedesktop.org/documentation/gstreamer/gstelement.html#GST_STATE_NULL" target="_blank" rel="noopener">GST_STATE_NULL</a> 这两个状态的变更是同步的。参照gst_element_set_state()接口说明。原因主要这两个状态涉及到资源的分配和释放。</p>
 <p> 动态添加元素时，需要单独设置状态。when adding elements dynamically to an already-running pipeline, e.g. from within a “pad-added” signal callback, you need to set it to the desired target state yourself using <code>gst_element_set_state ()</code> or <code>gst_element_sync_state_with_parent ()</code>.</p>
-<p><img src="C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20201214110946392.png" alt="image-20201214110946392"></p>
+<p><img src="https://xuleilx.github.io/images/gstreamer状态变更.png" alt="gstreamer状态变更"></p>
 <h1 id="Bins"><a href="#Bins" class="headerlink" title="Bins"></a>Bins</h1><p>Bins allow you to combine a group of linked elements into one logical element. You do not deal with the individual elements anymore but with just one element, the bin. </p>
 <h2 id="Creating-a-bin"><a href="#Creating-a-bin" class="headerlink" title="Creating a bin"></a>Creating a bin</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gst_bin_new();</span><br><span class="line">gst_bin_add();</span><br><span class="line">gst_bin_add_many();</span><br><span class="line">gst_bin_remove();</span><br><span class="line"><span class="comment">// 可以选择是否放入pipeline中</span></span><br><span class="line">gst_pipeline_new()</span><br></pre></td></tr></table></figure>
 <h2 id="Bins-manage-states-of-their-children"><a href="#Bins-manage-states-of-their-children" class="headerlink" title="Bins manage states of their children"></a>Bins manage states of their children</h2><p>Bins manage the state of all elements contained in them. If you set a bin (or a pipeline, which is a special top-level type of bin) to a certain target state using <code>gst_element_set_state ()</code>, it will make sure all elements contained within it will also be set to this state. This means it’s usually only necessary to set the state of the top-level pipeline to start up the pipeline or shut it down.</p>
