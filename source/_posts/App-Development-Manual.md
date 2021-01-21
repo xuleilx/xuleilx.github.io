@@ -1,5 +1,5 @@
 ---
-title: Application Development Manual
+title: '[App]Development Manual'
 date: 2020-12-22 22:38:35
 tags: 
   - Gstreamer

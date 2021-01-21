@@ -1,5 +1,5 @@
 ---
-title: Basic tutorial
+title: '[App]Basic tutorial'
 date: 2020-12-24 23:06:17
 tags:
 	- Gstreamer

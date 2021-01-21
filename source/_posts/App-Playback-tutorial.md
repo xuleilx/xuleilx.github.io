@@ -1,5 +1,5 @@
 ---
-title: Playback tutorial
+title: '[App]Playback tutorial'
 date: 2020-12-27 22:47:11
 tags:
 	- Gstreamer
