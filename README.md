@@ -24,8 +24,8 @@ git push origin hexo
 ```text
 1.设置全局代理 setting -> networking
 2. git设置代理
-git config --global http.proxy http://192.168.152.1:1080
-git config --global https.proxy https://192.168.152.1:1080
+git config --global http.proxy http://192.168.23.40:1080
+git config --global https.proxy https://192.168.23.40:1080
 ```
 # 添加多个tags
 ```text
