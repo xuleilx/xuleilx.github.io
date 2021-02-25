@@ -5,7 +5,6 @@ tags:
  - rtmp
  - ffmpeg
 ---
-
 # nginx+rtmp+ffmpeg搭建直播服务
 
 # nginx
@@ -36,27 +35,40 @@ rtmp {
 ```
 # ffmpeg推流和拉流
 
-1、启动或重启nginx服务：
+## 启动或重启nginx服务：
 
 `sudo /usr/local/nginx/sbin/nginx`
 或
 `sudo systemctl restart nginx`
 
-2、ffmpeg推流：
+## 推流：
 
-摄像头：
+**1）摄像头：**
 `ffmpeg -i /dev/video0 -an -f flv rtmp://127.0.0.1/live`
 -an 参数是去掉音频，如果需要的话可以去掉，live对应的是nginx配置文件中application的名称。
 
-播放文件：
+**2）播放文件：**
 `ffmpeg -re -i AVC_high_1280x720_2013.mp4 -c copy -f flv rtmp://127.0.0.1/live`
 
-3、ffplay拉流：
+**3）使用OBS Studio**
+
+**4）配合rtmpdump**
+`ffmpeg -re -i AVC_high_1280x720_2013.mp4 -c copy -f flv rtmp://127.0.0.1/live/play`
+
+## 拉流：
+
+**1）使用ffplay**
 
 `ffplay rtmp://127.0.0.1/live`
-或
-使用vlc播放
 
+**2）使用vlc播放**
+
+**3）配合rtmpdump**
+`rtmpdump -r rtmp://127.0.0.1/live/play | vlc -`
+服务器 URL
+具有以下格式：
+protocol://servername:port/appName/appInstance	
+rtmp://localhost:1935/testapp/instance1
 
 
 # 整体框架
@@ -68,5 +80,6 @@ graph LR
     C --> E[vlc 拉流]
 
 ```
+
 
 
