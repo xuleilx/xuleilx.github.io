@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://img-blog.csdn.net/20140602173751953?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVpeGlhb2h1YTEwMjA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="https://img-blog.csdn.net/20140602173759515?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVpeGlhb2h1YTEwMjA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="https://img-blog.csdn.net/20140602173806843?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVpeGlhb2h1YTEwMjA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2021-03-01T01:07:38.814Z">
+<meta property="og:updated_time" content="2021-03-01T02:25:16.190Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="视频和音频编码原理">
 <meta name="twitter:description" content="视频压缩编码和音频压缩编码的基本原理本文介绍一下视频压缩编码和音频压缩编码的基本原理。其实有关视频和音频编码的原理的资料非常的多，但是自己一直也没有去归纳和总结一下，在这里简单总结一下，以作备忘。 视频编码基本原理视频信号的冗余信息以记录数字视频的YUV分量格式为例，YUV分别代表亮度与两个色差信号。例如对于现有的PAL制电视系统，其亮度信号采样频率为13.5MHz；色度信号的频带通常为亮度信号的">
@@ -415,14 +415,11 @@
 
       
         <h1 id="视频压缩编码和音频压缩编码的基本原理"><a href="#视频压缩编码和音频压缩编码的基本原理" class="headerlink" title="视频压缩编码和音频压缩编码的基本原理"></a>视频压缩编码和音频压缩编码的基本原理</h1><p>本文介绍一下视频压缩编码和音频压缩编码的基本原理。其实有关视频和音频编码的原理的资料非常的多，但是自己一直也没有去归纳和总结一下，在这里简单总结一下，以作备忘。</p>
-<h1 id="视频编码基本原理"><a href="#视频编码基本原理" class="headerlink" title="视频编码基本原理"></a>视频编码基本原理</h1><h2 id="视频信号的冗余信息"><a href="#视频信号的冗余信息" class="headerlink" title="视频信号的冗余信息"></a>视频信号的冗余信息</h2><p>以记录数字视频的YUV分量格式为例，YUV分别代表亮度与两个色差信号。例如对于现有的PAL制电视系统，其亮度信号采样频率为13.5MHz；色度信号的频带通常为亮度信号的一半或更少，为6.75MHz或3.375MHz。以4：2：2的采样频率为例，Y信号采用13.5MHz，色度信号U和V采用6.75MHz采样，采样信号以8bit量化，则可以计算出数字视频的码率为：</p>
-<p>$$<br>13.5<em>8 + 6.75</em>8 + 6.75*8= 216Mbit/s<br>$$</p>
-<p>如此大的数据量如果直接进行存储或传输将会遇到很大困难，因此必须采用压缩技术以减少码率。数字化后的视频信号能进行压缩主要依据两个基本条件：</p>
+<h1 id="视频编码基本原理"><a href="#视频编码基本原理" class="headerlink" title="视频编码基本原理"></a>视频编码基本原理</h1><h2 id="视频信号的冗余信息"><a href="#视频信号的冗余信息" class="headerlink" title="视频信号的冗余信息"></a>视频信号的冗余信息</h2><p>以记录数字视频的YUV分量格式为例，YUV分别代表亮度与两个色差信号。例如对于现有的PAL制电视系统，其亮度信号采样频率为13.5MHz；色度信号的频带通常为亮度信号的一半或更少，为6.75MHz或3.375MHz。以4：2：2的采样频率为例，Y信号采用13.5MHz，色度信号U和V采用6.75MHz采样，采样信号以8bit量化，则可以计算出数字视频的码率为：<br>$$<br>13.5<em>8 + 6.75</em>8 + 6.75*8= 216Mbit/s<br>$$<br>如此大的数据量如果直接进行存储或传输将会遇到很大困难，因此必须采用压缩技术以减少码率。数字化后的视频信号能进行压缩主要依据两个基本条件：</p>
 <p><strong>数据冗余</strong> 例如如空间冗余、时间冗余、结构冗余、信息熵冗余等，即图像的各像素之间存在着很强的相关性。消除这些冗余并不会导致信息损失，属于无损压缩。</p>
 <p><strong>视觉冗余</strong> 人眼的一些特性比如亮度辨别阈值，视觉阈值，对亮度和色度的敏感度不同，使得在编码的时候引入适量的误差，也不会被察觉出来。可以利用人眼的视觉特性，以一定的客观失真换取数据压缩。这种压缩属于有损压缩。</p>
 <p>数字视频信号的压缩正是基于上述两种条件，使得视频数据量得以极大的压缩，有利于传输和存储。一般的数字视频压缩编码方法都是混合编码，即将变换编码，运动估计和运动补偿，以及熵编码三种方式相结合来进行压缩编码。通常使用变换编码来消去除图像的帧内冗余，用运动估计和运动补偿来去除图像的帧间冗余，用熵编码来进一步提高压缩的效率。下文简单介绍这三种压缩编码方法。</p>
-<h2 id="压缩编码的方法"><a href="#压缩编码的方法" class="headerlink" title="压缩编码的方法"></a>压缩编码的方法</h2><h3 id="变换编码"><a href="#变换编码" class="headerlink" title="变换编码"></a>变换编码</h3><p>变换编码的作用是将空间域描述的图像信号变换到频率域，然后对变换后的系数进行编码处理。一般来说，图像在空间上具有较强的相关性，变换到频率域可以实现去相关和能量集中。常用的正交变换有离散傅里叶变换，离散余弦变换等等。数字视频压缩过程中应用广泛的是离散余弦变换。</p>
-<p>离散余弦变换简称为DCT变换。它可以将L<em>L的图像块从空间域变换为频率域。所以，在基于DCT的图像压缩编码过程中，首先需要将图像分成互不重叠的图像块。假设一帧图像的大小为1280</em>720，首先将其以网格状的形式分成160<em>90个尺寸为8</em>8的彼此没有重叠的图像块，接下来才能对每个图像块进行DCT变换。</p>
+<h2 id="压缩编码的方法"><a href="#压缩编码的方法" class="headerlink" title="压缩编码的方法"></a>压缩编码的方法</h2><h3 id="变换编码"><a href="#变换编码" class="headerlink" title="变换编码"></a>变换编码</h3><p>变换编码的作用是将空间域描述的图像信号变换到频率域，然后对变换后的系数进行编码处理。一般来说，图像在空间上具有较强的相关性，变换到频率域可以实现去相关和能量集中。常用的正交变换有离散傅里叶变换，离散余弦变换等等。数字视频压缩过程中应用广泛的是离散余弦变换。<br>傅里叶分析 <a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1</a><br>离散余弦变换简称为DCT变换。它可以将L<em>L的图像块从空间域变换为频率域。所以，在基于DCT的图像压缩编码过程中，首先需要将图像分成互不重叠的图像块。假设一帧图像的大小为1280</em>720，首先将其以网格状的形式分成160<em>90个尺寸为8</em>8的彼此没有重叠的图像块，接下来才能对每个图像块进行DCT变换。</p>
 <p>经过分块以后，每个8<em>8点的图像块被送入DCT编码器，将8</em>8的图像块从空间域变换为频率域。下图给出一个实际8*8的图像块例子，图中的数字代表了每个像素的亮度值。从图上可以看出，在这个图像块中各个像素亮度值比较均匀，特别是相邻像素亮度值变化不是很大，说明图像信号具有很强的相关性。</p>
 <p><img src="https://img-blog.csdn.net/20140602173641875?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVpeGlhb2h1YTEwMjA=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
 <p><em>一个实际8</em>8图像块*</p>
@@ -533,6 +530,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2021/03/02/live555搭建rtsp服务器/" rel="prev" title="live555搭建rtsp服务器">
+                live555搭建rtsp服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -614,7 +615,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -627,7 +628,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
