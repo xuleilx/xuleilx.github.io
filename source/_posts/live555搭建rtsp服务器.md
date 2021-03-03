@@ -20,7 +20,8 @@ sudo make install
 # 启动
 ```shell
 # 切换到存放视频文件的目录，运行服务
-videos$ sudo live555MediaServer 
+videos$ su #切root
+videos$ live555MediaServer 
 # 需要留意的是live555并不支持mp4格式，需要将mp4转为mkv
 ffmpeg -i xxx.mp4 xxx.mkv
 ```
