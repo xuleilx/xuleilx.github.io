@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[live555搭建rtsp服务器]]></title>
     <url>%2F2021%2F03%2F02%2Flive555%E6%90%AD%E5%BB%BArtsp%E6%9C%8D%E5%8A%A1%E5%99%A8%2F</url>
-    <content type="text"><![CDATA[live555搭建rtsp直播或点播平台http://www.live555.com/ 编译123456wget http://www.live555.com/liveMedia/public/live555-latest.tar.gztar xzf live555-latest.tar.gzcd live./genMakefiles linux-64bit #注意后面这个参数是根据当前文件夹下config.&lt;后缀&gt;获取得到的makesudo make install 启动1234# 切换到存放视频文件的目录，运行服务videos$ sudo live555MediaServer # 需要留意的是live555并不支持mp4格式，需要将mp4转为mkvffmpeg -i xxx.mp4 xxx.mkv 客户端播放12vlc rtsp://127.0.0.1/xxx.mkvffplay rtsp://127.0.0.1/xxx.mkv]]></content>
+    <content type="text"><![CDATA[live555搭建rtsp直播或点播平台http://www.live555.com/ 编译123456wget http://www.live555.com/liveMedia/public/live555-latest.tar.gztar xzf live555-latest.tar.gzcd live./genMakefiles linux-64bit #注意后面这个参数是根据当前文件夹下config.&lt;后缀&gt;获取得到的makesudo make install 启动12345# 切换到存放视频文件的目录，运行服务videos$ su #切rootvideos$ live555MediaServer # 需要留意的是live555并不支持mp4格式，需要将mp4转为mkvffmpeg -i xxx.mp4 xxx.mkv 客户端播放12vlc rtsp://127.0.0.1/xxx.mkvffplay rtsp://127.0.0.1/xxx.mkv]]></content>
       <tags>
         <tag>rtsp</tag>
         <tag>live555</tag>
