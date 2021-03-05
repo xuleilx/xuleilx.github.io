@@ -588,7 +588,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/22/FFmpeg常用指令/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/22/FFmpeg指令汇总/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -607,7 +607,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/02/22/FFmpeg常用指令/" itemprop="url">FFmpeg常用指令</a></h1>
+                <a class="post-title-link" href="/2021/02/22/FFmpeg指令汇总/" itemprop="url">FFmpeg指令汇总</a></h1>
         
 
         <div class="post-meta">
@@ -659,13 +659,19 @@
       
         
           
-          1、将文件当作源推送到RTMP服务器 
-1ffmpeg -re -i localFile.mp4 -c copy -f flv rtmp://server/live/streamName
- 参数解释-r 以本地帧频读数据，主要用于模拟捕获设备。表示ffmpeg将按照帧率发送数据，不会按照最高的效率发
+          ffmpeg常用命令ffmpeg --help大概分为6个部分，具体如下：
+ffmpeg信息查询部分
+公共操作参数部分
+文件主要操作参数部分
+视频操作参数部分
+音频操作参数部分
+字母操作参数部分
+
+查看支持的容器格式12345678910# 封装和解封装ffmpeg -formats# 解封装ffm
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/02/22/FFmpeg常用指令/#more" rel="contents">
+            <a class="btn" href="/2021/02/22/FFmpeg指令汇总/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
