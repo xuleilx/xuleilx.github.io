@@ -195,7 +195,13 @@ ffmpeg -re -i input.mp4 -c copy -f hls -hls_time 3 -hls_list_size 0 -method PUT 
 
 ## x264
 ### 安装
-  `sudo apt install x264`
+```shell
+$git clone git://git.videolan.org/x264.git
+$cd x264
+$./configure –enable-shared 
+$make
+$sudo make install
+```
 
 ### 查看
   `x264 --full help`
