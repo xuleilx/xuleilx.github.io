@@ -15,6 +15,7 @@ hexo s --config source/_data/next.yml
 
 # upload source 
 git checkout hexo
+git update
 hexo clean
 git add source themes
 git commit
