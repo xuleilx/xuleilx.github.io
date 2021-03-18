@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="NAL协议格式NAL全称Network Abstract Layer, 即网络抽象层.https://www.itu.int/rec/T-REC-H.264-201906-I/en SPS vs. PPSH.264 comes in a variety of stream formats. One variation is called “Annex B”. (AUD)(SPS)(PPS)(I-S">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20210204090241733.png">
-<meta property="og:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20210204090453070.png">
-<meta property="og:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20210204091608639.png">
-<meta property="og:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20210204120556213.png">
-<meta property="og:updated_time" content="2021-02-05T07:29:46.950Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/image-20210204090241733.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/image-20210204090453070.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/image-20210204091608639.png">
+<meta property="og:image" content="https://xuleilx.github.io/images/image-20210204120556213.png">
+<meta property="og:updated_time" content="2021-03-18T02:07:23.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="H.264视频码流解析">
 <meta name="twitter:description" content="NAL协议格式NAL全称Network Abstract Layer, 即网络抽象层.https://www.itu.int/rec/T-REC-H.264-201906-I/en SPS vs. PPSH.264 comes in a variety of stream formats. One variation is called “Annex B”. (AUD)(SPS)(PPS)(I-S">
-<meta name="twitter:image" content="c:/Users/xulei/AppData/Roaming/Typora/typora-user-images/image-20210204090241733.png">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/image-20210204090241733.png">
 
 
 
@@ -437,13 +437,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Payload Packet    Single NAL    Non-Interleaved    Interleaved</span><br><span class="line">Type    Type      Unit Mode           Mode             Mode</span><br><span class="line">-------------------------------------------------------------</span><br><span class="line">0      reserved      ig               ig               ig</span><br><span class="line">1-23   NAL unit     yes              yes               no</span><br><span class="line">24     STAP-A        no              yes               no</span><br><span class="line">25     STAP-B        no               no              yes</span><br><span class="line">26     MTAP16        no               no              yes</span><br><span class="line">27     MTAP24        no               no              yes</span><br><span class="line">28     FU-A          no              yes              yes</span><br><span class="line">29     FU-B          no               no              yes</span><br><span class="line">30-31  reserved      ig               ig               ig</span><br></pre></td></tr></table></figure>
 <p> <strong>SPS + PPS + IDR = I frame</strong>    VLC的定义是不是有误？IDR就可以认为是I-Frame</p>
 <p>（15+4）+（4+4）+（46960+4）= 46991</p>
-<p><img src="C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20210204090241733.png" alt="image-20210204090241733"></p>
+<p><img src="https://xuleilx.github.io/images/image-20210204090241733.png" alt="image-20210204090241733"></p>
 <p><strong>P-SLICE = p frame</strong></p>
 <p>1562+4=1566</p>
-<p><img src="C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20210204090453070.png" alt="image-20210204090453070"></p>
+<p><img src="https://xuleilx.github.io/images/image-20210204090453070.png" alt="image-20210204090453070"></p>
 <p><strong>IDR = I frame</strong></p>
 <p>61779 + 4 = 61783</p>
-<p><img src="C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20210204091608639.png" alt="image-20210204091608639"></p>
+<p><img src="https://xuleilx.github.io/images/image-20210204091608639.png" alt="image-20210204091608639"></p>
 <h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="linux-send-h264-rtp-stream"><a href="#linux-send-h264-rtp-stream" class="headerlink" title="linux send h264 rtp stream:"></a>linux send h264 rtp stream:</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 录屏</span><br><span class="line">gst-launch-1.0 -v ximagesrc ! video/x-raw,framerate=20/1 ! videoscale ! videoconvert ! x264enc tune=zerolatency bitrate=500 speed-preset=superfast ! rtph264pay ! udpsink host=127.0.0.1 port=5000</span><br><span class="line"><span class="meta">#</span> h264文件</span><br><span class="line">gst-launch-1.0 -v filesrc location=/home/xuleilx/mywork/ffmpeg/test.h264 ! h264parse ! rtph264pay ! udpsink host=127.0.0.1 port=5000</span><br></pre></td></tr></table></figure>
 <h2 id="receive-h264-rtp-stream"><a href="#receive-h264-rtp-stream" class="headerlink" title="receive h264 rtp stream:"></a>receive h264 rtp stream:</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gst-launch-1.0 -v udpsrc port=5000 caps = "application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264, payload=(int)96" ! rtph264depay ! decodebin ! videoconvert ! autovideosink</span><br></pre></td></tr></table></figure>
 <p>Wireshark设置：</p>
@@ -451,7 +451,7 @@
 <li>右击Decode As …，Current设置成RTP</li>
 <li>Edit -&gt; Preferences…，Protocols-&gt;h264，DynamicRTP Type :96 </li>
 </ol>
-<p><img src="C:\Users\xulei\AppData\Roaming\Typora\typora-user-images\image-20210204120556213.png" alt="image-20210204120556213"></p>
+<p><img src="https://xuleilx.github.io/images/image-20210204120556213.png" alt="image-20210204120556213"></p>
 <h2 id="RTP承载H264数据需要将大的NAL帧分包"><a href="#RTP承载H264数据需要将大的NAL帧分包" class="headerlink" title="RTP承载H264数据需要将大的NAL帧分包"></a>RTP承载H264数据需要将大的NAL帧分包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1.如何通过RTP承载H264数据</span><br><span class="line"></span><br><span class="line">参考博客：</span><br><span class="line"></span><br><span class="line">https://www.jianshu.com/p/efc5ef2113da</span><br><span class="line">https://www.jianshu.com/p/5aa012b76951</span><br><span class="line"></span><br><span class="line">参考技术文档：</span><br><span class="line"></span><br><span class="line">https://tools.ietf.org/html/rfc6184</span><br><span class="line"></span><br><span class="line">分包参考实现ffmpeg:</span><br><span class="line"></span><br><span class="line">libavformat</span><br><span class="line"> --&gt; rtpenc_h264_hevc.c</span><br><span class="line">  --&gt; ff_rtp_send_h264_hevc()</span><br></pre></td></tr></table></figure>
 
       
