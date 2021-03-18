@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[视频解封装，解码，图像转换流程]]></title>
+    <url>%2F2021%2F03%2F17%2F%E8%A7%86%E9%A2%91%E8%A7%A3%E5%B0%81%E8%A3%85%EF%BC%8C%E8%A7%A3%E7%A0%81%EF%BC%8C%E5%9B%BE%E5%83%8F%E8%BD%AC%E6%8D%A2%E6%B5%81%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[视频解封装，解码，图像转换流程AVFormat：封装、解封装、包含协议封装解封装123456789101. avformat_alloc_context #封装结构体分配内存 // 可以不调用，avformat_open_input会判断入参是否为NULL，自行分配2. avformat_open_input #打开输入文件用于读取数据3. avformat_find_stream_info#获取流信息4. 针对每个stream处理 - pFormatContext-&gt;nb_streams - avcodec_find_decoder #根据流中的编码参数AVCodecParameters，查找是否支持该编码 - 判断流的类型 pLocalCodecParameters-&gt;codec_type - 保存AVCodecParameters和AVCodec，用于后续处理 9. av_read_frame #读取一包AVPacket数据包 AVCodec：编解码解码12345675. avcodec_alloc_context3 #编解码结构体分配内存6. avcodec_parameters_to_context#将解封装得到的编码参数AVCodecParameters赋值给编解码结构体7. avcodec_open2 #打开编码器10. avcodec_send_packet #将解封装中得到的AVPacket数据包送给解码器12. avcodec_receive_frame #读回一帧解码后的数据AVFrame AVPacket：压缩的数据包18. av_packet_alloc #压缩的数据包分配内存 swscale：视频图像转换12313. sws_getContext #给SwsContext结构体分配内存15. sws_scale #视频图像转换 AVUtil :工具类AVFrame：解码后的数据帧111. av_frame_alloc #解码后的数据帧分配内存 image114. av_image_alloc #分配内存用于存放一张图片 项目使用qt主要是方便学习ffmpeg编解码，后续采用glfw和sdl显示 源码地址https://github.com/xuleilx/MediaPlayer/tree/main/qt 功能描述 使用FFMpeg解码 将FFMpeg解码后的yuv数据转换成rgb 使用QT的QLabel组件，通过QImage显示rgb数据]]></content>
+      <tags>
+        <tag>ffmepg</tag>
+        <tag>qt</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[live555搭建rtsp服务器]]></title>
     <url>%2F2021%2F03%2F02%2Flive555%E6%90%AD%E5%BB%BArtsp%E6%9C%8D%E5%8A%A1%E5%99%A8%2F</url>
     <content type="text"><![CDATA[live555搭建rtsp直播或点播平台http://www.live555.com/ 编译123456wget http://www.live555.com/liveMedia/public/live555-latest.tar.gztar xzf live555-latest.tar.gzcd live./genMakefiles linux-64bit #注意后面这个参数是根据当前文件夹下config.&lt;后缀&gt;获取得到的makesudo make install 启动12345# 切换到存放视频文件的目录，运行服务videos$ su #切rootvideos$ live555MediaServer # 需要留意的是live555并不支持mp4格式，需要将mp4转为mkvffmpeg -i xxx.mp4 xxx.mkv 客户端播放12vlc rtsp://127.0.0.1/xxx.mkvffplay rtsp://127.0.0.1/xxx.mkv]]></content>
@@ -224,17 +233,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[基本概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[扑克中的概率和文氏图]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
-    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+    <title><![CDATA[基本概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E5%9F%BA%E6%9C%AC%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[ProbabilityP(H) = # of possibility that meet by condition / # of equally likely possibility]]></content>
       <tags>
         <tag>概率</tag>
       </tags>

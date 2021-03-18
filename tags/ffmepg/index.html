@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="gdb," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,14 @@
 
 
 
-<meta name="description" content="关于StackSmashingDetected问题调查■现象密钥交换时报错： stack smashing detected ，产生CoreDump。 ■再现步骤1.密钥交换 ■根本原因使用解密函数写穿了局部变量的buffer，导致触发了stack protector机制。 代码分析：12345678910int RootKeyCmdDown::procMsg(std::shared_ptr&amp;lt">
-<meta name="keywords" content="gdb">
-<meta property="og:type" content="article">
-<meta property="og:title" content="关于StackSmashingDetected问题调查">
-<meta property="og:url" content="http://yoursite.com/2020/11/27/关于StackSmashingDetected问题调查/index.html">
+<meta name="keywords" content="Hexo, NexT">
+<meta property="og:type" content="website">
+<meta property="og:title" content="沧海一粟">
+<meta property="og:url" content="http://yoursite.com/tags/ffmepg/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="关于StackSmashingDetected问题调查■现象密钥交换时报错： stack smashing detected ，产生CoreDump。 ■再现步骤1.密钥交换 ■根本原因使用解密函数写穿了局部变量的buffer，导致触发了stack protector机制。 代码分析：12345678910int RootKeyCmdDown::procMsg(std::shared_ptr&amp;lt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-11-27T08:29:13.978Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于StackSmashingDetected问题调查">
-<meta name="twitter:description" content="关于StackSmashingDetected问题调查■现象密钥交换时报错： stack smashing detected ，产生CoreDump。 ■再现步骤1.密钥交换 ■根本原因使用解密函数写穿了局部变量的buffer，导致触发了stack protector机制。 代码分析：12345678910int RootKeyCmdDown::procMsg(std::shared_ptr&amp;lt">
+<meta name="twitter:title" content="沧海一粟">
 
 
 
@@ -120,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/11/27/关于StackSmashingDetected问题调查/"/>
+  <link rel="canonical" href="http://yoursite.com/tags/ffmepg/"/>
 
 
 
 
 
-  <title>关于StackSmashingDetected问题调查 | 沧海一粟</title>
+  <title>标签: ffmepg | 沧海一粟</title>
   
 
 
@@ -155,7 +151,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -323,193 +319,54 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>ffmepg<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/27/关于StackSmashingDetected问题调查/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alex">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="沧海一粟">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">关于StackSmashingDetected问题调查</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2021/03/17/视频解封装，解码，图像转换流程/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">视频解封装，解码，图像转换流程</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-27T00:28:51-08:00">
-                2020-11-27
-              </time>
-            
+            </a>
+        
+      </h2>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="关于StackSmashingDetected问题调查"><a href="#关于StackSmashingDetected问题调查" class="headerlink" title="关于StackSmashingDetected问题调查"></a>关于StackSmashingDetected问题调查</h1><h2 id="■现象"><a href="#■现象" class="headerlink" title="■现象"></a>■现象</h2><p>密钥交换时报错：<strong><em> stack smashing detected </em></strong>，产生CoreDump。</p>
-<h2 id="■再现步骤"><a href="#■再现步骤" class="headerlink" title="■再现步骤"></a>■再现步骤</h2><p>1.密钥交换</p>
-<h2 id="■根本原因"><a href="#■根本原因" class="headerlink" title="■根本原因"></a>■根本原因</h2><p>使用解密函数写穿了局部变量的buffer，导致触发了stack protector机制。</p>
-<p>代码分析：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> RootKeyCmdDown::procMsg(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ConnectionContext&gt; conn)</span><br><span class="line">&#123;</span><br><span class="line">	logInfo(<span class="string">"%s procMsg."</span>, TAG.data());</span><br><span class="line">	<span class="built_in">vector</span>&lt;BYTE&gt; dataVec;</span><br><span class="line">	dataVec.resize(<span class="number">32</span>);</span><br><span class="line">	<span class="built_in">memset</span>(&amp;dataVec[<span class="number">0</span>], <span class="number">0</span>, <span class="number">32</span>);</span><br><span class="line">	BYTE new_root_key[<span class="number">16</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	get_new_rootkey(new_root_key);</span><br><span class="line">    .......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aes_decrypt((<span class="keyword">unsigned</span> <span class="keyword">char</span>*)new_root_key_aes,<span class="number">32</span>,pMsgContainer-&gt;GetRootKeyVector(),aes_decrypt_buf);</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">aes_decrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* in, <span class="keyword">int</span> len , <span class="keyword">unsigned</span> <span class="keyword">char</span>* key, <span class="keyword">unsigned</span> <span class="keyword">char</span>* out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AES_KEY aes;</span><br><span class="line">    <span class="keyword">if</span>(AES_set_decrypt_key(key, <span class="number">128</span>, &amp;aes) &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;(len/<span class="number">16</span>);i++) <span class="comment">//循环调用两次，out处写了32个字节</span></span><br><span class="line">	&#123;</span><br><span class="line">		AES_ecb_encrypt(in+i*<span class="number">16</span>, out+i*<span class="number">16</span>, &amp;aes , AES_DECRYPT);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="■调查详细"><a href="#■调查详细" class="headerlink" title="■调查详细"></a>■调查详细</h2><p>由于密钥交换触发条件比较麻烦，本示例使用的是测试程序，并非项目代码</p>
-<h3 id="1-打开产生Core文件选项"><a href="#1-打开产生Core文件选项" class="headerlink" title="1.打开产生Core文件选项"></a>1.打开产生Core文件选项</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@mdm9607-perf:~/work/stack-protector# ulimit -c unlimited</span><br><span class="line">root@mdm9607-perf:~/work/stack-protector# ulimit -c</span><br><span class="line">unlimited</span><br></pre></td></tr></table></figure>
-<h3 id="2-查看Core产生路径"><a href="#2-查看Core产生路径" class="headerlink" title="2.查看Core产生路径"></a>2.查看Core产生路径</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@mdm9607-perf:~/work/stack-protector# cat /proc/sys/kernel/core_pattern </span><br><span class="line">core</span><br></pre></td></tr></table></figure>
-<p>相对路径core，代表Core文件生成在执行命令的当前目录下。</p>
-<h3 id="3-gdb调试"><a href="#3-gdb调试" class="headerlink" title="3.gdb调试"></a>3.gdb调试</h3><h4 id="3-1-打印堆栈回溯"><a href="#3-1-打印堆栈回溯" class="headerlink" title="3.1 打印堆栈回溯"></a>3.1 打印堆栈回溯</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@mdm9607-perf:~/work/stack-protector# ./test_overflow_smash xxxxxxxxxxxxxxxx</span><br><span class="line">xxxxx</span><br><span class="line">*** stack smashing detected ***: ./test_overflow_smash terminated</span><br><span class="line">Aborted (core dumped)</span><br><span class="line">root@mdm9607-perf:~/work/stack-protector# gdb ./test_overflow_smash core</span><br><span class="line">Reading symbols from ./test_overflow_smash...2502</span><br><span class="line">done.</span><br><span class="line"></span><br><span class="line">warning: core file may not match specified executable file.</span><br><span class="line">[New LWP 5939]</span><br><span class="line">Core was generated by `./test_overflow_smash xxxxxxxxxxxxxxxxxxxxx&apos;.</span><br><span class="line">Program terminated with signal SIGABRT, Aborted.</span><br><span class="line">#0  0x4c93cb94 in raise () from /lib/libc.so.6</span><br><span class="line">(gdb) bt</span><br><span class="line">#0  0x4c93cb94 in raise () from /lib/libc.so.6</span><br><span class="line">#1  0x4c940670 in abort () from /lib/libc.so.6</span><br><span class="line">#2  0x4c974998 in ?? () from /lib/libc.so.6</span><br><span class="line">Backtrace stopped: previous frame identical to this frame (corrupt stack?)</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
-<p>libc.so以后的堆栈回溯只能看到？号。百度一下，可能是libc.so的版本不对。也就是说集成环境的libc.so与我们编译的SDK中libc.so版本不一致。</p>
-<h4 id="3-2-拷贝SDK中的libc-so到环境中，编译时指定该目录"><a href="#3-2-拷贝SDK中的libc-so到环境中，编译时指定该目录" class="headerlink" title="3.2 拷贝SDK中的libc.so到环境中，编译时指定该目录"></a>3.2 拷贝SDK中的libc.so到环境中，编译时指定该目录</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@mdm9607-perf:~/work/stack-protector# ls</span><br><span class="line">core                           test_overflow_segv</span><br><span class="line">libc.so.6</span><br></pre></td></tr></table></figure>
-<h4 id="3-3-gdb中设置lib库的加载路径"><a href="#3-3-gdb中设置lib库的加载路径" class="headerlink" title="3.3 gdb中设置lib库的加载路径"></a>3.3 gdb中设置lib库的加载路径</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(gdb)   set solib-absolute-prefix "./"</span><br><span class="line">(gdb)   set solib-search-path "./"</span><br><span class="line">warning: .dynamic section for "/home/root/work/stack-protector/libc.so.6" is not at the expected address (wrong library or version mismatch?)</span><br><span class="line">Reading symbols from /home/root/work/stack-protector/libc.so.6...done.</span><br><span class="line">Loaded symbols for /home/root/work/stack-protector/libc.so.6</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="meta">#</span>0  0x4c93cb94 in raise () from /home/root/work/stack-protector/libc.so.6</span><br><span class="line"><span class="meta">#</span>1  0x4c940670 in abort () from /home/root/work/stack-protector/libc.so.6</span><br><span class="line"><span class="meta">#</span>2  0x4c974998 in __libc_message ()</span><br><span class="line">   from /home/root/work/stack-protector/libc.so.6</span><br><span class="line"><span class="meta">#</span>3  0x4c9f042c in __fortify_fail ()</span><br><span class="line">   from /home/root/work/stack-protector/libc.so.6</span><br><span class="line"><span class="meta">#</span>4  0x4c9f03e8 in __stack_chk_fail ()</span><br><span class="line">   from /home/root/work/stack-protector/libc.so.6</span><br><span class="line"><span class="meta">#</span>5  0x0000862c in check_password (password=0xbebcfed8 'x' &lt;repeats 21 times&gt;)</span><br><span class="line">    at test_overflow.c:19</span><br><span class="line"><span class="meta">#</span>6  0x00008674 in main (argc=2, argv=0xbebcfdc4) at test_overflow.c:23</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure>
-<h4 id="3-4-关于编译参数stack-protector介绍见《经验分享：gcc编译参数stack-protector》"><a href="#3-4-关于编译参数stack-protector介绍见《经验分享：gcc编译参数stack-protector》" class="headerlink" title="3.4 关于编译参数stack-protector介绍见《经验分享：gcc编译参数stack-protector》"></a>3.4 关于编译参数stack-protector介绍见《经验分享：gcc编译参数stack-protector》</h4>
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
-        <p>微信支付</p>
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2021-03-17T18:28:13-07:00"
+              content="2021-03-17" >
+          03-17
+        </time>
       </div>
-    
 
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
-        <p>支付宝</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/gdb/" rel="tag"># gdb</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/11/26/关于gst-element-set-state死锁问题调查/" rel="next" title="关于gst_element_set_state死锁问题调查">
-                <i class="fa fa-chevron-left"></i> 关于gst_element_set_state死锁问题调查
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/11/27/经验分享：gcc编译参数stack-protector/" rel="prev" title="经验分享：gcc编译参数stack-protector">
-                经验分享：gcc编译参数stack-protector <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -517,12 +374,6 @@
 
 
           
-  
-    <div class="comments" id="comments">
-      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
-    </div>
-  
-
 
         </div>
         
@@ -543,17 +394,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -673,22 +515,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于StackSmashingDetected问题调查"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;StackSmashingDetected&#x95EE;&#x9898;&#x8C03;&#x67E5;" class="headerlink" title="&#x5173;&#x4E8E;StackSmashingDetected&#x95EE;&#x9898;&#x8C03;&#x67E5;"></a>&#x5173;&#x4E8E;StackSmashingDetected&#x95EE;&#x9898;&#x8C03;&#x67E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#■现象"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x25A0;&#x73B0;&#x8C61;" class="headerlink" title="&#x25A0;&#x73B0;&#x8C61;"></a>&#x25A0;&#x73B0;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■再现步骤"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;" class="headerlink" title="&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;"></a>&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■根本原因"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;" class="headerlink" title="&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;"></a>&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■调查详细"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;" class="headerlink" title="&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;"></a>&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-打开产生Core文件选项"><span class="nav-number">1.4.1.</span> <span class="nav-text"><a href="#1-&#x6253;&#x5F00;&#x4EA7;&#x751F;Core&#x6587;&#x4EF6;&#x9009;&#x9879;" class="headerlink" title="1.&#x6253;&#x5F00;&#x4EA7;&#x751F;Core&#x6587;&#x4EF6;&#x9009;&#x9879;"></a>1.&#x6253;&#x5F00;&#x4EA7;&#x751F;Core&#x6587;&#x4EF6;&#x9009;&#x9879;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-查看Core产生路径"><span class="nav-number">1.4.2.</span> <span class="nav-text"><a href="#2-&#x67E5;&#x770B;Core&#x4EA7;&#x751F;&#x8DEF;&#x5F84;" class="headerlink" title="2.&#x67E5;&#x770B;Core&#x4EA7;&#x751F;&#x8DEF;&#x5F84;"></a>2.&#x67E5;&#x770B;Core&#x4EA7;&#x751F;&#x8DEF;&#x5F84;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-gdb调试"><span class="nav-number">1.4.3.</span> <span class="nav-text"><a href="#3-gdb&#x8C03;&#x8BD5;" class="headerlink" title="3.gdb&#x8C03;&#x8BD5;"></a>3.gdb&#x8C03;&#x8BD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-打印堆栈回溯"><span class="nav-number">1.4.3.1.</span> <span class="nav-text"><a href="#3-1-&#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;" class="headerlink" title="3.1 &#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;"></a>3.1 &#x6253;&#x5370;&#x5806;&#x6808;&#x56DE;&#x6EAF;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-拷贝SDK中的libc-so到环境中，编译时指定该目录"><span class="nav-number">1.4.3.2.</span> <span class="nav-text"><a href="#3-2-&#x62F7;&#x8D1D;SDK&#x4E2D;&#x7684;libc-so&#x5230;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x7F16;&#x8BD1;&#x65F6;&#x6307;&#x5B9A;&#x8BE5;&#x76EE;&#x5F55;" class="headerlink" title="3.2 &#x62F7;&#x8D1D;SDK&#x4E2D;&#x7684;libc.so&#x5230;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x7F16;&#x8BD1;&#x65F6;&#x6307;&#x5B9A;&#x8BE5;&#x76EE;&#x5F55;"></a>3.2 &#x62F7;&#x8D1D;SDK&#x4E2D;&#x7684;libc.so&#x5230;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x7F16;&#x8BD1;&#x65F6;&#x6307;&#x5B9A;&#x8BE5;&#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-gdb中设置lib库的加载路径"><span class="nav-number">1.4.3.3.</span> <span class="nav-text"><a href="#3-3-gdb&#x4E2D;&#x8BBE;&#x7F6E;lib&#x5E93;&#x7684;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;" class="headerlink" title="3.3 gdb&#x4E2D;&#x8BBE;&#x7F6E;lib&#x5E93;&#x7684;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;"></a>3.3 gdb&#x4E2D;&#x8BBE;&#x7F6E;lib&#x5E93;&#x7684;&#x52A0;&#x8F7D;&#x8DEF;&#x5F84;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-关于编译参数stack-protector介绍见《经验分享：gcc编译参数stack-protector》"><span class="nav-number">1.4.3.4.</span> <span class="nav-text"><a href="#3-4-&#x5173;&#x4E8E;&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x4ECB;&#x7ECD;&#x89C1;&#x300A;&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x300B;" class="headerlink" title="3.4 &#x5173;&#x4E8E;&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x4ECB;&#x7ECD;&#x89C1;&#x300A;&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x300B;"></a>3.4 &#x5173;&#x4E8E;&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x4ECB;&#x7ECD;&#x89C1;&#x300A;&#x7ECF;&#x9A8C;&#x5206;&#x4EAB;&#xFF1A;gcc&#x7F16;&#x8BD1;&#x53C2;&#x6570;stack-protector&#x300B;</span></a></li></ol></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
 
       
 
@@ -807,10 +633,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
 
   
 
@@ -839,17 +661,6 @@
 
 
 
-  
-    <script type="text/javascript">
-      (function(d, s) {
-        var j, e = d.getElementsByTagName(s)[0];
-        if (typeof LivereTower === 'function') { return; }
-        j = d.createElement(s);
-        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-        j.async = true;
-        e.parentNode.insertBefore(j, e);
-      })(document, 'script');
-    </script>
   
 
 
