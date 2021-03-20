@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="视频解码流程源码文件/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封装、包含协议封装 AVCod">
+<meta name="description" content="视频解码流程源码文件&amp;lt;ffmpeg&amp;gt;/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封">
 <meta name="keywords" content="ffmepg,qt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ffmpeg源码example解析之decode_video">
 <meta property="og:url" content="http://yoursite.com/2021/03/17/ffmpeg源码example解析之decode-video/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="视频解码流程源码文件/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封装、包含协议封装 AVCod">
+<meta property="og:description" content="视频解码流程源码文件&amp;lt;ffmpeg&amp;gt;/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://xuleilx.github.io/images/decode_video.png">
-<meta property="og:updated_time" content="2021-03-20T02:44:39.833Z">
+<meta property="og:updated_time" content="2021-03-20T03:06:12.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg源码example解析之decode_video">
-<meta name="twitter:description" content="视频解码流程源码文件/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封装、包含协议封装 AVCod">
+<meta name="twitter:description" content="视频解码流程源码文件&amp;lt;ffmpeg&amp;gt;/doc/examples/decode_video.c 代码调用流程 该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。 首先我们先要了解ffmpeg的几个大类：  AVFormat：封装、解封">
 <meta name="twitter:image" content="https://xuleilx.github.io/images/decode_video.png">
 
 
@@ -406,7 +406,7 @@
       
 
       
-        <h1 id="视频解码流程"><a href="#视频解码流程" class="headerlink" title="视频解码流程"></a>视频解码流程</h1><h2 id="源码文件"><a href="#源码文件" class="headerlink" title="源码文件"></a>源码文件</h2><p><ffmpeg>/doc/examples/decode_video.c</ffmpeg></p>
+        <h1 id="视频解码流程"><a href="#视频解码流程" class="headerlink" title="视频解码流程"></a>视频解码流程</h1><h2 id="源码文件"><a href="#源码文件" class="headerlink" title="源码文件"></a>源码文件</h2><p><code>&lt;ffmpeg&gt;/doc/examples/decode_video.c</code></p>
 <h2 id="代码调用流程"><a href="#代码调用流程" class="headerlink" title="代码调用流程"></a>代码调用流程</h2><p><img src="https://xuleilx.github.io/images/decode_video.png" alt="image"></p>
 <p>该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。<br>通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。</p>
 <p>首先我们先要了解ffmpeg的几个大类：</p>
