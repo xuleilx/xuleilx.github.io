@@ -463,7 +463,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/17/视频解封装，解码，图像转换流程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/17/ffmpeg源码example解析之decode-video/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -482,7 +482,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/03/17/视频解封装，解码，图像转换流程/" itemprop="url">视频解封装，解码，图像转换流程</a></h1>
+                <a class="post-title-link" href="/2021/03/17/ffmpeg源码example解析之decode-video/" itemprop="url">ffmpeg源码example解析之decode_video</a></h1>
         
 
         <div class="post-meta">
@@ -534,11 +534,14 @@
       
         
           
-          视频解封装，解码，图像转换流程AVFormat：封装、解封装、包含协议封装解封装123456789101. avformat_alloc_context 	#封装结构体分配内存 // 可以不调用，avformat_open_input会判断入参是否为NULL，自行分配2. avformat_open
+          视频解码流程源码文件/doc/examples/decode_video.c
+代码调用流程
+该流程并不是一个正常的流程，它假设了该文件是mpeg1video的编码格式，并且没有封装容器。通常情况下是需要解封装的，比如说拿到一个视频文件，并不知道是什么编码，这时候就需要解封装来了解容器里面数据流了。
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/03/17/视频解封装，解码，图像转换流程/#more" rel="contents">
+            <a class="btn" href="/2021/03/17/ffmpeg源码example解析之decode-video/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
