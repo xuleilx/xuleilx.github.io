@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[ffmpeg源码example解析之decode-audio]]></title>
+    <url>%2F2021%2F03%2F24%2Fffmpeg%E6%BA%90%E7%A0%81example%E8%A7%A3%E6%9E%90%E4%B9%8Bdecode-audio%2F</url>
+    <content type="text"><![CDATA[音频播放源码文件&lt;ffmpeg&gt;/doc/examples/decode_audio.c&lt;ffmpeg&gt;/doc/examples/muxing.c&lt;ffmpeg&gt;/doc/examples/resampling_audio.c&lt;ffmpeg&gt;/doc/examples/transcode_aac.c 代码调用流程代码流程跟《ffmpeg源码example解析之decode-video》基本类似，主要的区别是在播放上。对于播放器来说需要设置一套播放参数，比如：采样率，通道数，大小端，采样大小以及数据类型。理论上可以通过ffmpeg解析出来的的这些参数设置给播放器，但是ffmpeg的format的跟播放器的format不是同一个枚举，需要建立一个映射关系，所以觉得一般的播放器会统一设置成固定值，比如：采样率：44100，通道数：2，大小端：LittleEndian，采样大小：16bit，数据类型：有符号也就是说无论输入是什么配置参数，统一重采样成这套参数跟播放匹配。 项目该项目用于学习ffmpeg编解码使用qt主要是比较方便，后续采用glfw和sdl显示 源码地址https://github.com/xuleilx/MediaPlayer/tree/main/qt 功能描述播放视频 使用FFMpeg解码 使用sws_scale将FFMpeg解码后的yuv数据转换成rgb 使用QT的QLabel组件，通过QImage显示rgb数据播放音频 使用FFMpeg解码 使用swr_convert将FFMpeg解码后的一帧数据转换成播放器指定的播放参数 使用QT的QAudioOutput播放pcm数据]]></content>
+      <tags>
+        <tag>ffmepg</tag>
+        <tag>qt</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[[Gstreamer]多媒体播放服务]]></title>
     <url>%2F2021%2F03%2F18%2FGstreamer-%E5%A4%9A%E5%AA%92%E4%BD%93%E6%92%AD%E6%94%BE%E6%9C%8D%E5%8A%A1%2F</url>
     <content type="text"><![CDATA[项目介绍一直对多媒体感兴趣，跟着雷神的博客学了一段时间，感觉内力大增，苦于项目中多媒体模块不是我负责，有力气没地方使，于是有了此项目。 本来打算将这个工程用于项目中验证的，所以一开始没有开源。最近发现项目太多，没有精力上项目验证了，就开源吧。 功能 音乐、视频播放，暂停，快进，快退，seek等基本功能 获取音乐媒体文件id3信息 通过配置文件定制插件 源码https://github.com/xuleilx/MediaplayerServer 编译1234# mkdir build# cd build# cmake ../# make 运行1234567891011121314# 启动dbus服务export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/dbus/session_bus_help"dbus-daemon --session --address=unix:path=/run/dbus/session_bus_help &amp;# 启动多媒体播放服务./mediaplayerserver &amp;# 查看所有接口dbus-send --session --print-reply --dest=com.hsae.mediaplayerserver.mediaplayer /com/hsae/mediaplayerserver org.freedesktop.DBus.Introspectable.Introspect # 设置播放文件dbus-send --session --print-reply --type=method_call --dest=com.hsae.mediaplayerserver.mediaplayer /com/hsae/mediaplayerserver com.hsae.mediaplayerserver.mediaplayer.setFile string:"/home/xuleilx/mywork/multimedia/video/AVC_high_1280x720_2013.mp4"# 播放dbus-send --session --print-reply --type=method_call --dest=com.hsae.mediaplayerserver.mediaplayer /com/hsae/mediaplayerserver com.hsae.mediaplayerserver.mediaplayer.start]]></content>
