@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="沧海一粟">
 <meta property="og:description" content="音频播放源码文件&amp;lt;ffmpeg&amp;gt;/doc/examples/decode_audio.c&amp;lt;ffmpeg&amp;gt;/doc/examples/muxing.c&amp;lt;ffmpeg&amp;gt;/doc/examples/resampling_audio.c&amp;lt;ffmpeg&amp;gt;/doc/examples/transcode_aac.c 代码调用流程代码流程跟《ffmpeg源码exam">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-03-24T07:57:54.294Z">
+<meta property="og:updated_time" content="2021-03-24T08:40:20.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg源码example解析之decode-audio">
 <meta name="twitter:description" content="音频播放源码文件&amp;lt;ffmpeg&amp;gt;/doc/examples/decode_audio.c&amp;lt;ffmpeg&amp;gt;/doc/examples/muxing.c&amp;lt;ffmpeg&amp;gt;/doc/examples/resampling_audio.c&amp;lt;ffmpeg&amp;gt;/doc/examples/transcode_aac.c 代码调用流程代码流程跟《ffmpeg源码exam">
@@ -411,7 +411,9 @@
 <h2 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h2><h3 id="播放视频"><a href="#播放视频" class="headerlink" title="播放视频"></a>播放视频</h3><ol>
 <li>使用FFMpeg解码</li>
 <li>使用sws_scale将FFMpeg解码后的yuv数据转换成rgb</li>
-<li>使用QT的QLabel组件，通过QImage显示rgb数据<h3 id="播放音频"><a href="#播放音频" class="headerlink" title="播放音频"></a>播放音频</h3></li>
+<li>使用QT的QLabel组件，通过QImage显示rgb数据</li>
+</ol>
+<h3 id="播放音频"><a href="#播放音频" class="headerlink" title="播放音频"></a>播放音频</h3><ol>
 <li>使用FFMpeg解码</li>
 <li>使用swr_convert将FFMpeg解码后的一帧数据转换成播放器指定的播放参数</li>
 <li>使用QT的QAudioOutput播放pcm数据</li>
