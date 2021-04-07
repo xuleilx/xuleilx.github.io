@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[FFmpeg之数据结构]]></title>
+    <url>%2F2021%2F04%2F06%2FFFmpeg%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%2F</url>
+    <content type="text"><![CDATA[FFMpeg中关键数据结构之间的关系graph LR A0[AVPacket] A[AVFormatContext] -->B0[AVIOContext] subgraph 2[Protocol Layer] B0 --> B1[URLContext] --> B2[URLProtocol] end A --> C0[AVInputFormat] subgraph 1[Format Layer] C0 end A --> D0["AVStream[0]"] A --> E0["AVStream[1]"] subgraph 3[Codec Layer] D0 --> D1[AVCodecContext] --> D2[AVCodec] E0 --> E1[AVCodecContext] --> E2[AVCodec] end A1[AVFrame] - 每个AVStream存储一个视频/音频流的相关数据； - 每个AVStream对应一个AVCodecContext，存储该视频/音频流使用解码方式的相关数据； - 每个AVCodecContext中对应一个AVCodec，包含该视频/音频对应的解码器。 - 每种解码器都对应一个AVCodec结构。 # 数据结构的动态和静态关系 URLProtocol和URLContext、AVInputFormat和AVFormatContext、AVCodec和AVCodecContext Context结构将多种类型的广义数据的共同部分抽象出来，着重于动态性，其核心成员只能在程序运行时动态确定其值。并且接口类的数据结构在运行时有多个实例，而相应的Context类只有一个实例，同时体现了数据结构的划分原则，如果有一对多的关系就要分开定义。 # 数据结构解析 ## AVInputFormat/AVFormatContext/AVIContext 分析AVInputFormat/AVFormatContext/AVIContext 三个结构体之间的关系。 AVFormatContext父类 AVInputFormat接口类，libavformat/avidec.c实现了avi封装器的接口。 AVIContext 子类，包含指向父类的指针以及子类特有属性。 AVFormatContext通过AVInputFormat调用avidec封装器的函数，设置AVIContext 特有属性和AVFormatContext通用属性。 classDiagram AVFormatContext]]></content>
+      <tags>
+        <tag>ffmpeg</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[ffmpeg源码example解析之decode-audio]]></title>
     <url>%2F2021%2F03%2F24%2Fffmpeg%E6%BA%90%E7%A0%81example%E8%A7%A3%E6%9E%90%E4%B9%8Bdecode-audio%2F</url>
     <content type="text"><![CDATA[音频播放源码文件&lt;ffmpeg&gt;/doc/examples/decode_audio.c&lt;ffmpeg&gt;/doc/examples/muxing.c&lt;ffmpeg&gt;/doc/examples/resampling_audio.c&lt;ffmpeg&gt;/doc/examples/transcode_aac.c 代码调用流程代码流程跟《ffmpeg源码example解析之decode-video》基本类似，主要的区别是在播放上。对于播放器来说需要设置一套播放参数，比如：采样率，通道数，大小端，采样大小以及数据类型。理论上可以通过ffmpeg解析出来的的这些参数设置给播放器，但是ffmpeg的format的跟播放器的format不是同一个枚举，需要建立一个映射关系，所以觉得一般的播放器会统一设置成固定值，比如：采样率：44100，通道数：2，大小端：LittleEndian，采样大小：16bit，数据类型：有符号也就是说无论输入是什么配置参数，统一重采样成这套参数跟播放匹配。 项目该项目用于学习ffmpeg编解码使用qt主要是比较方便，后续采用glfw和sdl显示 源码地址https://github.com/xuleilx/MediaPlayer/tree/main/qt 功能描述播放视频 使用FFMpeg解码 使用sws_scale将FFMpeg解码后的yuv数据转换成rgb 使用QT的QLabel组件，通过QImage显示rgb数据 播放音频 使用FFMpeg解码 使用swr_convert将FFMpeg解码后的一帧数据转换成播放器指定的播放参数 使用QT的QAudioOutput播放pcm数据]]></content>
@@ -291,9 +299,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+    <title><![CDATA[相依事件的概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -307,17 +315,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[相依事件的概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
+    <title><![CDATA[贝叶斯定理]]></title>
+    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
+    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[贝叶斯定理]]></title>
-    <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
-    <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
