@@ -2,6 +2,8 @@
 title: 全局变量导致fwrite崩溃问题分析
 date: 2020-11-26 23:32:59
 tags: gdb
+categories:
+ - 经验分享
 ---
 # ■问题描述
 项目Carlife语音识别率不高，录音有卡顿，偶发程序崩溃。

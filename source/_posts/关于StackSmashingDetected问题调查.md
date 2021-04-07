@@ -2,6 +2,8 @@
 title: 关于StackSmashingDetected问题调查
 date: 2020-11-27 00:28:51
 tags: gdb
+categories:
+ - 经验分享
 ---
 
 # 关于StackSmashingDetected问题调查

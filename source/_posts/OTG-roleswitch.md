@@ -1,7 +1,9 @@
 ---
-title: OTG_roleswitch
+title: USB之OTG
 date: 2020-11-26 23:15:39
 tags: USB
+categories:
+ - 设备驱动
 ---
 
 # OTG roleswitch(Apple CarPlay)

@@ -2,6 +2,8 @@
 title: pandas总结
 date: 2018-06-25 19:18:02
 tags: 机器学习
+categories:
+ - 机器学习
 ---
 0、概述
 ========

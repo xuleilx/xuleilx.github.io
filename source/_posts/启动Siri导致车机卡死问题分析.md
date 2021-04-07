@@ -2,6 +2,8 @@
 title: 启动Siri导致车机卡死问题分析
 date: 2020-11-29 19:44:28
 tags: Media
+categories:
+ - 经验分享
 ---
 
 # 启动Siri导致车机卡死问题分析

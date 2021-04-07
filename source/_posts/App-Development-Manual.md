@@ -2,8 +2,10 @@
 title: '[App]Development Manual'
 date: 2020-12-22 22:38:35
 tags: 
-  - Gstreamer
-  - Media
+ - Gstreamer
+ - Media
+categories:
+ - Gstreamer
 ---
 # What is GStreamer?
 

@@ -1,8 +1,10 @@
 ---
-title: FFmpeg之数据结构
+title: ffmpeg之数据结构
 date: 2021-04-06 23:42:26
 tags:
-	- ffmpeg
+ - ffmpeg
+categories:
+ - ffmpeg
 ---
 # FFMpeg中关键数据结构之间的关系
 

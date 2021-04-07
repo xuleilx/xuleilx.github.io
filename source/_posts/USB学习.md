@@ -2,6 +2,8 @@
 title: USB学习
 date: 2020-07-27 21:06:52
 tags: USB
+categories:
+ - 设备驱动
 ---
 # USB学习
 ## 1. 动机
@@ -13,7 +15,7 @@ tags: USB
 ## 2. 方法
 应用出生，当然是从应用入手，大概了解了内核驱动实现之后，觉得对USB的理解还是稍有欠缺。
 遂想到一句古话：纸上得来终觉浅，绝知此事要躬行。
-1. USB in a NutShell  
+1. USB in a NutShell
     https://www.beyondlogic.org/usbnutshell/usb1.shtml  大概了解USB的整体框架
 
 2. 《圈圈教你玩USB》

@@ -2,8 +2,10 @@
 title: '[Plugin]The Basics of Writing a Plugin'
 date: 2021-01-21 00:54:13
 tags:
-  - Gstreamer
-  - Media
+ - Gstreamer
+ - Media
+categories:
+ - Gstreamer
 ---
 # Foundations
 

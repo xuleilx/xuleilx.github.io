@@ -2,6 +2,8 @@
 title: 关于gst_element_set_state死锁问题调查
 date: 2020-11-26 23:53:16
 tags: gdb
+categories:
+ - 经验分享
 ---
 
 # 关于gst_element_set_state死锁问题调查

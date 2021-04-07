@@ -3,6 +3,9 @@ title: '[Gstreamer]多媒体播放服务'
 date: 2021-03-18 00:16:38
 tags:
  - Gstreamer
+ - Media
+categories:
+ - Gstreamer
 ---
 # 项目介绍
 一直对多媒体感兴趣，跟着雷神的博客学了一段时间，感觉内力大增，苦于项目中多媒体模块不是我负责，有力气没地方使，于是有了此项目。

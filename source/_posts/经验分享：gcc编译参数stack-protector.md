@@ -4,6 +4,8 @@ date: 2020-11-27 00:38:12
 tags:
   - gdb
   - gcc
+categories:
+ - 经验分享
 ---
 # 经验分享：gcc编译参数stack-protector
 

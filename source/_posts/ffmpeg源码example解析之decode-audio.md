@@ -2,8 +2,10 @@
 title: ffmpeg源码example解析之decode-audio
 date: 2021-03-24 00:57:20
 tags:
- - ffmepg
+ - ffmpeg
  - qt
+categories:
+ - ffmpeg
 ---
 # 音频播放
 ## 源码文件

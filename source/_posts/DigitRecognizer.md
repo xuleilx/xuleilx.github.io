@@ -1,7 +1,9 @@
 ---
 title: DigitRecognizer
 date: 2018-06-12 20:26:31
-tags: Kaggle
+tags: 机器学习
+categories:
+ - 机器学习
 ---
 0、概述
 ========

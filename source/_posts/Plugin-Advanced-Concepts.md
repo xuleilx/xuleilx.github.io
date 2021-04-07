@@ -2,8 +2,10 @@
 title: '[Plugin]Advanced Concepts'
 date: 2021-01-21 00:59:29
 tags:
-  - Gstreamer
-  - Media
+ - Gstreamer
+ - Media
+categories:
+ - Gstreamer
 ---
 # Playbin连接流程
 

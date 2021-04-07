@@ -1,7 +1,9 @@
 ---
-title: tensorflow学习之二次曲线
+title: tensorflow之二次曲线
 date: 2017-12-17 20:59:17
-tags: tensorflow
+tags: 机器学习
+categories:
+ - 机器学习
 ---
 代码：
 

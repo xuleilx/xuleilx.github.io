@@ -1,7 +1,9 @@
 ---
-title: FFmpeg指令汇总
+title: ffmpeg指令汇总
 date: 2021-02-22 23:51:02
 tags:
+ - ffmpeg
+categories:
  - ffmpeg
 ---
 # ffmpeg常用命令

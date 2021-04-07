@@ -2,6 +2,8 @@
 title: USB笔记2_HID
 date: 2020-08-17 20:31:22
 tags: USB
+categories:
+ - 设备驱动
 ---
 
 # USB笔记2_HID

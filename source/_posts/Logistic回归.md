@@ -1,7 +1,10 @@
 ---
 title: Logistic回归
 date: 2018-05-29 22:00:25
+mathjax: true
 tags: 机器学习
+categories:
+ - 机器学习
 ---
 0、概述
 ========

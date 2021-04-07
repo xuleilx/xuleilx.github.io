@@ -2,6 +2,8 @@
 title: USB笔记3_复合设备
 date: 2020-08-17 20:33:23
 tags: USB
+categories:
+ - 设备驱动
 ---
 
 # USB笔记3_复合设备

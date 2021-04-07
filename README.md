@@ -33,5 +33,7 @@ git config --global https.proxy https://192.168.23.40:7890
 tags:
   - tag1
   - tag2
-<tab>-<space>tagname
+categories:
+ - name
+<space>-<space>tagname
 ```

@@ -2,8 +2,10 @@
 title: ffmpeg源码example解析之decode_video
 date: 2021-03-17 18:28:13
 tags:
- - ffmepg
+ - ffmpeg
  - qt
+categories:
+ - ffmpeg
 ---
 # 视频解码流程
 ## 源码文件

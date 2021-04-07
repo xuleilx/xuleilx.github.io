@@ -2,6 +2,8 @@
 title: 关于Pop音解决方案
 date: 2020-11-27 00:53:26
 tags: Media
+categories:
+ - 经验分享
 ---
 
 ## 现象分析

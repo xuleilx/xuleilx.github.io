@@ -2,6 +2,8 @@
 title: 关于解码Carlife的h264视频流时程序Dump的调查
 date: 2020-11-26 23:19:20
 tags: gdb
+categories:
+ - 经验分享
 ---
 
 # 关于解码Carlife的h264视频流时程序Dump的调查
