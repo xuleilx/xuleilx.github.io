@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://xuleilx.github.io/images/atomic_patch.jpg">
 <meta property="og:image" content="https://xuleilx.github.io/images/pcm_wait.jpg">
 <meta property="og:image" content="https://xuleilx.github.io/images/snd_pcm_dsnoop_open.jpg">
-<meta property="og:updated_time" content="2020-11-30T03:45:30.640Z">
+<meta property="og:updated_time" content="2021-04-07T09:34:31.202Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="启动Siri导致车机卡死问题分析">
 <meta name="twitter:description" content="启动Siri导致车机卡死问题分析问题现象启动Siri后，车机卡顿，串口输入输出卡顿。CPU使用率达到接近100%。 再现步骤启动Siri 根本原因直接原因录声音的时候用到snd_pcm_wait接口，来判断是否用数据即使没有数据snd_pcm_wait也会直接返回，_GetAvailDelayWithTimestamp函数中的snd_pcm_status循环调用ioctl判断有无数据，导致CPU">
@@ -385,6 +385,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/经验分享/" itemprop="url" rel="index">
+                    <span itemprop="name">经验分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -610,13 +632,22 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
             
               
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
