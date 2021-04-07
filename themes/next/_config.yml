@@ -53,14 +53,6 @@ footer:
   # Any custom text can be defined here.
   #custom_text: Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a>
 
-# mermaid chart
-mermaid: ## mermaid url https://github.com/knsv/mermaid
-  enable: true  # default true
-  theme: forest
-  version: "8.0.0" # default v7.1.2
-  options:  # find more api options from https://github.com/knsv/mermaid/blob/master/src/mermaidAPI.js
-  #startOnload: true  // default true
-
 # ---------------------------------------------------------------
 # SEO Settings
 # ---------------------------------------------------------------

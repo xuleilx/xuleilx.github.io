@@ -2,7 +2,7 @@
 title: FFmpeg之数据结构
 date: 2021-04-06 23:42:26
 tags:
- - ffmpeg
+	- ffmpeg
 ---
 # FFMpeg中关键数据结构之间的关系
 
@@ -24,10 +24,9 @@ A --> E0["AVStream[1]"]
     	D0 --> D1[AVCodecContext] --> D2[AVCodec]
     	E0 --> E1[AVCodecContext] --> E2[AVCodec]
     end
-
 A1[AVFrame]
-
 ```
+
 - 每个AVStream存储一个视频/音频流的相关数据；
 - 每个AVStream对应一个AVCodecContext，存储该视频/音频流使用解码方式的相关数据；
 - 每个AVCodecContext中对应一个AVCodec，包含该视频/音频对应的解码器。
@@ -52,21 +51,7 @@ AVIContext 子类，包含指向父类的指针以及子类特有属性。
 
 AVFormatContext通过AVInputFormat调用avidec封装器的函数，设置AVIContext 特有属性和AVFormatContext通用属性。
 
-```mermaid
-classDiagram
-      AVFormatContext <|-- AVIContext
-      AVFormatContext o-- AVInputFormat
-      AVInputFormat <|.. AVIContext
-      AVFormatContext : +ff_const59 struct AVInputFormat *iformat
-      AVFormatContext : +void *priv_data
-      class AVIContext{
-          +const AVClass *class
-      }
-      class AVInputFormat{
-          -read_probe()
-          -read_header()
-      }
-```
+![image](https://xuleilx.github.io/images/AVFormatContext.png)
 
 ```c
 // libavformat/avformat.h
@@ -169,22 +154,7 @@ MsrleContext子类，包含指向父类的指针以及子类特有属性。
 
 AVCodecContext通过AVCodec调用Msrle解码器的函数，设置MsrleContext特有属性和AVCodecContext通用属性。
 
-```mermaid
-classDiagram
-      AVCodecContext <|-- MsrleContext
-      AVCodecContext o-- AVCodec
-      AVCodec <|.. MsrleContext
-      AVCodecContext : +const struct AVCodec  *codec
-      AVCodecContext : +void *priv_data
-      class MsrleContext{
-          +AVCodecContext *avctx
-      }
-      class AVCodec{
-          -int sizeInFeet
-          -init()
-          -decode()
-      }
-```
+![image](https://xuleilx.github.io/images/AVCodecContext.png)
 
 
 ```c
