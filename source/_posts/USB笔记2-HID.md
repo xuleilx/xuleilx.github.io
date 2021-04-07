@@ -1,7 +1,7 @@
 ---
 title: USB笔记2_HID
 date: 2020-08-17 20:31:22
-tags:
+tags: USB
 ---
 
 # USB笔记2_HID

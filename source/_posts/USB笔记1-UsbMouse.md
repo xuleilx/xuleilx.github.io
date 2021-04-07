@@ -1,7 +1,7 @@
 ---
 title: USB笔记1_UsbMouse
 date: 2020-08-11 20:34:38
-tags:
+tags: USB
 ---
 
 # USB笔记1_UsbMouse
