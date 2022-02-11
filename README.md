@@ -5,6 +5,7 @@ hexo官网，安装hexo
 cd ~
 npm install --save hexo-deployer-git
 apt-get -y install build-essential nghttp2 libnghttp2-dev libssl-dev
+rm -rf node_modules && npm install --force # 在目标文件夹下生成node_modules，否则hexo执行失败
 
 # 创建博客
 hexo new [layout] <title>
