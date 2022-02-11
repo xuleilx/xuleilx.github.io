@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="USB," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="USB笔记3_复合设备本篇主要浅谈支持多功能的设备。至少有两种方法能够实现：  只是用一个接口，但是使用两个应用集合和两个报告。 使用两个接口，一个接口实现键盘功能，另一个接口实现鼠标功能。  方法一：一个接口、两个集合、两个报告通过修改报告描述符实现。一个描述符中可以具有多个外层应用集合，而系统软件就是通过分析外层应用集合的功能来增加不通的设备和驱动的。因此在这里，只需要实现用途分别为键盘和鼠标">
+<meta name="keywords" content="USB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="USB笔记3_复合设备">
+<meta property="og:url" content="http://yoursite.com/2020/08/17/USB笔记3-复合设备/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="USB笔记3_复合设备本篇主要浅谈支持多功能的设备。至少有两种方法能够实现：  只是用一个接口，但是使用两个应用集合和两个报告。 使用两个接口，一个接口实现键盘功能，另一个接口实现鼠标功能。  方法一：一个接口、两个集合、两个报告通过修改报告描述符实现。一个描述符中可以具有多个外层应用集合，而系统软件就是通过分析外层应用集合的功能来增加不通的设备和驱动的。因此在这里，只需要实现用途分别为键盘和鼠标">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="USB笔记3_复合设备">
+<meta name="twitter:description" content="USB笔记3_复合设备本篇主要浅谈支持多功能的设备。至少有两种方法能够实现：  只是用一个接口，但是使用两个应用集合和两个报告。 使用两个接口，一个接口实现键盘功能，另一个接口实现鼠标功能。  方法一：一个接口、两个集合、两个报告通过修改报告描述符实现。一个描述符中可以具有多个外层应用集合，而系统软件就是通过分析外层应用集合的功能来增加不通的设备和驱动的。因此在这里，只需要实现用途分别为键盘和鼠标">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/08/17/USB笔记3-复合设备/"/>
+
+
+
+
+
+  <title>USB笔记3_复合设备 | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/USB笔记3-复合设备/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">USB笔记3_复合设备</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-17T20:33:23+08:00">
+                2020-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设备驱动/" itemprop="url" rel="index">
+                    <span itemprop="name">设备驱动</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="USB笔记3-复合设备"><a href="#USB笔记3-复合设备" class="headerlink" title="USB笔记3_复合设备"></a>USB笔记3_复合设备</h1><p>本篇主要浅谈支持多功能的设备。<br>至少有两种方法能够实现：</p>
+<ol>
+<li>只是用一个接口，但是使用两个应用集合和两个报告。</li>
+<li>使用两个接口，一个接口实现键盘功能，另一个接口实现鼠标功能。</li>
+</ol>
+<h2 id="方法一：一个接口、两个集合、两个报告"><a href="#方法一：一个接口、两个集合、两个报告" class="headerlink" title="方法一：一个接口、两个集合、两个报告"></a>方法一：一个接口、两个集合、两个报告</h2><p>通过修改报告描述符实现。一个描述符中可以具有多个外层应用集合，而系统软件就是通过分析外层应用集合的功能来增加不通的设备和驱动的。因此在这里，只需要实现用途分别为键盘和鼠标的两个应用集合即可。同时，每个应用集合里还需要增加一个报告ID，以区分返回数据。报告ID是报告输入或者输出时的第一个字节，当没有定义报告ID时，报告前面就没有报告ID。对于返回的没有报告ID的报告，人体学输入设备驱动会自动增加一个报告ID 0；而应用程序在发送数据出去时，也要带一个值为0的报告ID。人体学输入设备驱动会自动去掉这个值为0的报告ID，只发送数据出去。<br>注意：报告ID一旦定义，输入报告和输出报告的第一字节都是报告ID。例如：本例中的键盘，从端点1读输出报告数据时要读2字节的数据，第一字节为报告ID，第二字节才是真正的报告数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br></pre></td><td class="code"><pre><span class="line">//USB报告描述符的定义</span><br><span class="line">//该报告描述符定义了两个顶层应用集合——键盘和鼠标。</span><br><span class="line">code uint8 ReportDescriptor[]=</span><br><span class="line">&#123;</span><br><span class="line"> //每行开始的第一字节为该条目的前缀，前缀的格式为：</span><br><span class="line"> //D7~D4：bTag。D3~D2：bType；D1~D0：bSize。以下分别对每个条目注释。</span><br><span class="line"> </span><br><span class="line">/************************USB键盘部分报告描述符**********************/</span><br><span class="line">/*******************************************************************/</span><br><span class="line"> //这是一个全局（bType为1）条目，将用途页选择为普通桌面Generic Desktop Page(0x01)</span><br><span class="line"> //后面跟一字节数据（bSize为1），后面的字节数就不注释了，</span><br><span class="line"> //自己根据bSize来判断。</span><br><span class="line"> 0x05, 0x01, // USAGE_PAGE (Generic Desktop)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部（bType为2）条目，说明接下来的集合用途用于键盘</span><br><span class="line"> 0x09, 0x06, // USAGE (Keyboard)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目（bType为0）条目，开集合，后面跟的数据0x01表示</span><br><span class="line"> //该集合是一个应用集合。它的性质在前面由用途页和用途定义为</span><br><span class="line"> //普通桌面用的键盘。</span><br><span class="line"> 0xa1, 0x01, // COLLECTION (Application)</span><br><span class="line"> </span><br><span class="line"> //报告ID，这里定义键盘报告的ID为1（报告ID 0是保留的）</span><br><span class="line"> 0x85, 0x01, //Report ID (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，选择用途页为键盘（Keyboard/Keypad(0x07)）</span><br><span class="line"> 0x05, 0x07, //     USAGE_PAGE (Keyboard/Keypad)</span><br><span class="line"></span><br><span class="line"> //这是一个局部条目，说明用途的最小值为0xe0。实际上是键盘左Ctrl键。</span><br><span class="line"> //具体的用途值可在HID用途表中查看。</span><br><span class="line"> 0x19, 0xe0, //     USAGE_MINIMUM (Keyboard LeftControl)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途的最大值为0xe7。实际上是键盘右GUI键。</span><br><span class="line"> 0x29, 0xe7, //     USAGE_MAXIMUM (Keyboard Right GUI)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明返回的数据的逻辑值（就是我们返回的数据域的值）</span><br><span class="line"> //最小为0。因为我们这里用Bit来表示一个数据域，因此最小为0，最大为1。</span><br><span class="line"> 0x15, 0x00, //     LOGICAL_MINIMUM (0)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明逻辑值最大为1。</span><br><span class="line"> 0x25, 0x01, //     LOGICAL_MAXIMUM (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域的数量为八个。</span><br><span class="line"> 0x95, 0x08, //     REPORT_COUNT (8)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明每个数据域的长度为1个bit。</span><br><span class="line"> 0x75, 0x01, //     REPORT_SIZE (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，说明有8个长度为1bit的数据域（数量和长度</span><br><span class="line"> //由前面的两个全局条目所定义）用来做为输入，</span><br><span class="line"> //属性为：Data,Var,Abs。Data表示这些数据可以变动，Var表示</span><br><span class="line"> //这些数据域是独立的，每个域表示一个意思。Abs表示绝对值。</span><br><span class="line"> //这样定义的结果就是，当某个域的值为1时，就表示对应的键按下。</span><br><span class="line"> //bit0就对应着用途最小值0xe0，bit7对应着用途最大值0xe7。</span><br><span class="line"> 0x81, 0x02, //     INPUT (Data,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域数量为1个</span><br><span class="line"> 0x95, 0x01, //     REPORT_COUNT (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明每个数据域的长度为8bit。</span><br><span class="line"> 0x75, 0x08, //     REPORT_SIZE (8)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，输入用，由前面两个全局条目可知，长度为8bit，</span><br><span class="line"> //数量为1个。它的属性为常量（即返回的数据一直是0）。</span><br><span class="line"> //该字节是保留字节（保留给OEM使用）。</span><br><span class="line"> 0x81, 0x03, //     INPUT (Cnst,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目。定义位域数量为6个。</span><br><span class="line"> 0x95, 0x06, //   REPORT_COUNT (6)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目。定义每个位域长度为8bit。</span><br><span class="line"> //其实这里这个条目不要也是可以的，因为在前面已经有一个定义</span><br><span class="line"> //长度为8bit的全局条目了。</span><br><span class="line"> 0x75, 0x08, //   REPORT_SIZE (8)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，定义逻辑最小值为0。</span><br><span class="line"> //同上，这里这个全局条目也是可以不要的，因为前面已经有一个</span><br><span class="line"> //定义逻辑最小值为0的全局条目了。</span><br><span class="line"> 0x15, 0x00, //   LOGICAL_MINIMUM (0)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，定义逻辑最大值为255。</span><br><span class="line"> 0x25, 0xFF, //   LOGICAL_MAXIMUM (255)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，选择用途页为键盘。</span><br><span class="line"> //前面已经选择过用途页为键盘了，所以该条目不要也可以。</span><br><span class="line"> 0x05, 0x07, //   USAGE_PAGE (Keyboard/Keypad)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，定义用途最小值为0（0表示没有键按下）</span><br><span class="line"> 0x19, 0x00, //   USAGE_MINIMUM (Reserved (no event indicated))</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，定义用途最大值为0x65</span><br><span class="line"> 0x29, 0x65, //   USAGE_MAXIMUM (Keyboard Application)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目。它说明这六个8bit的数据域是输入用的，</span><br><span class="line"> //属性为：Data,Ary,Abs。Data说明数据是可以变的，Ary说明</span><br><span class="line"> //这些数据域是一个数组，即每个8bit都可以表示某个键值，</span><br><span class="line"> //如果按下的键太多（例如超过这里定义的长度或者键盘本身无法</span><br><span class="line"> //扫描出按键情况时），则这些数据返回全1（二进制），表示按键无效。</span><br><span class="line"> //Abs表示这些值是绝对值。</span><br><span class="line"> 0x81, 0x00, //     INPUT (Data,Ary,Abs)</span><br><span class="line"></span><br><span class="line"> //以下为输出报告的描述</span><br><span class="line"> //逻辑最小值前面已经有定义为0了，这里可以省略。 </span><br><span class="line"> //这是一个全局条目，说明逻辑值最大为1。</span><br><span class="line"> 0x25, 0x01, //     LOGICAL_MAXIMUM (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域数量为5个。 </span><br><span class="line"> 0x95, 0x05, //   REPORT_COUNT (5)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域的长度为1bit。</span><br><span class="line"> 0x75, 0x01, //   REPORT_SIZE (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明使用的用途页为指示灯（LED）</span><br><span class="line"> 0x05, 0x08, //   USAGE_PAGE (LEDs)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途最小值为数字键盘灯。</span><br><span class="line"> 0x19, 0x01, //   USAGE_MINIMUM (Num Lock)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途最大值为Kana灯。</span><br><span class="line"> 0x29, 0x05, //   USAGE_MAXIMUM (Kana)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目。定义输出数据，即前面定义的5个LED。</span><br><span class="line"> 0x91, 0x02, //   OUTPUT (Data,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目。定义位域数量为1个。</span><br><span class="line"> 0x95, 0x01, //   REPORT_COUNT (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目。定义位域长度为3bit。</span><br><span class="line"> 0x75, 0x03, //   REPORT_SIZE (3)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，定义输出常量，前面用了5bit，所以这里需要</span><br><span class="line"> //3个bit来凑成一字节。</span><br><span class="line"> 0x91, 0x03, //   OUTPUT (Cnst,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //下面这个主条目用来关闭前面的集合。bSize为0，所以后面没数据。</span><br><span class="line"> 0xc0,        // END_COLLECTION</span><br><span class="line">//以下注释不包括第一字节报告ID。</span><br><span class="line">//通过上面的报告描述符的定义，我们知道返回的输入报告具有8字节。</span><br><span class="line">//第一字节的8个bit用来表示特殊键是否按下（例如Shift、Alt等键）。</span><br><span class="line">//第二字节为保留值，值为常量0。第三到第八字节是一个普通键键值的</span><br><span class="line">//数组，当没有键按下时，全部6个字节值都为0。当只有一个普通键按下时，</span><br><span class="line">//这六个字节中的第一字节值即为该按键的键值（具体的键值请看HID的</span><br><span class="line">//用途表文档），当有多个普通键同时按下时，则同时返回这些键的键值。</span><br><span class="line">//如果按下的键太多，则这六个字节都为0xFF（不能返回0x00，这样会让</span><br><span class="line">//操作系统认为所有键都已经释放）。至于键值在数组中的先后顺序是</span><br><span class="line">//无所谓的，操作系统会负责检查是否有新键按下。我们应该在中断端点1</span><br><span class="line">//中按照上面的格式返回实际的键盘数据。另外，报告中还定义了一个字节</span><br><span class="line">//的输出报告，是用来控制LED情况的。只使用了低7位，高1位是保留值0。</span><br><span class="line">//当某位的值为1时，则表示对应的LED要点亮。操作系统会负责同步各个</span><br><span class="line">//键盘之间的LED，例如你有两块键盘，一块的数字键盘灯亮时，另一块</span><br><span class="line">//也会跟着亮。键盘本身不需要判断各种LED应该何时亮，它只是等待主机</span><br><span class="line">//发送报告给它，然后根据报告值来点亮相应的LED。我们在端点1输出中断</span><br><span class="line">//中读出这1字节的输出报告，然后对它取反（因为学习板上的LED是低电平时</span><br><span class="line">//亮），直接发送到LED上。这样main函数中按键点亮LED的代码就不需要了。</span><br><span class="line"></span><br><span class="line">/************************USB鼠标部分报告描述符**********************/</span><br><span class="line">/*******************************************************************/</span><br><span class="line"></span><br><span class="line"> //这是一个全局（bType为1）条目，选择用途页为普通桌面Generic Desktop Page(0x01)</span><br><span class="line"> 0x05, 0x01, // USAGE_PAGE (Generic Desktop)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部（bType为2）条目，说明接下来的应用集合用途用于鼠标</span><br><span class="line"> 0x09, 0x02, // USAGE (Mouse)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目（bType为0）条目，开集合，后面跟的数据0x01表示</span><br><span class="line"> //该集合是一个应用集合。它的性质在前面由用途页和用途定义为</span><br><span class="line"> //普通桌面用的鼠标。</span><br><span class="line"> 0xa1, 0x01, // COLLECTION (Application)</span><br><span class="line"> </span><br><span class="line"> //报告ID，这里定义鼠标报告的ID为2</span><br><span class="line"> 0x85, 0x02, //Report ID (2)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目。说明用途为指针集合</span><br><span class="line"> 0x09, 0x01, //   USAGE (Pointer)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，开集合，后面跟的数据0x00表示该集合是一个</span><br><span class="line"> //物理集合，用途由前面的局部条目定义为指针集合。</span><br><span class="line"> 0xa1, 0x00, //   COLLECTION (Physical)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，选择用途页为按键（Button Page(0x09)）</span><br><span class="line"> 0x05, 0x09, //     USAGE_PAGE (Button)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途的最小值为1。实际上是鼠标左键。</span><br><span class="line"> 0x19, 0x01, //     USAGE_MINIMUM (Button 1)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途的最大值为3。实际上是鼠标中键。</span><br><span class="line"> 0x29, 0x03, //     USAGE_MAXIMUM (Button 3)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明返回的数据的逻辑值（就是我们返回的数据域的值啦）</span><br><span class="line"> //最小为0。因为我们这里用Bit来表示一个数据域，因此最小为0，最大为1。</span><br><span class="line"> 0x15, 0x00, //     LOGICAL_MINIMUM (0)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明逻辑值最大为1。</span><br><span class="line"> 0x25, 0x01, //     LOGICAL_MAXIMUM (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域的数量为三个。</span><br><span class="line"> 0x95, 0x03, //     REPORT_COUNT (3)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明每个数据域的长度为1个bit。</span><br><span class="line"> 0x75, 0x01, //     REPORT_SIZE (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，说明有3个长度为1bit的数据域（数量和长度</span><br><span class="line"> //由前面的两个全局条目所定义）用来做为输入，</span><br><span class="line"> //属性为：Data,Var,Abs。Data表示这些数据可以变动，Var表示</span><br><span class="line"> //这些数据域是独立的，每个域表示一个意思。Abs表示绝对值。</span><br><span class="line"> //这样定义的结果就是，第一个数据域bit0表示按键1（左键）是否按下，</span><br><span class="line"> //第二个数据域bit1表示按键2（右键）是否按下，第三个数据域bit2表示</span><br><span class="line"> //按键3（中键）是否按下。</span><br><span class="line"> 0x81, 0x02, //     INPUT (Data,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域数量为1个</span><br><span class="line"> 0x95, 0x01, //     REPORT_COUNT (1)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明每个数据域的长度为5bit。</span><br><span class="line"> 0x75, 0x05, //     REPORT_SIZE (5)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目，输入用，由前面两个全局条目可知，长度为5bit，</span><br><span class="line"> //数量为1个。它的属性为常量（即返回的数据一直是0）。</span><br><span class="line"> //这个只是为了凑齐一个字节（前面用了3个bit）而填充的一些数据</span><br><span class="line"> //而已，所以它是没有实际用途的。</span><br><span class="line"> 0x81, 0x03, //     INPUT (Cnst,Var,Abs)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，选择用途页为普通桌面Generic Desktop Page(0x01)</span><br><span class="line"> 0x05, 0x01, //     USAGE_PAGE (Generic Desktop)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途为X轴</span><br><span class="line"> 0x09, 0x30, //     USAGE (X)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途为Y轴</span><br><span class="line"> 0x09, 0x31, //     USAGE (Y)</span><br><span class="line"> </span><br><span class="line"> //这是一个局部条目，说明用途为滚轮</span><br><span class="line"> 0x09, 0x38, //     USAGE (Wheel)</span><br><span class="line"> </span><br><span class="line"> //下面两个为全局条目，说明返回的逻辑最小和最大值。</span><br><span class="line"> //因为鼠标指针移动时，通常是用相对值来表示的，</span><br><span class="line"> //相对值的意思就是，当指针移动时，只发送移动量。</span><br><span class="line"> //往右移动时，X值为正；往下移动时，Y值为正。</span><br><span class="line"> //对于滚轮，当滚轮往上滚时，值为正。</span><br><span class="line"> 0x15, 0x81, //     LOGICAL_MINIMUM (-127)</span><br><span class="line"> 0x25, 0x7f, //     LOGICAL_MAXIMUM (127)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域的长度为8bit。</span><br><span class="line"> 0x75, 0x08, //     REPORT_SIZE (8)</span><br><span class="line"> </span><br><span class="line"> //这是一个全局条目，说明数据域的个数为3个。</span><br><span class="line"> 0x95, 0x03, //     REPORT_COUNT (3)</span><br><span class="line"> </span><br><span class="line"> //这是一个主条目。它说明这三个8bit的数据域是输入用的，</span><br><span class="line"> //属性为：Data,Var,Rel。Data说明数据是可以变的，Var说明</span><br><span class="line"> //这些数据域是独立的，即第一个8bit表示X轴，第二个8bit表示</span><br><span class="line"> //Y轴，第三个8bit表示滚轮。Rel表示这些值是相对值。</span><br><span class="line"> 0x81, 0x06, //     INPUT (Data,Var,Rel)</span><br><span class="line"> </span><br><span class="line"> //下面这两个主条目用来关闭前面的集合用。</span><br><span class="line"> //我们开了两个集合，所以要关两次。bSize为0，所以后面没数据。</span><br><span class="line"> 0xc0,       //   END_COLLECTION</span><br><span class="line"> 0xc0        // END_COLLECTION</span><br><span class="line">//以下注释不包括第一字节报告ID。</span><br><span class="line">//通过上面的报告描述符的定义，我们知道返回的输入报告具有4字节。</span><br><span class="line">//第一字节的低3位用来表示按键是否按下的，高5位为常数0，无用。</span><br><span class="line">//第二字节表示X轴改的变量，第三字节表示Y轴的改变量，第四字节表示</span><br><span class="line">//滚轮的改变量。我们在中断端点1中应该要按照上面的格式返回实际的</span><br><span class="line">//鼠标数据。</span><br><span class="line">&#125;;</span><br><span class="line">//由于该报告使用了报告ID，因此报告在返回时，需要在最前面增加</span><br><span class="line">//一字节的报告ID。当报告ID为1时，返回的数据是键盘数据；</span><br><span class="line">//当报告ID为2时，返回的数据是鼠标数据。</span><br></pre></td></tr></table></figure></p>
+<p>由于多了一个Report ID，所以构造report的时候是9个字节，而不是之前的8个字节。</p>
+<h2 id="方法二：两个接口、各一个HID描述符、各一个报告描述符"><a href="#方法二：两个接口、各一个HID描述符、各一个报告描述符" class="headerlink" title="方法二：两个接口、各一个HID描述符、各一个报告描述符"></a>方法二：两个接口、各一个HID描述符、各一个报告描述符</h2><p>使用两个接口，每个接口实现一个HID设备。这样每个接口需要一个报告描述符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[配置描述符集合] --&gt; B(配置描述符)</span><br><span class="line">B --&gt; C[第一个接口描述符]</span><br><span class="line">B --&gt; D[第二个接口描述符]</span><br><span class="line">C--&gt; G[HID描述符]</span><br><span class="line">C--&gt; H[输入端点描述符]</span><br><span class="line">C--&gt; I[输出端点描述符]</span><br><span class="line">D--&gt; J[HID描述符]</span><br><span class="line">D--&gt; K[输入端点描述符]</span><br><span class="line">D--&gt; L[输出端点描述符]</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br></pre></td><td class="code"><pre><span class="line">//USB配置描述符集合的定义</span><br><span class="line">//配置描述符总长度为9+9+9+7+7+9+9+7字节</span><br><span class="line">code uint8 ConfigurationDescriptor[9+9+9+7+7+9+9+7]=</span><br><span class="line">&#123;</span><br><span class="line"> /***************配置描述符***********************/</span><br><span class="line"> //bLength字段。配置描述符的长度为9字节。</span><br><span class="line"> 0x09,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。配置描述符编号为0x02。</span><br><span class="line"> 0x02,</span><br><span class="line"> </span><br><span class="line"> //wTotalLength字段。配置描述符集合的总长度，</span><br><span class="line"> //包括配置描述符本身、接口描述符、类描述符、端点描述符等。</span><br><span class="line"> sizeof(ConfigurationDescriptor)&amp;0xFF, //低字节</span><br><span class="line"> (sizeof(ConfigurationDescriptor)&gt;&gt;8)&amp;0xFF, //高字节</span><br><span class="line"> </span><br><span class="line"> //bNumInterfaces字段。该配置包含的接口数，有两个接口。</span><br><span class="line"> 0x02,</span><br><span class="line"> </span><br><span class="line"> //bConfiguration字段。该配置的值为1。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //iConfigurationz字段，该配置的字符串索引。这里没有，为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bmAttributes字段，该设备的属性。由于我们的板子是总线供电的，</span><br><span class="line"> //并且我们不想实现远程唤醒的功能，所以该字段的值为0x80。</span><br><span class="line"> 0x80,</span><br><span class="line"> </span><br><span class="line"> //bMaxPower字段，该设备需要的最大电流量。由于我们的板子</span><br><span class="line"> //需要的电流不到100mA，因此我们这里设置为100mA。由于每单位</span><br><span class="line"> //电流为2mA，所以这里设置为50(0x32)。</span><br><span class="line"> 0x32,</span><br><span class="line"> </span><br><span class="line"> /*******************第一个接口描述符*********************/</span><br><span class="line"> //bLength字段。接口描述符的长度为9字节。</span><br><span class="line"> 0x09,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。接口描述符的编号为0x04。</span><br><span class="line"> 0x04,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceNumber字段。该接口的编号，第一个接口，编号为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bAlternateSetting字段。该接口的备用编号，为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bNumEndpoints字段。非0端点的数目。由于USB键盘需要二个</span><br><span class="line"> //中断端点（一个输入一个输出），因此该值为2。</span><br><span class="line"> 0x02,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceClass字段。该接口所使用的类。USB键盘是HID类，</span><br><span class="line"> //HID类的编码为0x03。</span><br><span class="line"> 0x03,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceSubClass字段。该接口所使用的子类。在HID1.1协议中，</span><br><span class="line"> //只规定了一种子类：支持BIOS引导启动的子类。</span><br><span class="line"> //USB键盘、鼠标属于该子类，子类代码为0x01。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceProtocol字段。如果子类为支持引导启动的子类，</span><br><span class="line"> //则协议可选择鼠标和键盘。键盘代码为0x01，鼠标代码为0x02。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //iConfiguration字段。该接口的字符串索引值。这里没有，为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> /******************HID描述符************************/</span><br><span class="line"> //bLength字段。本HID描述符下只有一个下级描述符。所以长度为9字节。</span><br><span class="line"> 0x09,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。HID描述符的编号为0x21。</span><br><span class="line"> 0x21,</span><br><span class="line"> </span><br><span class="line"> //bcdHID字段。本协议使用的HID1.1协议。注意低字节在先。</span><br><span class="line"> 0x10,</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bCountyCode字段。设备适用的国家代码，这里选择为美国，代码0x21。</span><br><span class="line"> 0x21,</span><br><span class="line"> </span><br><span class="line"> //bNumDescriptors字段。下级描述符的数目。我们只有一个报告描述符。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bDescritporType字段。下级描述符的类型，为报告描述符，编号为0x22。</span><br><span class="line"> 0x22,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorLength字段。</span><br><span class="line"> //下级描述符的长度。下级描述符为键盘报告描述符。</span><br><span class="line"> sizeof(KeyboardReportDescriptor)&amp;0xFF,</span><br><span class="line"> (sizeof(KeyboardReportDescriptor)&gt;&gt;8)&amp;0xFF,</span><br><span class="line"> </span><br><span class="line"> /**********************输入端点描述符***********************/</span><br><span class="line"> //bLength字段。端点描述符长度为7字节。</span><br><span class="line"> 0x07,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。端点描述符编号为0x05。</span><br><span class="line"> 0x05,</span><br><span class="line"> </span><br><span class="line"> //bEndpointAddress字段。端点的地址。我们使用D12的输入端点1。</span><br><span class="line"> //D7位表示数据方向，输入端点D7为1。所以输入端点1的地址为0x81。</span><br><span class="line"> 0x81,</span><br><span class="line"> </span><br><span class="line"> //bmAttributes字段。D1~D0为端点传输类型选择。</span><br><span class="line"> //该端点为中断端点。中断端点的编号为3。其它位保留为0。</span><br><span class="line"> 0x03,</span><br><span class="line"> </span><br><span class="line"> //wMaxPacketSize字段。该端点的最大包长。端点1的最大包长为16字节。</span><br><span class="line"> //注意低字节在先。</span><br><span class="line"> 0x10,</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bInterval字段。端点查询的时间，我们设置为10个帧时间，即10ms。</span><br><span class="line"> 0x0A,</span><br><span class="line"> </span><br><span class="line"> /**********************输出端点描述符***********************/</span><br><span class="line"> //bLength字段。端点描述符长度为7字节。</span><br><span class="line"> 0x07,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。端点描述符编号为0x05。</span><br><span class="line"> 0x05,</span><br><span class="line"> </span><br><span class="line"> //bEndpointAddress字段。端点的地址。我们使用D12的输出端点1。</span><br><span class="line"> //D7位表示数据方向，输出端点D7为0。所以输出端点1的地址为0x01。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bmAttributes字段。D1~D0为端点传输类型选择。</span><br><span class="line"> //该端点为中断端点。中断端点的编号为3。其它位保留为0。</span><br><span class="line"> 0x03,</span><br><span class="line"> </span><br><span class="line"> //wMaxPacketSize字段。该端点的最大包长。端点1的最大包长为16字节。</span><br><span class="line"> //注意低字节在先。</span><br><span class="line"> 0x10,</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bInterval字段。端点查询的时间，我们设置为10个帧时间，即10ms。</span><br><span class="line"> 0x0A,</span><br><span class="line"></span><br><span class="line"> /*******************第二个接口描述符*********************/</span><br><span class="line"> //bLength字段。接口描述符的长度为9字节。</span><br><span class="line"> 0x09,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。接口描述符的编号为0x04。</span><br><span class="line"> 0x04,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceNumber字段。该接口的编号，第二个接口，编号为1。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bAlternateSetting字段。该接口的备用编号，为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bNumEndpoints字段。非0端点的数目。由于USB鼠标需要一个</span><br><span class="line"> //中断输入端点，因此该值为1。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceClass字段。该接口所使用的类。USB键盘是HID类，</span><br><span class="line"> //HID类的编码为0x03。</span><br><span class="line"> 0x03,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceSubClass字段。该接口所使用的子类。在HID1.1协议中，</span><br><span class="line"> //只规定了一种子类：支持BIOS引导启动的子类。</span><br><span class="line"> //USB键盘、鼠标属于该子类，子类代码为0x01。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bInterfaceProtocol字段。如果子类为支持引导启动的子类，</span><br><span class="line"> //则协议可选择鼠标和键盘。键盘代码为0x01，鼠标代码为0x02。</span><br><span class="line"> 0x02,</span><br><span class="line"> </span><br><span class="line"> //iConfiguration字段。该接口的字符串索引值。这里没有，为0。</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> /******************HID描述符************************/</span><br><span class="line"> //bLength字段。本HID描述符下只有一个下级描述符。所以长度为9字节。</span><br><span class="line"> 0x09,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。HID描述符的编号为0x21。</span><br><span class="line"> 0x21,</span><br><span class="line"> </span><br><span class="line"> //bcdHID字段。本协议使用的HID1.1协议。注意低字节在先。</span><br><span class="line"> 0x10,</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bCountyCode字段。设备适用的国家代码，这里选择为美国，代码0x21。</span><br><span class="line"> 0x21,</span><br><span class="line"> </span><br><span class="line"> //bNumDescriptors字段。下级描述符的数目。我们只有一个报告描述符。</span><br><span class="line"> 0x01,</span><br><span class="line"> </span><br><span class="line"> //bDescritporType字段。下级描述符的类型，为报告描述符，编号为0x22。</span><br><span class="line"> 0x22,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorLength字段。</span><br><span class="line"> //下级描述符的长度。下级描述符为鼠标报告描述符。</span><br><span class="line"> sizeof(MouseReportDescriptor)&amp;0xFF,</span><br><span class="line"> (sizeof(MouseReportDescriptor)&gt;&gt;8)&amp;0xFF,</span><br><span class="line"> </span><br><span class="line"> /**********************输入端点描述符***********************/</span><br><span class="line"> //bLength字段。端点描述符长度为7字节。</span><br><span class="line"> 0x07,</span><br><span class="line"> </span><br><span class="line"> //bDescriptorType字段。端点描述符编号为0x05。</span><br><span class="line"> 0x05,</span><br><span class="line"> </span><br><span class="line"> //bEndpointAddress字段。端点的地址。我们使用D12的输入端点2。</span><br><span class="line"> //D7位表示数据方向，输入端点D7为1。所以输入端点2的地址为0x82。</span><br><span class="line"> 0x82,</span><br><span class="line"> </span><br><span class="line"> //bmAttributes字段。D1~D0为端点传输类型选择。</span><br><span class="line"> //该端点为中断端点。中断端点的编号为3。其它位保留为0。</span><br><span class="line"> 0x03,</span><br><span class="line"> </span><br><span class="line"> //wMaxPacketSize字段。该端点的最大包长。端点2的最大包长为64字节。</span><br><span class="line"> //注意低字节在先。</span><br><span class="line"> 0x40,</span><br><span class="line"> 0x00,</span><br><span class="line"> </span><br><span class="line"> //bInterval字段。端点查询的时间，我们设置为10个帧时间，即10ms。</span><br><span class="line"> 0x0A</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="三、QA"><a href="#三、QA" class="headerlink" title="三、QA"></a>三、QA</h2><p><strong>Q:无</strong><br>A:无</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/USB/" rel="tag"># USB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/17/USB笔记2-HID/" rel="next" title="USB笔记2_HID">
+                <i class="fa fa-chevron-left"></i> USB笔记2_HID
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/21/Linux内核完全注释-第三章/" rel="prev" title="Linux内核完全注释_第三章 内核编程语言和环境">
+                Linux内核完全注释_第三章 内核编程语言和环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#USB笔记3-复合设备"><span class="nav-number">1.</span> <span class="nav-text"><a href="#USB&#x7B14;&#x8BB0;3-&#x590D;&#x5408;&#x8BBE;&#x5907;" class="headerlink" title="USB&#x7B14;&#x8BB0;3_&#x590D;&#x5408;&#x8BBE;&#x5907;"></a>USB&#x7B14;&#x8BB0;3_&#x590D;&#x5408;&#x8BBE;&#x5907;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：一个接口、两个集合、两个报告"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x4E24;&#x4E2A;&#x96C6;&#x5408;&#x3001;&#x4E24;&#x4E2A;&#x62A5;&#x544A;" class="headerlink" title="&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x4E24;&#x4E2A;&#x96C6;&#x5408;&#x3001;&#x4E24;&#x4E2A;&#x62A5;&#x544A;"></a>&#x65B9;&#x6CD5;&#x4E00;&#xFF1A;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x4E24;&#x4E2A;&#x96C6;&#x5408;&#x3001;&#x4E24;&#x4E2A;&#x62A5;&#x544A;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：两个接口、各一个HID描述符、各一个报告描述符"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x4E24;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x5404;&#x4E00;&#x4E2A;HID&#x63CF;&#x8FF0;&#x7B26;&#x3001;&#x5404;&#x4E00;&#x4E2A;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;" class="headerlink" title="&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x4E24;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x5404;&#x4E00;&#x4E2A;HID&#x63CF;&#x8FF0;&#x7B26;&#x3001;&#x5404;&#x4E00;&#x4E2A;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;"></a>&#x65B9;&#x6CD5;&#x4E8C;&#xFF1A;&#x4E24;&#x4E2A;&#x63A5;&#x53E3;&#x3001;&#x5404;&#x4E00;&#x4E2A;HID&#x63CF;&#x8FF0;&#x7B26;&#x3001;&#x5404;&#x4E00;&#x4E2A;&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、QA"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;QA" class="headerlink" title="&#x4E09;&#x3001;QA"></a>&#x4E09;&#x3001;QA</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

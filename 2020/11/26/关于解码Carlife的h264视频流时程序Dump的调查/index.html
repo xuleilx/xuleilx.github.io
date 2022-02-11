@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="gdb," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于解码Carlife的h264视频流时程序Dump的调查■现象carlife黑屏。 ■再现步骤1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象） 2.A7项目有carlife功能的车机 （目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象） 3.连接carlife成功后，点击手机home">
+<meta name="keywords" content="gdb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于解码Carlife的h264视频流时程序Dump的调查">
+<meta property="og:url" content="http://yoursite.com/2020/11/26/关于解码Carlife的h264视频流时程序Dump的调查/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="关于解码Carlife的h264视频流时程序Dump的调查■现象carlife黑屏。 ■再现步骤1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象） 2.A7项目有carlife功能的车机 （目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象） 3.连接carlife成功后，点击手机home">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.963Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于解码Carlife的h264视频流时程序Dump的调查">
+<meta name="twitter:description" content="关于解码Carlife的h264视频流时程序Dump的调查■现象carlife黑屏。 ■再现步骤1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象） 2.A7项目有carlife功能的车机 （目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象） 3.连接carlife成功后，点击手机home">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/26/关于解码Carlife的h264视频流时程序Dump的调查/"/>
+
+
+
+
+
+  <title>关于解码Carlife的h264视频流时程序Dump的调查 | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/26/关于解码Carlife的h264视频流时程序Dump的调查/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于解码Carlife的h264视频流时程序Dump的调查</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-26T23:19:20+08:00">
+                2020-11-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/经验分享/" itemprop="url" rel="index">
+                    <span itemprop="name">经验分享</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="关于解码Carlife的h264视频流时程序Dump的调查"><a href="#关于解码Carlife的h264视频流时程序Dump的调查" class="headerlink" title="关于解码Carlife的h264视频流时程序Dump的调查"></a>关于解码Carlife的h264视频流时程序Dump的调查</h1><h2 id="■现象"><a href="#■现象" class="headerlink" title="■现象"></a>■现象</h2><p>carlife黑屏。</p>
+<h2 id="■再现步骤"><a href="#■再现步骤" class="headerlink" title="■再现步骤"></a>■再现步骤</h2><p>1.Iphone手机carlife版本更新至6.0及以上（5.9版本的手机carlife没有此现象）</p>
+<p>2.A7项目有carlife功能的车机</p>
+<p>（目前尝试了其他项目的A7车机均有此现象。I6平台的项目或使用PC软件播放Carlife的h264数据没有此现象）</p>
+<p>3.连接carlife成功后，点击手机home键退到主界面，车机carlife功能黑屏（程序崩溃）</p>
+<h2 id="■根本原因"><a href="#■根本原因" class="headerlink" title="■根本原因"></a>■根本原因</h2><p><strong>直接原因</strong>：<br>通过捕获Core文件，使用gdb调试，发现omx代码调用gstreamer接口一路调用到__memcpy_neon时程序Dump。</p>
+<p>memcpy拷贝的源地址是非法的地址。</p>
+<p><gstallocator.c><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">L127: memcpy (dinfo.data, sinfo.data +offset, size);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(gdb) p sinfo</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span>1 = &#123;memory = 0xaf704da0, flags =GST_MAP_READ, </span><br><span class="line"></span><br><span class="line">data = 0xac167000 &lt;error: Cannot accessmemory at address 0xac167000&gt;, ★非法地址</span><br><span class="line"></span><br><span class="line">size = 559104, maxsize = 559104, user_data= &#123;0xb6fceab8, 0xb65a019b, </span><br><span class="line"></span><br><span class="line">0xb683fda0, 0xb659c0e0&#125;, _gst_reserved =&#123;0x1, 0x7270e000, 0xaca77688, </span><br><span class="line"></span><br><span class="line">0x0&#125;&#125;</span><br></pre></td></tr></table></figure></gstallocator.c></p>
+<p><strong>诱因</strong>：</p>
+<p>在对Carlife传输给车机的H264码流进行解码时，</p>
+<p>我们发现SPS信息中level-id字段会随着Carlife应用在前后台改变而改变。</p>
+<p>具体说：</p>
+<p>Carlife手机应用在前台时SPS信息：00 00 0001 27 42 00 1F &lt;—（level-id：1F）</p>
+<p>Carlife手机应用在后台时SPS信息：00 00 0001 27 42 00 20 &lt;—（level-id：20）</p>
+<p>通过与高通沟通，得知Level 3.1（level-id：1F）和3.2（level-id：20）</p>
+<p>所支持的视频解析度范围不同，解码器一般会通过该值进行重新配置。</p>
+<p>相同解析度的情况下，如果从level 3.1 改成level 3.2不利于解码的稳定性。</p>
+<p><strong>根本原因</strong>:<br>高通调查后承认自己解码器的Bug，提供walkaround方案。没有考虑视频播放过程中重新配置解码器的情况。</p>
+<h2 id="■调查详细"><a href="#■调查详细" class="headerlink" title="■调查详细"></a>■调查详细</h2><h3 id="调试小插曲"><a href="#调试小插曲" class="headerlink" title="调试小插曲"></a>调试小插曲</h3><ol>
+<li><p>一开始直接使用gdb解析CoreDump的时候发现，bt打出来的信息都是？号，无疑这是因为我们的程序没有带-g编译参数，没有符号导致的。</p>
+</li>
+<li><p>加完-g参数重新编译后，可以完整的显示出了堆栈信息，但是没有行号信息。从gdb的提示信息可以看出，符号是正确加载了，很奇怪。</p>
+</li>
+<li><p>经过很多尝试之后，决定尝试替换车机里其他人拷贝进去的gdb，使用我在A7平台下编译生成的gdb命令，这下显示了所有想要的东西。</p>
+</li>
+</ol>
+<h3 id="调试开始"><a href="#调试开始" class="headerlink" title="调试开始"></a>调试开始</h3><p>下面开始展示真正的实力了：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> gdb /usr/app/carlife/CarlifeDaemon ./TinyVpuDec\:src_14988678226_2254.core</span><br><span class="line">Core was generated by `/usr/app/carlife/CarlifeDaemon -i'.</span><br><span class="line">Program terminated with signal SIGSEGV, Segmentation fault.</span><br><span class="line"><span class="meta">#</span>0  __memcpy_neon () at ../ports/sysdeps/arm/armv7/multiarch/memcpy_impl.S:568</span><br><span class="line">568	../ports/sysdeps/arm/armv7/multiarch/memcpy_impl.S: No such file or directory.</span><br><span class="line">(gdb) bt</span><br><span class="line"><span class="meta">#</span>0  __memcpy_neon () at ../ports/sysdeps/arm/armv7/multiarch/memcpy_impl.S:568</span><br><span class="line"><span class="meta">#</span>1  0xb6855ff2 in _fallback_mem_copy (mem=0xaf704da0, offset=0, size=559104)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstallocator.c:127</span><br><span class="line"><span class="meta">#</span>2  0xb685e3a6 in gst_buffer_copy_into (dest=0xaf711020, src=0xaf705ca0, </span><br><span class="line">    flags=(GST_BUFFER_COPY_FLAGS | GST_BUFFER_COPY_TIMESTAMPS | GST_BUFFER_COPY_META | GST_BUFFER_COPY_MEMORY | GST_BUFFER_COPY_DEEP), offset=0, size=559104)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstbuffer.c:498</span><br><span class="line"><span class="meta">#</span>3  0xb685e5bc in gst_buffer_copy_with_flags (buffer=0xaf705ca0, </span><br><span class="line">    flags=(GST_BUFFER_COPY_FLAGS | GST_BUFFER_COPY_TIMESTAMPS | GST_BUFFER_COPY_META | GST_BUFFER_COPY_MEMORY | GST_BUFFER_COPY_DEEP))</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstbuffer.c:579</span><br><span class="line"><span class="meta">#</span>4  0xb65b4cbc in gst_base_sink_drain (basesink=0x15ff3f8)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/libs/gst/base/gstbasesink.c:4918</span><br><span class="line"><span class="meta">#</span>5  0xb65b8e78 in gst_base_sink_default_query (basesink=0x15ff3f8, </span><br><span class="line">    query=0xaf70bc90)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/libs/gst/base/gstbasesink.c:4941</span><br><span class="line"><span class="meta">#</span>6  0xb688a152 in gst_pad_query (pad=pad@entry=0x15e2960, </span><br><span class="line">    query=query@entry=0xaf70bc90)</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstpad.c:3831</span><br><span class="line"><span class="meta">#</span>7  0xb688a624 in gst_pad_peer_query (pad=0x15e2810, </span><br><span class="line">    query=query@entry=0xaf70bc90)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstpad.c:3962</span><br><span class="line"><span class="meta">#</span>8  0xb03d1242 in gst_video_decoder_negotiate_pool (decoder=0x15f6158, </span><br><span class="line">    caps=&lt;optimized out&gt;)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/video/gstvideodecoder.c:3696</span><br><span class="line"><span class="meta">#</span>9  0xb03d585a in gst_video_decoder_negotiate (decoder=decoder@entry=0x15f6158)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0-plugins-base/1.6-r0/git/gst-libs/gst/video/gstvideodecoder.c:3872</span><br><span class="line"><span class="meta">#</span>10 0xb032cd92 in gst_omx_video_dec_reconfigure_output_port (</span><br><span class="line">    crop_rect=0xb0111168, crop_rect=0xb0111168, self=0x15f6158)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gst-omx/1.2-r0/git/omx/gstomxvideodec.c:1722</span><br><span class="line"><span class="meta">#</span>11 gst_omx_video_dec_loop (self=0x15f6158)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gst-omx/1.2-r0/git/omx/gstomxvideodec.c:1956</span><br><span class="line"><span class="meta">#</span>12 0xb68ab9ce in gst_task_func (task=0xb01136b8)</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gsttask.c:331</span><br><span class="line"><span class="meta">#</span>13 0xb6d06410 in g_thread_pool_thread_proxy (data=&lt;optimized out&gt;)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/cortexa7hf-vfp-poky-linux-gnueabi/glib-2.0/1_2.40.0-r0/glib-2.40.0/glib/gthreadpool.c:307</span><br><span class="line"><span class="meta">#</span>14 0xb6d05d02 in g_thread_proxy (data=0xaf702b80)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/cortexa7hf-vfp-poky-linux-gnueabi/glib-2.0/1_2.40.0-r0/glib-2.40.0/glib/gthread.c:764</span><br><span class="line"><span class="meta">#</span>15 0xb6b5145e in start_thread (arg=0xaca78910) at pthread_create.c:314</span><br><span class="line"><span class="meta">#</span>16 0xb699dd9c in ?? ()</span><br><span class="line">    at ../ports/sysdeps/unix/sysv/linux/arm/nptl/../clone.S:92</span><br><span class="line">   from /lib/arm-linux-gnueabihf/libc.so.6</span><br><span class="line">Backtrace stopped: previous frame identical to this frame (corrupt stack?)</span><br><span class="line">(gdb) frame 1</span><br><span class="line"><span class="meta">#</span>1  0xb6855ff2 in _fallback_mem_copy (mem=0xaf704da0, offset=0, size=559104)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstallocator.c:127</span><br><span class="line">127	/Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstallocator.c: No such file or directory.</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 结合代码可以发现，程序执行L127: memcpy (dinfo.data, sinfo.data +offset, size);时Dump了</span><br><span class="line"><span class="meta">#</span> 这时我们需要看一下pc指针指向什么地方Dump的。于是我们查看寄存器的信息。</span><br><span class="line"></span><br><span class="line">(gdb) info r</span><br><span class="line">r0             0xac1f0058	2887712856</span><br><span class="line">r1             0xac167000	2887151616</span><br><span class="line">r2             0x88800	559104</span><br><span class="line">r3             0x0	0</span><br><span class="line">r4             0x88800	559104</span><br><span class="line">r5             0xac1f0008	2887712776</span><br><span class="line">r6             0xaf704da0	2943372704</span><br><span class="line">r7             0xb69064b4	3062916276</span><br><span class="line">r8             0x88800	559104</span><br><span class="line">r9             0xaca775f0	2896655856</span><br><span class="line">r10            0x0	0</span><br><span class="line">r11            0xaca77624	2896655908</span><br><span class="line">r12            0xac1f0058	2887712856</span><br><span class="line">sp             0xaca775b8	0xaca775b8</span><br><span class="line">lr             0xb6855ff3	-1232773133</span><br><span class="line">pc             0xb6855ff2	0xb6855ff2 &lt;_fallback_mem_copy+118&gt;</span><br><span class="line">cpsr           0x200e0030	537788464</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 看下pc指向的是汇编哪一行</span><br><span class="line"></span><br><span class="line">(gdb) disassemble r</span><br><span class="line">   0xb68e52b4 &lt;+372&gt;:	strne	r3, [r12], #4</span><br><span class="line">   0xb68e52b8 &lt;+376&gt;:	lsls	r8, r8, #31</span><br><span class="line">   0xb68e52bc &lt;+380&gt;:	ldrhcs	r3, [r1], #2</span><br><span class="line">   0xb68e52c0 &lt;+384&gt;:	ldrbne	r8, [r1]</span><br><span class="line">   0xb68e52c4 &lt;+388&gt;:	strhcs	r3, [r12], #2</span><br><span class="line">   0xb68e52c8 &lt;+392&gt;:	strbne	r8, [r12]</span><br><span class="line">   0xb68e52cc &lt;+396&gt;:	pop	&#123;r8&#125;		; (ldr r8, [sp], #4)</span><br><span class="line">   0xb68e52d0 &lt;+400&gt;:	bx	lr</span><br><span class="line">=&gt; 0xb68e52d4 &lt;+404&gt;:	vldr	d3, [r1]</span><br><span class="line">   0xb68e52d8 &lt;+408&gt;:	vldr	d4, [r1, #64]	; 0x40</span><br><span class="line">   0xb68e52dc &lt;+412&gt;:	vldr	d5, [r1, #128]	; 0x80</span><br><span class="line">   0xb68e52e0 &lt;+416&gt;:	vldr	d6, [r1, #192]	; 0xc0</span><br><span class="line">   0xb68e52e4 &lt;+420&gt;:	vldr	d7, [r1, #256]	; 0x100</span><br><span class="line">   0xb68e52e8 &lt;+424&gt;:	vldr	d0, [r1, #8]</span><br><span class="line">   0xb68e52ec &lt;+428&gt;:	vldr	d1, [r1, #16]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 从汇编代码可以看出来，程序是加载 r1 寄存器中存放的地址时Dump了，访问了无法访问的内存。</span><br><span class="line"><span class="meta">#</span> 我们看下代码L127: memcpy (dinfo.data, sinfo.data +offset, size);再看一下我们数据的拷贝源是什么，很明显sinfo.data无法访问。</span><br><span class="line"></span><br><span class="line">(gdb) p sinfo</span><br><span class="line"><span class="meta">$</span>1 = &#123;memory = 0xaf704da0, flags = GST_MAP_READ, </span><br><span class="line">  data = 0xac167000 &lt;error: Cannot access memory at address 0xac167000&gt;, </span><br><span class="line">  size = 559104, maxsize = 559104, user_data = &#123;0xb6fceab8, 0xb65a019b, </span><br><span class="line">    0xb683fda0, 0xb659c0e0&#125;, _gst_reserved = &#123;0x1, 0x7270e000, 0xaca77688, </span><br><span class="line">    0x0&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 让我们的显示变得漂亮一点</span><br><span class="line"></span><br><span class="line">(gdb) set print pretty on</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 我们回到栈帧1，为什么要到栈帧1呢？栈帧0是memcpy函数，我们打印不了我们想要看的参数mem</span><br><span class="line"><span class="meta">#</span> 那我们为什么要看mem呢？很简单，sinfo是怎么来的，通过阅读代码是由mem拷贝过来的。</span><br><span class="line"></span><br><span class="line">(gdb) frame 1</span><br><span class="line"><span class="meta">#</span>1  0xb67ebff2 in _fallback_mem_copy (mem=0xaf604da8, offset=0, size=559104)</span><br><span class="line">    at /Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstallocator.c:127</span><br><span class="line">127	/Build_Directory/workspace/ZS11_Gerrit/A7_MR3/poky/build/tmp/work/atlas7_arm-poky-linux-gnueabi/gstreamer1.0/1.6-r0/git/gst/gstallocator.c: No such file or directory.</span><br><span class="line">(gdb) info r</span><br><span class="line">r0             0xac175058	2887209048</span><br><span class="line">r1             0xac0ec000	2886647808</span><br><span class="line">r2             0x88800	559104</span><br><span class="line">r3             0x0	0</span><br><span class="line">r4             0x88800	559104</span><br><span class="line">r5             0xac175008	2887208968</span><br><span class="line">r6             0xaf604da8	2942324136</span><br><span class="line">r7             0xb689c4b4	3062482100</span><br><span class="line">r8             0x88800	559104</span><br><span class="line">r9             0xac9fc5f0	2896152048</span><br><span class="line">r10            0x0	0</span><br><span class="line">r11            0xac9fc624	2896152100</span><br><span class="line">r12            0xac175058	2887209048</span><br><span class="line">sp             0xac9fc5b8	0xac9fc5b8</span><br><span class="line">lr             0xb67ebff3	-1233207309</span><br><span class="line">pc             0xb67ebff2	0xb67ebff2 &lt;_fallback_mem_copy+118&gt;</span><br><span class="line">cpsr           0x200e0030	537788464</span><br><span class="line">(gdb) p sinfo</span><br><span class="line"><span class="meta">$</span>4 = &#123;</span><br><span class="line">  memory = 0xaf604da8, </span><br><span class="line">  flags = GST_MAP_READ, </span><br><span class="line">  data = 0xac0ec000 &lt;error: Cannot access memory at address 0xac0ec000&gt;, </span><br><span class="line">  size = 559104, </span><br><span class="line">  maxsize = 559104, </span><br><span class="line">  user_data = &#123;0xb6f64ab8, 0xb653619b, 0xb67d5da0, 0xb65320e0&#125;, </span><br><span class="line">  _gst_reserved = &#123;0x1, 0x8583b000, 0xac9fc688, 0x0&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(gdb)  p *(GstMemorySystem *)(mem)</span><br><span class="line"><span class="meta">$</span>6 = &#123;</span><br><span class="line">  mem = &#123;</span><br><span class="line">    mini_object = &#123;</span><br><span class="line">      type = 1980632, </span><br><span class="line">      refcount = 3, </span><br><span class="line">      lockstate = 131329, </span><br><span class="line">      flags = 1, </span><br><span class="line">      copy = 0xb6817489 &lt;_gst_memory_copy&gt;, </span><br><span class="line">      dispose = 0xb0280055, </span><br><span class="line">      free = 0xb6816f49 &lt;_gst_memory_free&gt;, </span><br><span class="line">      n_qdata = 0, </span><br><span class="line">      qdata = 0x0</span><br><span class="line">    &#125;, </span><br><span class="line">    allocator = 0xaf60f048, </span><br><span class="line">    parent = 0x0, </span><br><span class="line">    maxsize = 559104, </span><br><span class="line">    align = 0, </span><br><span class="line">    offset = 0, </span><br><span class="line">    size = 559104</span><br><span class="line">  &#125;, </span><br><span class="line">  slice_size = 0, </span><br><span class="line">  data = 0xaf610398 "\001", </span><br><span class="line">  user_data = 0xac0ec000, </span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">  notify = 0xffffffff, </span><br><span class="line">  map_mode = 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>来，我们看看gstallocator.c:127的代码，gst_memory_map (mem, &amp;sinfo, GST_MAP_READ)在这个地方，给sinfo赋值了，具体怎么赋值的呢？我们需要深入到gst_memory_map 函数<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">gboolean</span><br><span class="line">gst_memory_map (GstMemory * mem, GstMapInfo * info, GstMapFlags flags)</span><br><span class="line">&#123;</span><br><span class="line">  g_return_val_if_fail (mem != <span class="literal">NULL</span>, FALSE);</span><br><span class="line">  g_return_val_if_fail (info != <span class="literal">NULL</span>, FALSE);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!gst_memory_lock (mem, (GstLockFlags) flags))</span><br><span class="line">    <span class="keyword">goto</span> lock_failed;</span><br><span class="line"></span><br><span class="line">  info-&gt;flags = flags;</span><br><span class="line">  info-&gt;memory = mem;</span><br><span class="line">  info-&gt;size = mem-&gt;size;</span><br><span class="line">  info-&gt;maxsize = mem-&gt;maxsize - mem-&gt;offset;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (mem-&gt;allocator-&gt;mem_map_full)</span><br><span class="line">    info-&gt;data = mem-&gt;allocator-&gt;mem_map_full (mem, info, mem-&gt;maxsize);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    info-&gt;data = mem-&gt;allocator-&gt;mem_map (mem, mem-&gt;maxsize, flags); <span class="comment">// ★该函数</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (G_UNLIKELY (info-&gt;data == <span class="literal">NULL</span>))</span><br><span class="line">    <span class="keyword">goto</span> error;</span><br><span class="line"></span><br><span class="line">  info-&gt;data = info-&gt;data + mem-&gt;offset;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TRUE;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* ERRORS */</span></span><br><span class="line">lock_failed:</span><br><span class="line">  &#123;</span><br><span class="line">    GST_CAT_DEBUG (GST_CAT_MEMORY, <span class="string">"mem %p: lock %d failed"</span>, mem, flags);</span><br><span class="line">    <span class="built_in">memset</span> (info, <span class="number">0</span>, <span class="keyword">sizeof</span> (GstMapInfo));</span><br><span class="line">    <span class="keyword">return</span> FALSE;</span><br><span class="line">  &#125;</span><br><span class="line">error:</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">/* something went wrong, restore the orginal state again */</span></span><br><span class="line">    GST_CAT_ERROR (GST_CAT_MEMORY, <span class="string">"mem %p: subclass map failed"</span>, mem);</span><br><span class="line">    gst_memory_unlock (mem, (GstLockFlags) flags);</span><br><span class="line">    <span class="built_in">memset</span> (info, <span class="number">0</span>, <span class="keyword">sizeof</span> (GstMapInfo));</span><br><span class="line">    <span class="keyword">return</span> FALSE;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//gstallocator.c  </span></span><br><span class="line">alloc-&gt;mem_map = (GstMemoryMapFunction) _sysmem_map;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//gstallocator.c</span></span><br><span class="line"><span class="keyword">static</span> gpointer</span><br><span class="line">_sysmem_map (GstMemorySystem * mem, gsize maxsize, GstMapFlags flags)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> mem-&gt;data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一开始，以为就是这个函数，但是后来发现不是，思考了一下这个应该就是C语言实现多态的方式。那是怎么知道不是这个函数的呢？增加断点调试。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">(gdb) attach pid（CarlifeDaemon）</span><br><span class="line">(gdb) b gstallocator.c:106</span><br><span class="line"><span class="meta">#</span> 复现问题后继续运行到断点</span><br><span class="line">(gdb) c</span><br><span class="line"><span class="meta">#</span> 锁定当前线程，因为gstmemory.c中的函数会在很多地方调用到，不锁定的话会停在别的线程</span><br><span class="line">(gdb) set scheduler-locking on </span><br><span class="line">(gdb) b gstmemory.c:309</span><br><span class="line">(gdb) c</span><br><span class="line"><span class="meta">#</span> 为了能够进入mem_map函数调试，我在_sysmem_map函数处加了断点，但是死活进不去，于是我一步步，打印mem-&gt;allocator 的所有成员看看mem_map的函数地址。</span><br><span class="line">(gdb) p *(GstAllocator*)mem-&gt;allocator </span><br><span class="line"><span class="meta">$</span>4 = &#123;</span><br><span class="line">  object = &#123;</span><br><span class="line">    object = &#123;</span><br><span class="line">      g_type_instance = &#123;</span><br><span class="line">        g_class = 0xaf6138d0</span><br><span class="line">      &#125;, </span><br><span class="line">      ref_count = 17, </span><br><span class="line">      qdata = 0x2</span><br><span class="line">    &#125;, </span><br><span class="line">    lock = &#123;</span><br><span class="line">      p = 0xaf60a600, </span><br><span class="line">      i = &#123;2942346752, 0&#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    name = 0xaf60ccb0 "TinyVideoSink:pool:sink:allocator", </span><br><span class="line">    parent = 0x0, </span><br><span class="line">    flags = 66060304, </span><br><span class="line">    control_bindings = 0x0, </span><br><span class="line">    control_rate = 100000000, </span><br><span class="line">    last_sync = 18446744073709551615, </span><br><span class="line">    _gst_reserved = 0x0</span><br><span class="line">  &#125;, </span><br><span class="line">  mem_type = 0xb02bafb8 "V4l2Memory", </span><br><span class="line">  mem_map = 0xb029efe9,  # 需要关注的函数地址</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">  mem_unmap = 0xb029ef7d, </span><br><span class="line">  mem_copy = 0xb6766f7d &lt;_fallback_mem_copy&gt;, </span><br><span class="line">  mem_share = 0xb029fcc5, </span><br><span class="line">  mem_is_span = 0xb029ef0d, </span><br><span class="line">  mem_map_full = 0x0, </span><br><span class="line">  mem_unmap_full = 0x0, </span><br><span class="line">  _gst_reserved = &#123;0x0, 0x0&#125;, </span><br><span class="line">  priv = 0xaf60d040</span><br><span class="line">&#125;</span><br><span class="line">No function contains specified address.</span><br><span class="line">(gdb) x 0xb029efe9</span><br><span class="line">0xb029efe9:	0x924b146c</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 其他调用的地方</span><br><span class="line">(gdb) p *(GstAllocator*)mem-&gt;allocator </span><br><span class="line"><span class="meta">$</span>6 = &#123;</span><br><span class="line">  object = &#123;</span><br><span class="line">    object = &#123;</span><br><span class="line">      g_type_instance = &#123;</span><br><span class="line">        g_class = 0x1c81ac8</span><br><span class="line">      &#125;, </span><br><span class="line">      ref_count = 7, </span><br><span class="line">      qdata = 0x2</span><br><span class="line">    &#125;, </span><br><span class="line">    lock = &#123;</span><br><span class="line">      p = 0x1c81b78, </span><br><span class="line">      i = &#123;29891448, 0&#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    name = 0x1c80950 "allocatorsysmem0", </span><br><span class="line">    parent = 0x0, </span><br><span class="line">    flags = 0, </span><br><span class="line">    control_bindings = 0x0, </span><br><span class="line">    control_rate = 100000000, </span><br><span class="line">    last_sync = 18446744073709551615, </span><br><span class="line">    _gst_reserved = 0x0</span><br><span class="line">  &#125;, </span><br><span class="line">  mem_type = 0xb67db1d4 "SystemMemory", </span><br><span class="line">  mem_map = 0xb67667dd &lt;_sysmem_map&gt;, # 需要关注的函数地址</span><br><span class="line">---Type &lt;return&gt; to continue, or q &lt;return&gt; to quit---</span><br><span class="line">  mem_unmap = 0xb67667e1 &lt;_sysmem_unmap&gt;, </span><br><span class="line">  mem_copy = 0xb6766a49 &lt;_sysmem_copy&gt;, </span><br><span class="line">  mem_share = 0xb6766b65 &lt;_sysmem_share&gt;, </span><br><span class="line">  mem_is_span = 0xb67667e5 &lt;_sysmem_is_span&gt;, </span><br><span class="line">  mem_map_full = 0x0, </span><br><span class="line">  mem_unmap_full = 0x0, </span><br><span class="line">  _gst_reserved = &#123;0x0, 0x0&#125;, </span><br><span class="line">  priv = 0x1c83c18</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样的函数指针，指向了不同的函数实现，然而这块代码我们没有，没有办法知道如何赋值的，<br>只知道现在sinfo.data = 0xac0ec000是<em>(GstMemorySystem </em>)(mem)的user_data</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gdb/" rel="tag"># gdb</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/26/OTG-roleswitch/" rel="next" title="USB之OTG">
+                <i class="fa fa-chevron-left"></i> USB之OTG
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/26/全局变量导致fwrite崩溃问题分析/" rel="prev" title="全局变量导致fwrite崩溃问题分析">
+                全局变量导致fwrite崩溃问题分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于解码Carlife的h264视频流时程序Dump的调查"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5173;&#x4E8E;&#x89E3;&#x7801;Carlife&#x7684;h264&#x89C6;&#x9891;&#x6D41;&#x65F6;&#x7A0B;&#x5E8F;Dump&#x7684;&#x8C03;&#x67E5;" class="headerlink" title="&#x5173;&#x4E8E;&#x89E3;&#x7801;Carlife&#x7684;h264&#x89C6;&#x9891;&#x6D41;&#x65F6;&#x7A0B;&#x5E8F;Dump&#x7684;&#x8C03;&#x67E5;"></a>&#x5173;&#x4E8E;&#x89E3;&#x7801;Carlife&#x7684;h264&#x89C6;&#x9891;&#x6D41;&#x65F6;&#x7A0B;&#x5E8F;Dump&#x7684;&#x8C03;&#x67E5;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#■现象"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x25A0;&#x73B0;&#x8C61;" class="headerlink" title="&#x25A0;&#x73B0;&#x8C61;"></a>&#x25A0;&#x73B0;&#x8C61;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■再现步骤"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;" class="headerlink" title="&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;"></a>&#x25A0;&#x518D;&#x73B0;&#x6B65;&#x9AA4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■根本原因"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;" class="headerlink" title="&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;"></a>&#x25A0;&#x6839;&#x672C;&#x539F;&#x56E0;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#■调查详细"><span class="nav-number">1.4.</span> <span class="nav-text"><a href="#&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;" class="headerlink" title="&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;"></a>&#x25A0;&#x8C03;&#x67E5;&#x8BE6;&#x7EC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调试小插曲"><span class="nav-number">1.4.1.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;&#x5C0F;&#x63D2;&#x66F2;" class="headerlink" title="&#x8C03;&#x8BD5;&#x5C0F;&#x63D2;&#x66F2;"></a>&#x8C03;&#x8BD5;&#x5C0F;&#x63D2;&#x66F2;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试开始"><span class="nav-number">1.4.2.</span> <span class="nav-text"><a href="#&#x8C03;&#x8BD5;&#x5F00;&#x59CB;" class="headerlink" title="&#x8C03;&#x8BD5;&#x5F00;&#x59CB;"></a>&#x8C03;&#x8BD5;&#x5F00;&#x59CB;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

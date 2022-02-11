@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="USB," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="USB笔记1_UsbMouse本篇主要来自《圈圈教你玩usb》的UsbMouse实例 一、USB枚举过程1.1 Device设备端代码片段12345678910111213141516while(1)  //死循环&amp;#123;  if(D12GetIntPin()==0) //如果有中断发生  &amp;#123;   D12WriteCommand(READ_INTERRUPT_REGISTER);">
+<meta name="keywords" content="USB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="USB笔记1_UsbMouse">
+<meta property="og:url" content="http://yoursite.com/2020/08/11/USB笔记1-UsbMouse/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="USB笔记1_UsbMouse本篇主要来自《圈圈教你玩usb》的UsbMouse实例 一、USB枚举过程1.1 Device设备端代码片段12345678910111213141516while(1)  //死循环&amp;#123;  if(D12GetIntPin()==0) //如果有中断发生  &amp;#123;   D12WriteCommand(READ_INTERRUPT_REGISTER);">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="USB笔记1_UsbMouse">
+<meta name="twitter:description" content="USB笔记1_UsbMouse本篇主要来自《圈圈教你玩usb》的UsbMouse实例 一、USB枚举过程1.1 Device设备端代码片段12345678910111213141516while(1)  //死循环&amp;#123;  if(D12GetIntPin()==0) //如果有中断发生  &amp;#123;   D12WriteCommand(READ_INTERRUPT_REGISTER);">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/08/11/USB笔记1-UsbMouse/"/>
+
+
+
+
+
+  <title>USB笔记1_UsbMouse | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/11/USB笔记1-UsbMouse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">USB笔记1_UsbMouse</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-11T20:34:38+08:00">
+                2020-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设备驱动/" itemprop="url" rel="index">
+                    <span itemprop="name">设备驱动</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="USB笔记1-UsbMouse"><a href="#USB笔记1-UsbMouse" class="headerlink" title="USB笔记1_UsbMouse"></a>USB笔记1_UsbMouse</h1><p>本篇主要来自《圈圈教你玩usb》的UsbMouse实例</p>
+<h2 id="一、USB枚举过程"><a href="#一、USB枚举过程" class="headerlink" title="一、USB枚举过程"></a>一、USB枚举过程</h2><h3 id="1-1-Device设备端代码片段"><a href="#1-1-Device设备端代码片段" class="headerlink" title="1.1 Device设备端代码片段"></a>1.1 Device设备端代码片段</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)  <span class="comment">//死循环</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span>(D12GetIntPin()==<span class="number">0</span>) <span class="comment">//如果有中断发生</span></span><br><span class="line">  &#123;</span><br><span class="line">   D12WriteCommand(READ_INTERRUPT_REGISTER);  <span class="comment">//写读中断寄存器的命令</span></span><br><span class="line">   InterruptSource=D12ReadByte(); <span class="comment">//读回第一字节的中断寄存器</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x80</span>)UsbBusSuspend(); <span class="comment">//总线挂起中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x40</span>)UsbBusReset();   <span class="comment">//总线复位中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x01</span>)UsbEp0Out();     <span class="comment">//端点0输出中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x02</span>)UsbEp0In();      <span class="comment">//端点0输入中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x04</span>)UsbEp1Out();     <span class="comment">//端点1输出中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x08</span>)UsbEp1In();      <span class="comment">//端点1输入中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x10</span>)UsbEp2Out();     <span class="comment">//端点2输出中断处理</span></span><br><span class="line">   <span class="keyword">if</span>(InterruptSource&amp;<span class="number">0x20</span>)UsbEp2In();      <span class="comment">//端点2输入中断处理</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-Device设备端日志"><a href="#1-2-Device设备端日志" class="headerlink" title="1.2 Device设备端日志"></a>1.2 Device设备端日志</h3><h4 id="1-2-1-SETUP数据包，获取设备描述符"><a href="#1-2-1-SETUP数据包，获取设备描述符" class="headerlink" title="1.2.1 SETUP数据包，获取设备描述符"></a>1.2.1 SETUP数据包，获取设备描述符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">USB端点0输出中断。					// host端带返回值的请求，device需要知道输出什么，所以先读8字节</span><br><span class="line">读端点0缓冲区8字节。</span><br><span class="line">0x80 0x06 0x00 0x01 0x00 0x00 0x40 0x00 </span><br><span class="line">USB标准输入请求：获取描述符——设备描述符。	// 设备描述符有18个字节</span><br><span class="line">写端点0缓冲区16字节。				// PDIUSBD12的端点0大小的16字节</span><br><span class="line">0x12 0x01 0x10 0x01 0x00 0x00 0x00 0x10 0x88 0x88 0x01 0x00 0x00 0x01 0x01 0x02 </span><br><span class="line">USB端点0输入中断。</span><br><span class="line">写端点0缓冲区2字节。					// 发送剩余的2个字节</span><br><span class="line">0x03 0x01</span><br></pre></td></tr></table></figure>
+<p>日志显示已经成功接收到主机发送过来的8字节数据。在第一次接收到数据后，会停顿一段时间。这段时间主机一直在请求输入。<br>但是目前还没有返回数据，所以D12一直在回答NAK，即没有数据准备好。结果USB主机经过一段时间的等待之后，终于不耐烦了，<br>发送了一次总线复位，然后又重新输出这8个字节的数据，然后又是等待输入数据。尝试几次后主机只好无奈的放弃了。<br>这是改USB端口上不再有数据活动，从而D12进入了挂起状态。同时在计算机端弹出无法识别的USB设备对话框。</p>
+<p>主机端内核日志：</p>
+<pre><code>[ 9536.933549] usb 2-1: new full-speed USB device number 16 using ci_hdrc
+[ 9542.053622] usb 2-1: device descriptor read/64, error -110
+
+#define ETIMEDOUT       110     /* Connection timed out */
+</code></pre><h4 id="1-2-2-设置地址"><a href="#1-2-2-设置地址" class="headerlink" title="1.2.2 设置地址"></a>1.2.2 设置地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">USB总线复位。</span><br><span class="line">USB端点0输出中断。</span><br><span class="line">读端点0缓冲区8字节。</span><br><span class="line">0x00 0x05 0x06 0x00 0x00 0x00 0x00 0x00 </span><br><span class="line">USB标准输出请求：设置地址。地址为：0x06 </span><br><span class="line">写端点0缓冲区0字节。</span><br><span class="line">USB端点0输入中断。</span><br></pre></td></tr></table></figure>
+<h4 id="1-2-3-SETUP数据包，基于新地址，重新获取设备描述符"><a href="#1-2-3-SETUP数据包，基于新地址，重新获取设备描述符" class="headerlink" title="1.2.3 SETUP数据包，基于新地址，重新获取设备描述符"></a>1.2.3 SETUP数据包，基于新地址，重新获取设备描述符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">USB端点0输出中断。</span><br><span class="line">读端点0缓冲区8字节。</span><br><span class="line">0x80 0x06 0x00 0x01 0x00 0x00 0x12 0x00 </span><br><span class="line">USB标准输入请求：获取描述符——设备描述符。</span><br><span class="line">写端点0缓冲区16字节。</span><br><span class="line">0x12 0x01 0x10 0x01 0x00 0x00 0x00 0x10 0x88 0x88 0x01 0x00 0x00 0x01 0x01 0x02 </span><br><span class="line">USB端点0输入中断。</span><br><span class="line">写端点0缓冲区2字节。</span><br><span class="line">0x03 0x01</span><br></pre></td></tr></table></figure>
+<h3 id="二、描述符"><a href="#二、描述符" class="headerlink" title="二、描述符"></a>二、描述符</h3><h3 id="2-1-各描述符之间的关系"><a href="#2-1-各描述符之间的关系" class="headerlink" title="2.1 各描述符之间的关系"></a>2.1 各描述符之间的关系</h3><pre><code>设备描述符（Device Descriptor）
+    配置描述符（Configuration Descriptor）
+        接口描述符（Interface Descriptor）
+            HID描述符（HID Device Descriptor）
+                报告描述符（Report Descriptor）
+</code></pre><p>一个设备描述符可以包含多个配置描述符，通常1个<br>一个配置描述符可以包含多个接口描述符。<br>一个接口描述符可以包含多个端点描述符。</p>
+<p>接口描述符跟着配置描述符走的，无法单独存在。</p>
+<h3 id="2-2-各描述符简介："><a href="#2-2-各描述符简介：" class="headerlink" title="2.2 各描述符简介："></a>2.2 各描述符简介：</h3><h4 id="2-2-1-设备描述符（Device-Descriptor）"><a href="#2-2-1-设备描述符（Device-Descriptor）" class="headerlink" title="2.2.1 设备描述符（Device Descriptor）"></a>2.2.1 设备描述符（Device Descriptor）</h4><pre><code>Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0 
+  bDeviceProtocol         0 
+  bMaxPacketSize0        16
+  idVendor           0x8888 
+  idProduct          0x0001 
+  bcdDevice            1.00
+  iManufacturer           1
+  iProduct                2
+  iSerial                 3
+  bNumConfigurations      1
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//USB设备描述符的定义</span></span><br><span class="line">code uint8 DeviceDescriptor[]=  <span class="comment">//设备描述符为18字节</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//bLength字段。设备描述符的长度为18(0x12)字节</span></span><br><span class="line"> <span class="number">0x12</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bDescriptorType字段。设备描述符的编号为0x01</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bcdUSB字段。这里设置版本为USB1.1，即0x0110。</span></span><br><span class="line"><span class="comment">//由于是小端结构，所以低字节在先，即0x10，0x01。</span></span><br><span class="line"> <span class="number">0x10</span>,</span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bDeviceClass字段。我们不在设备描述符中定义设备类，</span></span><br><span class="line"><span class="comment">//而在接口描述符中定义设备类，所以该字段的值为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bDeviceSubClass字段。bDeviceClass字段为0时，该字段也为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bDeviceProtocol字段。bDeviceClass字段为0时，该字段也为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bMaxPacketSize0字段。PDIUSBD12的端点0大小的16字节。</span></span><br><span class="line"> <span class="number">0x10</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//idVender字段。厂商ID号，我们这里取0x8888，仅供实验用。</span></span><br><span class="line"><span class="comment">//实际产品不能随便使用厂商ID号，必须跟USB协会申请厂商ID号。</span></span><br><span class="line"><span class="comment">//注意小端模式，低字节在先。</span></span><br><span class="line"> <span class="number">0x88</span>,</span><br><span class="line"> <span class="number">0x88</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//idProduct字段。产品ID号，由于是第一个实验，我们这里取0x0001。</span></span><br><span class="line"><span class="comment">//注意小端模式，低字节应该在前。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bcdDevice字段。我们这个USB鼠标刚开始做，就叫它1.0版吧，即0x0100。</span></span><br><span class="line"><span class="comment">//小端模式，低字节在先。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//iManufacturer字段。厂商字符串的索引值，为了方便记忆和管理，</span></span><br><span class="line"><span class="comment">//字符串索引就从1开始吧。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//iProduct字段。产品字符串的索引值。刚刚用了1，这里就取2吧。</span></span><br><span class="line"><span class="comment">//注意字符串索引值不要使用相同的值。</span></span><br><span class="line"> <span class="number">0x02</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//iSerialNumber字段。设备的序列号字符串索引值。</span></span><br><span class="line"><span class="comment">//这里取3就可以了。</span></span><br><span class="line"> <span class="number">0x03</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">//bNumConfigurations字段。该设备所具有的配置数。</span></span><br><span class="line"><span class="comment">//我们只需要一种配置就行了，因此该值设置为1。</span></span><br><span class="line"> <span class="number">0x01</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-2-配置描述符（Configuration-Descriptor）-接口描述符（Interface-Descriptor）-HID描述符（HID-Device-Descriptor）"><a href="#2-2-2-配置描述符（Configuration-Descriptor）-接口描述符（Interface-Descriptor）-HID描述符（HID-Device-Descriptor）" class="headerlink" title="2.2.2 配置描述符（Configuration Descriptor）- 接口描述符（Interface Descriptor） - HID描述符（HID Device Descriptor）"></a>2.2.2 配置描述符（Configuration Descriptor）- 接口描述符（Interface Descriptor） - HID描述符（HID Device Descriptor）</h4><pre><code>Configuration Descriptor:
+  bLength                 9
+  bDescriptorType         2
+  wTotalLength           34
+  bNumInterfaces          1
+  bConfigurationValue     1
+  iConfiguration          0 
+  bmAttributes         0x80
+    (Bus Powered)
+  MaxPower              100mA
+
+Interface Descriptor:
+  bLength                 9
+  bDescriptorType         4
+  bInterfaceNumber        0
+  bAlternateSetting       0
+  bNumEndpoints           1
+  bInterfaceClass         3 Human Interface Device
+  bInterfaceSubClass      1 Boot Interface Subclass
+  bInterfaceProtocol      2 Mouse
+  iInterface              0
+
+HID Device Descriptor:
+  bLength                 9
+  bDescriptorType        33
+  bcdHID               1.10
+  bCountryCode           33 US
+  bNumDescriptors         1
+  bDescriptorType        34 Report
+  wDescriptorLength      52
+
+Report Descriptor: (length is 52)
+  略
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//USB配置描述符集合的定义</span></span><br><span class="line"><span class="comment">//配置描述符总长度为9+9+9+7字节</span></span><br><span class="line">code uint8 ConfigurationDescriptor[<span class="number">9</span>+<span class="number">9</span>+<span class="number">9</span>+<span class="number">7</span>]=</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">/***************配置描述符***********************/</span></span><br><span class="line"> <span class="comment">//bLength字段。配置描述符的长度为9字节。</span></span><br><span class="line"> <span class="number">0x09</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescriptorType字段。配置描述符编号为0x02。</span></span><br><span class="line"> <span class="number">0x02</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//wTotalLength字段。配置描述符集合的总长度，</span></span><br><span class="line"> <span class="comment">//包括配置描述符本身、接口描述符、类描述符、端点描述符等。</span></span><br><span class="line"> <span class="keyword">sizeof</span>(ConfigurationDescriptor)&amp;<span class="number">0xFF</span>, <span class="comment">//低字节</span></span><br><span class="line"> (<span class="keyword">sizeof</span>(ConfigurationDescriptor)&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0xFF</span>, <span class="comment">//高字节</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bNumInterfaces字段。该配置包含的接口数，只有一个接口。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bConfiguration字段。该配置的值为1。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//iConfigurationz字段，该配置的字符串索引。这里没有，为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bmAttributes字段，该设备的属性。由于我们的板子是总线供电的，</span></span><br><span class="line"> <span class="comment">//并且我们不想实现远程唤醒的功能，所以该字段的值为0x80。</span></span><br><span class="line"> <span class="number">0x80</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bMaxPower字段，该设备需要的最大电流量。由于我们的板子</span></span><br><span class="line"> <span class="comment">//需要的电流不到100mA，因此我们这里设置为100mA。由于每单位</span></span><br><span class="line"> <span class="comment">//电流为2mA，所以这里设置为50(0x32)。</span></span><br><span class="line"> <span class="number">0x32</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">/*******************接口描述符*********************/</span></span><br><span class="line"> <span class="comment">//bLength字段。接口描述符的长度为9字节。</span></span><br><span class="line"> <span class="number">0x09</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescriptorType字段。接口描述符的编号为0x04。</span></span><br><span class="line"> <span class="number">0x04</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bInterfaceNumber字段。该接口的编号，第一个接口，编号为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bAlternateSetting字段。该接口的备用编号，为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bNumEndpoints字段。非0端点的数目。由于USB鼠标只需要一个</span></span><br><span class="line"> <span class="comment">//中断输入端点，因此该值为1。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bInterfaceClass字段。该接口所使用的类。USB鼠标是HID类，</span></span><br><span class="line"> <span class="comment">//HID类的编码为0x03。</span></span><br><span class="line"> <span class="number">0x03</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bInterfaceSubClass字段。该接口所使用的子类。在HID1.1协议中，</span></span><br><span class="line"> <span class="comment">//只规定了一种子类：支持BIOS引导启动的子类。</span></span><br><span class="line"> <span class="comment">//USB键盘、鼠标属于该子类，子类代码为0x01。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bInterfaceProtocol字段。如果子类为支持引导启动的子类，</span></span><br><span class="line"> <span class="comment">//则协议可选择鼠标和键盘。键盘代码为0x01，鼠标代码为0x02。</span></span><br><span class="line"> <span class="number">0x02</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//iConfiguration字段。该接口的字符串索引值。这里没有，为0。</span></span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">/******************HID描述符************************/</span></span><br><span class="line"> <span class="comment">//bLength字段。本HID描述符下只有一个下级描述符。所以长度为9字节。</span></span><br><span class="line"> <span class="number">0x09</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescriptorType字段。HID描述符的编号为0x21。</span></span><br><span class="line"> <span class="number">0x21</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bcdHID字段。本协议使用的HID1.1协议。注意低字节在先。</span></span><br><span class="line"> <span class="number">0x10</span>,</span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bCountyCode字段。设备适用的国家代码，这里选择为美国，代码0x21。</span></span><br><span class="line"> <span class="number">0x21</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bNumDescriptors字段。下级描述符的数目。我们只有一个报告描述符。</span></span><br><span class="line"> <span class="number">0x01</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescritporType字段。下级描述符的类型，为报告描述符，编号为0x22。</span></span><br><span class="line"> <span class="number">0x22</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescriptorLength字段。下级描述符的长度。下级描述符为报告描述符。</span></span><br><span class="line"> <span class="keyword">sizeof</span>(ReportDescriptor)&amp;<span class="number">0xFF</span>,</span><br><span class="line"> (<span class="keyword">sizeof</span>(ReportDescriptor)&gt;&gt;<span class="number">8</span>)&amp;<span class="number">0xFF</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">/**********************端点描述符***********************/</span></span><br><span class="line"> <span class="comment">//bLength字段。端点描述符长度为7字节。</span></span><br><span class="line"> <span class="number">0x07</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bDescriptorType字段。端点描述符编号为0x05。</span></span><br><span class="line"> <span class="number">0x05</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bEndpointAddress字段。端点的地址。我们使用D12的输入端点1。</span></span><br><span class="line"> <span class="comment">//D7位表示数据方向，输入端点D7为1。所以输入端点1的地址为0x81。</span></span><br><span class="line"> <span class="number">0x81</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bmAttributes字段。D1~D0为端点传输类型选择。</span></span><br><span class="line"> <span class="comment">//该端点为中断端点。中断端点的编号为3。其它位保留为0。</span></span><br><span class="line"> <span class="number">0x03</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//wMaxPacketSize字段。该端点的最大包长。端点1的最大包长为16字节。</span></span><br><span class="line"> <span class="comment">//注意低字节在先。</span></span><br><span class="line"> <span class="number">0x10</span>,</span><br><span class="line"> <span class="number">0x00</span>,</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//bInterval字段。端点查询的时间，我们设置为10个帧时间，即10ms。</span></span><br><span class="line"> <span class="number">0x0A</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-3-报告描述符（Report-Descriptor）"><a href="#2-2-3-报告描述符（Report-Descriptor）" class="headerlink" title="2.2.3 报告描述符（Report Descriptor）"></a>2.2.3 报告描述符（Report Descriptor）</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//USB报告描述符的定义</span></span><br><span class="line">code uint8 ReportDescriptor[]=</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//每行开始的第一字节为该条目的前缀，前缀的格式为：</span></span><br><span class="line"> <span class="comment">//D7~D4：bTag。D3~D2：bType；D1~D0：bSize。以下分别对每个条目注释。</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局（bType为1）条目，选择用途页为普通桌面Generic Desktop Page(0x01)</span></span><br><span class="line"> <span class="comment">//后面跟一字节数据（bSize为1），后面的字节数就不注释了，</span></span><br><span class="line"> <span class="comment">//自己根据bSize来判断。</span></span><br><span class="line"> <span class="number">0x05</span>, <span class="number">0x01</span>, <span class="comment">// USAGE_PAGE (Generic Desktop)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部（bType为2）条目，说明接下来的应用集合用途用于鼠标</span></span><br><span class="line"> <span class="number">0x09</span>, <span class="number">0x02</span>, <span class="comment">// USAGE (Mouse)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个主条目（bType为0）条目，开集合，后面跟的数据0x01表示</span></span><br><span class="line"> <span class="comment">//该集合是一个应用集合。它的性质在前面由用途页和用途定义为</span></span><br><span class="line"> <span class="comment">//普通桌面用的鼠标。</span></span><br><span class="line"> <span class="number">0xa1</span>, <span class="number">0x01</span>, <span class="comment">// COLLECTION (Application)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目。说明用途为指针集合</span></span><br><span class="line"> <span class="number">0x09</span>, <span class="number">0x01</span>, <span class="comment">//   USAGE (Pointer)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个主条目，开集合，后面跟的数据0x00表示该集合是一个</span></span><br><span class="line"> <span class="comment">//物理集合，用途由前面的局部条目定义为指针集合。</span></span><br><span class="line"> <span class="number">0xa1</span>, <span class="number">0x00</span>, <span class="comment">//   COLLECTION (Physical)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，选择用途页为按键（Button Page(0x09)）</span></span><br><span class="line"> <span class="number">0x05</span>, <span class="number">0x09</span>, <span class="comment">//     USAGE_PAGE (Button)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目，说明用途的最小值为1。实际上是鼠标左键。</span></span><br><span class="line"> <span class="number">0x19</span>, <span class="number">0x01</span>, <span class="comment">//     USAGE_MINIMUM (Button 1)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目，说明用途的最大值为3。实际上是鼠标中键。</span></span><br><span class="line"> <span class="number">0x29</span>, <span class="number">0x03</span>, <span class="comment">//     USAGE_MAXIMUM (Button 3)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明返回的数据的逻辑值（就是我们返回的数据域的值啦）</span></span><br><span class="line"> <span class="comment">//最小为0。因为我们这里用Bit来表示一个数据域，因此最小为0，最大为1。</span></span><br><span class="line"> <span class="number">0x15</span>, <span class="number">0x00</span>, <span class="comment">//     LOGICAL_MINIMUM (0)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明逻辑值最大为1。</span></span><br><span class="line"> <span class="number">0x25</span>, <span class="number">0x01</span>, <span class="comment">//     LOGICAL_MAXIMUM (1)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明数据域的数量为三个。</span></span><br><span class="line"> <span class="number">0x95</span>, <span class="number">0x03</span>, <span class="comment">//     REPORT_COUNT (3)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明每个数据域的长度为1个bit。</span></span><br><span class="line"> <span class="number">0x75</span>, <span class="number">0x01</span>, <span class="comment">//     REPORT_SIZE (1)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个主条目，说明有3个长度为1bit的数据域（数量和长度</span></span><br><span class="line"> <span class="comment">//由前面的两个全局条目所定义）用来做为输入，</span></span><br><span class="line"> <span class="comment">//属性为：Data,Var,Abs。Data表示这些数据可以变动，Var表示</span></span><br><span class="line"> <span class="comment">//这些数据域是独立的，每个域表示一个意思。Abs表示绝对值。</span></span><br><span class="line"> <span class="comment">//这样定义的结果就是，第一个数据域bit0表示按键1（左键）是否按下，</span></span><br><span class="line"> <span class="comment">//第二个数据域bit1表示按键2（右键）是否按下，第三个数据域bit2表示</span></span><br><span class="line"> <span class="comment">//按键3（中键）是否按下。</span></span><br><span class="line"> <span class="number">0x81</span>, <span class="number">0x02</span>, <span class="comment">//     INPUT (Data,Var,Abs)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明数据域数量为1个</span></span><br><span class="line"> <span class="number">0x95</span>, <span class="number">0x01</span>, <span class="comment">//     REPORT_COUNT (1)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明每个数据域的长度为5bit。</span></span><br><span class="line"> <span class="number">0x75</span>, <span class="number">0x05</span>, <span class="comment">//     REPORT_SIZE (5)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个主条目，输入用，由前面两个全局条目可知，长度为5bit，</span></span><br><span class="line"> <span class="comment">//数量为1个。它的属性为常量（即返回的数据一直是0）。</span></span><br><span class="line"> <span class="comment">//这个只是为了凑齐一个字节（前面用了3个bit）而填充的一些数据</span></span><br><span class="line"> <span class="comment">//而已，所以它是没有实际用途的。</span></span><br><span class="line"> <span class="number">0x81</span>, <span class="number">0x03</span>, <span class="comment">//     INPUT (Cnst,Var,Abs)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，选择用途页为普通桌面Generic Desktop Page(0x01)</span></span><br><span class="line"> <span class="number">0x05</span>, <span class="number">0x01</span>, <span class="comment">//     USAGE_PAGE (Generic Desktop)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目，说明用途为X轴</span></span><br><span class="line"> <span class="number">0x09</span>, <span class="number">0x30</span>, <span class="comment">//     USAGE (X)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目，说明用途为Y轴</span></span><br><span class="line"> <span class="number">0x09</span>, <span class="number">0x31</span>, <span class="comment">//     USAGE (Y)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个局部条目，说明用途为滚轮</span></span><br><span class="line"> <span class="number">0x09</span>, <span class="number">0x38</span>, <span class="comment">//     USAGE (Wheel)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//下面两个为全局条目，说明返回的逻辑最小和最大值。</span></span><br><span class="line"> <span class="comment">//因为鼠标指针移动时，通常是用相对值来表示的，</span></span><br><span class="line"> <span class="comment">//相对值的意思就是，当指针移动时，只发送移动量。</span></span><br><span class="line"> <span class="comment">//往右移动时，X值为正；往下移动时，Y值为正。</span></span><br><span class="line"> <span class="comment">//对于滚轮，当滚轮往上滚时，值为正。</span></span><br><span class="line"> <span class="number">0x15</span>, <span class="number">0x81</span>, <span class="comment">//     LOGICAL_MINIMUM (-127)</span></span><br><span class="line"> <span class="number">0x25</span>, <span class="number">0x7f</span>, <span class="comment">//     LOGICAL_MAXIMUM (127)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明数据域的长度为8bit。</span></span><br><span class="line"> <span class="number">0x75</span>, <span class="number">0x08</span>, <span class="comment">//     REPORT_SIZE (8)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个全局条目，说明数据域的个数为3个。</span></span><br><span class="line"> <span class="number">0x95</span>, <span class="number">0x03</span>, <span class="comment">//     REPORT_COUNT (3)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//这是一个主条目。它说明这三个8bit的数据域是输入用的，</span></span><br><span class="line"> <span class="comment">//属性为：Data,Var,Rel。Data说明数据是可以变的，Var说明</span></span><br><span class="line"> <span class="comment">//这些数据域是独立的，即第一个8bit表示X轴，第二个8bit表示</span></span><br><span class="line"> <span class="comment">//Y轴，第三个8bit表示滚轮。Rel表示这些值是相对值。</span></span><br><span class="line"> <span class="number">0x81</span>, <span class="number">0x06</span>, <span class="comment">//     INPUT (Data,Var,Rel)</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">//下面这两个主条目用来关闭前面的集合用。</span></span><br><span class="line"> <span class="comment">//我们开了两个集合，所以要关两次。bSize为0，所以后面没数据。</span></span><br><span class="line"> <span class="number">0xc0</span>,       <span class="comment">//   END_COLLECTION</span></span><br><span class="line"> <span class="number">0xc0</span>        <span class="comment">// END_COLLECTION</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//通过上面的报告描述符的定义，我们知道返回的输入报告具有4字节。</span></span><br><span class="line"><span class="comment">//第一字节的低3位用来表示按键是否按下的，高5位为常数0，无用。</span></span><br><span class="line"><span class="comment">//第二字节表示X轴改的变量，第三字节表示Y轴的改变量，第四字节表示</span></span><br><span class="line"><span class="comment">//滚轮的改变量。我们在中断端点1中应该要按照上面的格式返回实际的</span></span><br><span class="line"><span class="comment">//鼠标数据。</span></span><br></pre></td></tr></table></figure>
+<h2 id="三、QA"><a href="#三、QA" class="headerlink" title="三、QA"></a>三、QA</h2><p><strong>Q:lsusb获取Report Descriptor异常</strong><br>A:Report Descriptors:<br>    <strong> UNAVAILABLE </strong></p>
+<p>获取Report Descriptors<br><a href="http://www.slashdev.ca/2010/05/08/get-usb-report-descriptor-with-linux/" target="_blank" rel="noopener">http://www.slashdev.ca/2010/05/08/get-usb-report-descriptor-with-linux/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/USB/" rel="tag"># USB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/27/USB学习/" rel="next" title="USB学习">
+                <i class="fa fa-chevron-left"></i> USB学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/17/USB笔记2-HID/" rel="prev" title="USB笔记2_HID">
+                USB笔记2_HID <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#USB笔记1-UsbMouse"><span class="nav-number">1.</span> <span class="nav-text"><a href="#USB&#x7B14;&#x8BB0;1-UsbMouse" class="headerlink" title="USB&#x7B14;&#x8BB0;1_UsbMouse"></a>USB&#x7B14;&#x8BB0;1_UsbMouse</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、USB枚举过程"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;USB&#x679A;&#x4E3E;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x4E00;&#x3001;USB&#x679A;&#x4E3E;&#x8FC7;&#x7A0B;"></a>&#x4E00;&#x3001;USB&#x679A;&#x4E3E;&#x8FC7;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Device设备端代码片段"><span class="nav-number">1.1.1.</span> <span class="nav-text"><a href="#1-1-Device&#x8BBE;&#x5907;&#x7AEF;&#x4EE3;&#x7801;&#x7247;&#x6BB5;" class="headerlink" title="1.1 Device&#x8BBE;&#x5907;&#x7AEF;&#x4EE3;&#x7801;&#x7247;&#x6BB5;"></a>1.1 Device&#x8BBE;&#x5907;&#x7AEF;&#x4EE3;&#x7801;&#x7247;&#x6BB5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Device设备端日志"><span class="nav-number">1.1.2.</span> <span class="nav-text"><a href="#1-2-Device&#x8BBE;&#x5907;&#x7AEF;&#x65E5;&#x5FD7;" class="headerlink" title="1.2 Device&#x8BBE;&#x5907;&#x7AEF;&#x65E5;&#x5FD7;"></a>1.2 Device&#x8BBE;&#x5907;&#x7AEF;&#x65E5;&#x5FD7;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-SETUP数据包，获取设备描述符"><span class="nav-number">1.1.2.1.</span> <span class="nav-text"><a href="#1-2-1-SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;" class="headerlink" title="1.2.1 SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;"></a>1.2.1 SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-设置地址"><span class="nav-number">1.1.2.2.</span> <span class="nav-text"><a href="#1-2-2-&#x8BBE;&#x7F6E;&#x5730;&#x5740;" class="headerlink" title="1.2.2 &#x8BBE;&#x7F6E;&#x5730;&#x5740;"></a>1.2.2 &#x8BBE;&#x7F6E;&#x5730;&#x5740;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-SETUP数据包，基于新地址，重新获取设备描述符"><span class="nav-number">1.1.2.3.</span> <span class="nav-text"><a href="#1-2-3-SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x57FA;&#x4E8E;&#x65B0;&#x5730;&#x5740;&#xFF0C;&#x91CD;&#x65B0;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;" class="headerlink" title="1.2.3 SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x57FA;&#x4E8E;&#x65B0;&#x5730;&#x5740;&#xFF0C;&#x91CD;&#x65B0;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;"></a>1.2.3 SETUP&#x6570;&#x636E;&#x5305;&#xFF0C;&#x57FA;&#x4E8E;&#x65B0;&#x5730;&#x5740;&#xFF0C;&#x91CD;&#x65B0;&#x83B7;&#x53D6;&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、描述符"><span class="nav-number">1.1.3.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x63CF;&#x8FF0;&#x7B26;" class="headerlink" title="&#x4E8C;&#x3001;&#x63CF;&#x8FF0;&#x7B26;"></a>&#x4E8C;&#x3001;&#x63CF;&#x8FF0;&#x7B26;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-各描述符之间的关系"><span class="nav-number">1.1.4.</span> <span class="nav-text"><a href="#2-1-&#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;" class="headerlink" title="2.1 &#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;"></a>2.1 &#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x4E4B;&#x95F4;&#x7684;&#x5173;&#x7CFB;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-各描述符简介："><span class="nav-number">1.1.5.</span> <span class="nav-text"><a href="#2-2-&#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;&#xFF1A;" class="headerlink" title="2.2 &#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;&#xFF1A;"></a>2.2 &#x5404;&#x63CF;&#x8FF0;&#x7B26;&#x7B80;&#x4ECB;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-设备描述符（Device-Descriptor）"><span class="nav-number">1.1.5.1.</span> <span class="nav-text"><a href="#2-2-1-&#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Device-Descriptor&#xFF09;" class="headerlink" title="2.2.1 &#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Device Descriptor&#xFF09;"></a>2.2.1 &#x8BBE;&#x5907;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Device Descriptor&#xFF09;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-配置描述符（Configuration-Descriptor）-接口描述符（Interface-Descriptor）-HID描述符（HID-Device-Descriptor）"><span class="nav-number">1.1.5.2.</span> <span class="nav-text"><a href="#2-2-2-&#x914D;&#x7F6E;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Configuration-Descriptor&#xFF09;-&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Interface-Descriptor&#xFF09;-HID&#x63CF;&#x8FF0;&#x7B26;&#xFF08;HID-Device-Descriptor&#xFF09;" class="headerlink" title="2.2.2 &#x914D;&#x7F6E;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Configuration Descriptor&#xFF09;- &#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Interface Descriptor&#xFF09; - HID&#x63CF;&#x8FF0;&#x7B26;&#xFF08;HID Device Descriptor&#xFF09;"></a>2.2.2 &#x914D;&#x7F6E;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Configuration Descriptor&#xFF09;- &#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Interface Descriptor&#xFF09; - HID&#x63CF;&#x8FF0;&#x7B26;&#xFF08;HID Device Descriptor&#xFF09;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-报告描述符（Report-Descriptor）"><span class="nav-number">1.1.5.3.</span> <span class="nav-text"><a href="#2-2-3-&#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Report-Descriptor&#xFF09;" class="headerlink" title="2.2.3 &#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Report Descriptor&#xFF09;"></a>2.2.3 &#x62A5;&#x544A;&#x63CF;&#x8FF0;&#x7B26;&#xFF08;Report Descriptor&#xFF09;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、QA"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;QA" class="headerlink" title="&#x4E09;&#x3001;QA"></a>&#x4E09;&#x3001;QA</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Gstreamer,Media," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Basic tutorialelement -&amp;gt; pad -&amp;gt; caps  包含关系 Basic tutorial 7: Multithreading and Pad AvailabilityRequest padsTo request (or release) pads in the PLAYING or PAUSED states, you need to take additio">
+<meta name="keywords" content="Gstreamer,Media">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[App]Basic tutorial">
+<meta property="og:url" content="http://yoursite.com/2020/12/24/App-Basic-tutorial/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="Basic tutorialelement -&amp;gt; pad -&amp;gt; caps  包含关系 Basic tutorial 7: Multithreading and Pad AvailabilityRequest padsTo request (or release) pads in the PLAYING or PAUSED states, you need to take additio">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/tutorials/basic/images/tutorials/basic-tutorial-8.png">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[App]Basic tutorial">
+<meta name="twitter:description" content="Basic tutorialelement -&amp;gt; pad -&amp;gt; caps  包含关系 Basic tutorial 7: Multithreading and Pad AvailabilityRequest padsTo request (or release) pads in the PLAYING or PAUSED states, you need to take additio">
+<meta name="twitter:image" content="https://gstreamer.freedesktop.org/documentation/tutorials/basic/images/tutorials/basic-tutorial-8.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/24/App-Basic-tutorial/"/>
+
+
+
+
+
+  <title>[App]Basic tutorial | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/24/App-Basic-tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[App]Basic tutorial</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-24T23:06:17+08:00">
+                2020-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gstreamer/" itemprop="url" rel="index">
+                    <span itemprop="name">Gstreamer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Basic-tutorial"><a href="#Basic-tutorial" class="headerlink" title="Basic tutorial"></a>Basic tutorial</h1><p>element -&gt; pad -&gt; caps  包含关系</p>
+<h1 id="Basic-tutorial-7-Multithreading-and-Pad-Availability"><a href="#Basic-tutorial-7-Multithreading-and-Pad-Availability" class="headerlink" title="Basic tutorial 7: Multithreading and Pad Availability"></a>Basic tutorial 7: Multithreading and Pad Availability</h1><h2 id="Request-pads"><a href="#Request-pads" class="headerlink" title="Request pads"></a>Request pads</h2><p>To request (or release) pads in the <code>PLAYING</code> or <code>PAUSED</code> states, you need to take additional cautions (Pad blocking) which are not described in this tutorial. It is safe to request (or release) pads in the <code>NULL</code> or <code>READY</code> states, though.</p>
+<h2 id="多管道播放"><a href="#多管道播放" class="headerlink" title="多管道播放"></a>多管道播放</h2><ol>
+<li>单播放<br>gst-launch-1.0 filesrc location=/home/xuleilx/Music/123.mp3 ! decodebin ! autoaudiosink </li>
+<li>单显示<br>gst-launch-1.0 filesrc location=/home/xuleilx/Music/123.mp3 ! decodebin ! wavescope ! videoconvert ! autovideosink</li>
+<li>播放+显示<br>gst-launch-1.0 filesrc location=/home/xuleilx/Music/123.mp3 ! decodebin ! tee name=t ! queue ! autoaudiosink t. ! queue ! wavescope ! videoconvert ! autovideosink</li>
+<li>修改显示范围，增加个capsfilter<br>gst-launch-1.0 filesrc location=/home/xuleilx/Music/123.mp3 ! decodebin ! tee name=t ! queue ! autoaudiosink t. ! queue ! wavescope ! capsfilter caps=”video/x-raw, format=BGRx,width=1280, height=720, framerate=30/1” ! videoconvert ! autovideosink</li>
+</ol>
+<p>注意：<br>playbin的flags的vis有类似功能</p>
+<h1 id="Basic-tutorial-8-Short-cutting-the-pipeline"><a href="#Basic-tutorial-8-Short-cutting-the-pipeline" class="headerlink" title="Basic tutorial 8: Short-cutting the pipeline"></a>Basic tutorial 8: Short-cutting the pipeline</h1><p>主要通过<code>appsrc</code>，<code>appsink</code>实现，截取管道中的数据。</p>
+<p>This tutorial expands <a href="https://gstreamer.freedesktop.org/documentation/tutorials/basic/multithreading-and-pad-availability.html" target="_blank" rel="noopener">Basic tutorial 7: Multithreading and Pad Availability</a> in two ways: firstly, the <code>audiotestsrc</code> is replaced by an <code>appsrc</code> that will generate the audio data. Secondly, a new branch is added to the <code>tee</code> so data going into the audio sink and the wave display is also replicated into an <code>appsink</code>. The <code>appsink</code> uploads the information back into the application, which then just notifies the user that data has been received, but it could obviously perform more complex tasks.</p>
+<p><img src="https://gstreamer.freedesktop.org/documentation/tutorials/basic/images/tutorials/basic-tutorial-8.png" alt="img"></p>
+<h1 id="Basic-tutorial-10-GStreamer-tools"><a href="#Basic-tutorial-10-GStreamer-tools" class="headerlink" title="Basic tutorial 10: GStreamer tools"></a>Basic tutorial 10: GStreamer tools</h1><p>三大利器，可以参照其源码实现想要的功能</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gst-launch-1.0</span><br><span class="line">gst-inspect-1.0</span><br><span class="line">gst-discoverer-1.0 # id3信息</span><br></pre></td></tr></table></figure>
+<h1 id="Basic-tutorial-11-Debugging-tools"><a href="#Basic-tutorial-11-Debugging-tools" class="headerlink" title="Basic tutorial 11: Debugging tools"></a>Basic tutorial 11: Debugging tools</h1><h2 id="Printing-debug-information"><a href="#Printing-debug-information" class="headerlink" title="Printing debug information"></a>Printing debug information</h2><h3 id="The-debug-log"><a href="#The-debug-log" class="headerlink" title="The debug log"></a>The debug log</h3><p>The first category is the Debug Level, which is a number specifying the amount of desired output:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">| # | Name    | Description                                                    |</span><br><span class="line">|---|---------|----------------------------------------------------------------|</span><br><span class="line">| 0 | none    | No debug information is output.                                |</span><br><span class="line">| 1 | ERROR   | Logs all fatal errors. These are errors that do not allow the  |</span><br><span class="line">|   |         | core or elements to perform the requested action. The          |</span><br><span class="line">|   |         | application can still recover if programmed to handle the      |</span><br><span class="line">|   |         | conditions that triggered the error.                           |</span><br><span class="line">| 2 | WARNING | Logs all warnings. Typically these are non-fatal, but          |</span><br><span class="line">|   |         | user-visible problems are expected to happen.                  |</span><br><span class="line">| 3 | FIXME   | Logs all &quot;fixme&quot; messages. Those typically that a codepath that|</span><br><span class="line">|   |         | is known to be incomplete has been triggered. It may work in   |</span><br><span class="line">|   |         | most cases, but may cause problems in specific instances.      |</span><br><span class="line">| 4 | INFO    | Logs all informational messages. These are typically used for  |</span><br><span class="line">|   |         | events in the system that only happen once, or are important   |</span><br><span class="line">|   |         | and rare enough to be logged at this level.                    |</span><br><span class="line">| 5 | DEBUG   | Logs all debug messages. These are general debug messages for  |</span><br><span class="line">|   |         | events that happen only a limited number of times during an    |</span><br><span class="line">|   |         | object&apos;s lifetime; these include setup, teardown, change of    |</span><br><span class="line">|   |         | parameters, etc.                                               |</span><br><span class="line">| 6 | LOG     | Logs all log messages. These are messages for events that      |</span><br><span class="line">|   |         | happen repeatedly during an object&apos;s lifetime; these include   |</span><br><span class="line">|   |         | streaming and steady-state conditions. This is used for log    |</span><br><span class="line">|   |         | messages that happen on every buffer in an element for example.|</span><br><span class="line">| 7 | TRACE   | Logs all trace messages. Those are message that happen very    |</span><br><span class="line">|   |         | very often. This is for example is each time the reference     |</span><br><span class="line">|   |         | count of a GstMiniObject, such as a GstBuffer or GstEvent, is  |</span><br><span class="line">|   |         | modified.                                                      |</span><br><span class="line">| 9 | MEMDUMP | Logs all memory dump messages. This is the heaviest logging and|</span><br><span class="line">|   |         | may include dumping the content of blocks of memory.           |</span><br><span class="line">+------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h4 id="设置插件的日志等级"><a href="#设置插件的日志等级" class="headerlink" title="设置插件的日志等级"></a>设置插件的日志等级</h4><p><code>GST_DEBUG=2,audiotestsrc:6</code></p>
+<h4 id="支持正则表达式"><a href="#支持正则表达式" class="headerlink" title="支持正则表达式"></a>支持正则表达式</h4><p><code>GST_DEBUG=2,audio*:6</code></p>
+<h4 id="显示所有插件的日志等级："><a href="#显示所有插件的日志等级：" class="headerlink" title="显示所有插件的日志等级："></a>显示所有插件的日志等级：</h4><p><code>gst-launch-1.0 --gst-debug-help</code></p>
+<h4 id="Gstreamer日志输出文件，默认输出到终端"><a href="#Gstreamer日志输出文件，默认输出到终端" class="headerlink" title="Gstreamer日志输出文件，默认输出到终端"></a>Gstreamer日志输出文件，默认输出到终端</h4><p><code>export GST_DEBUG_FILE=/tmp/gst.log</code></p>
+<h3 id="Adding-your-own-debug-information"><a href="#Adding-your-own-debug-information" class="headerlink" title="Adding your own debug information"></a>Adding your own debug information</h3><p>Use the <code>GST_ERROR()</code>, <code>GST_WARNING()</code>, <code>GST_INFO()</code>, <code>GST_LOG()</code> and GST_DEBUG() macros. They accept the same parameters as printf, and they use the default category (default will be shown as the Debug category in the output log).</p>
+<h2 id="Getting-pipeline-graphs"><a href="#Getting-pipeline-graphs" class="headerlink" title="Getting pipeline graphs"></a>Getting pipeline graphs</h2><h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p><code>export GST_DEBUG_DUMP_DOT_DIR=/tmp/</code></p>
+<h3 id="代码中"><a href="#代码中" class="headerlink" title="代码中"></a>代码中</h3><p><code>GST_DEBUG_BIN_TO_DOT_FILE(GST_BIN(mypipeline), GST_DEBUG_GRAPH_SHOW_ALL, &quot;test&quot;);</code><br>生成/tmp/test.dot文件，用vscode安装Graphviz Preview可查看</p>
+<h1 id="Basic-tutorial-12-Streaming"><a href="#Basic-tutorial-12-Streaming" class="headerlink" title="Basic tutorial 12: Streaming"></a>Basic tutorial 12: Streaming</h1><p>对于流媒体来说，buffer是通用解决方案。gstreamer提供了queue、queue2和multiqueue<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gst_bus_add_signal_watch (bus);</span><br><span class="line">g_signal_connect (bus, <span class="string">"message"</span>, G_CALLBACK (cb_message), &amp;data);</span><br></pre></td></tr></table></figure></p>
+<p>Live streams cannot be paused, so they behave in <code>PAUSED</code> state as if they were in the <code>PLAYING</code> state. Setting live streams to <code>PAUSED</code> succeeds, but returns <code>GST_STATE_CHANGE_NO_PREROLL</code>, instead of <code>GST_STATE_CHANGE_SUCCESS</code> to indicate that this is a live stream. We are receiving the <code>NO_PREROLL</code> return code even though we are trying to set the pipeline to <code>PLAYING</code>, because state changes happen progressively (from NULL to READY, to <code>PAUSED</code> and then to <code>PLAYING</code>).</p>
+<p>For the second network issue, the loss of clock, we simply set the pipeline to PAUSED and back to PLAYING, so a new clock is selected, waiting for new media chunks to be received if necessary.</p>
+<h1 id="Basic-tutorial-14-Handy-elements"><a href="#Basic-tutorial-14-Handy-elements" class="headerlink" title="Basic tutorial 14: Handy elements"></a>Basic tutorial 14: Handy elements</h1><h2 id="Bins"><a href="#Bins" class="headerlink" title="Bins"></a>Bins</h2><p><code>playbin</code><br><code>uridecodebin</code><br><code>decodebin</code></p>
+<h2 id="File-input-output"><a href="#File-input-output" class="headerlink" title="File input/output"></a>File input/output</h2><p><code>filesrc</code><br><code>filesink</code></p>
+<h2 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h2><p><code>souphttpsrc</code></p>
+<h2 id="Test-media-generation"><a href="#Test-media-generation" class="headerlink" title="Test media generation"></a>Test media generation</h2><p><code>videotestsrc</code><br><code>audiotestsrc</code></p>
+<h2 id="Video-adapters"><a href="#Video-adapters" class="headerlink" title="Video adapters"></a>Video adapters</h2><p><code>videoconvert</code><br><code>videorate</code><br><code>videoscale</code></p>
+<h2 id="Audio-adapters"><a href="#Audio-adapters" class="headerlink" title="Audio adapters"></a>Audio adapters</h2><p><code>audioconvert</code><br><code>audioresample</code><br><code>audiorate</code></p>
+<h2 id="Multithreading"><a href="#Multithreading" class="headerlink" title="Multithreading"></a>Multithreading</h2><p><code>queue</code><br><code>queue2</code><br><code>multiqueue</code><br><code>tee</code></p>
+<h2 id="Capabilities"><a href="#Capabilities" class="headerlink" title="Capabilities"></a>Capabilities</h2><p><code>capsfilter</code><br><code>typefind</code></p>
+<h2 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h2><p><code>fakesink</code><br><code>identity</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gstreamer/" rel="tag"># Gstreamer</a>
+          
+            <a href="/tags/Media/" rel="tag"># Media</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/22/App-Development-Manual/" rel="next" title="[App]Development Manual">
+                <i class="fa fa-chevron-left"></i> [App]Development Manual
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/27/App-Playback-tutorial/" rel="prev" title="[App]Playback tutorial">
+                [App]Playback tutorial <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Basic-tutorial" class="headerlink" title="Basic tutorial"></a>Basic tutorial</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-7-Multithreading-and-Pad-Availability"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Basic-tutorial-7-Multithreading-and-Pad-Availability" class="headerlink" title="Basic tutorial 7: Multithreading and Pad Availability"></a>Basic tutorial 7: Multithreading and Pad Availability</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-pads"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#Request-pads" class="headerlink" title="Request pads"></a>Request pads</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多管道播放"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x591A;&#x7BA1;&#x9053;&#x64AD;&#x653E;" class="headerlink" title="&#x591A;&#x7BA1;&#x9053;&#x64AD;&#x653E;"></a>&#x591A;&#x7BA1;&#x9053;&#x64AD;&#x653E;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-8-Short-cutting-the-pipeline"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Basic-tutorial-8-Short-cutting-the-pipeline" class="headerlink" title="Basic tutorial 8: Short-cutting the pipeline"></a>Basic tutorial 8: Short-cutting the pipeline</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-10-GStreamer-tools"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Basic-tutorial-10-GStreamer-tools" class="headerlink" title="Basic tutorial 10: GStreamer tools"></a>Basic tutorial 10: GStreamer tools</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-11-Debugging-tools"><span class="nav-number">5.</span> <span class="nav-text"><a href="#Basic-tutorial-11-Debugging-tools" class="headerlink" title="Basic tutorial 11: Debugging tools"></a>Basic tutorial 11: Debugging tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Printing-debug-information"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#Printing-debug-information" class="headerlink" title="Printing debug information"></a>Printing debug information</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-debug-log"><span class="nav-number">5.1.1.</span> <span class="nav-text"><a href="#The-debug-log" class="headerlink" title="The debug log"></a>The debug log</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置插件的日志等级"><span class="nav-number">5.1.1.1.</span> <span class="nav-text"><a href="#&#x8BBE;&#x7F6E;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;" class="headerlink" title="&#x8BBE;&#x7F6E;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;"></a>&#x8BBE;&#x7F6E;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持正则表达式"><span class="nav-number">5.1.1.2.</span> <span class="nav-text"><a href="#&#x652F;&#x6301;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;" class="headerlink" title="&#x652F;&#x6301;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;"></a>&#x652F;&#x6301;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示所有插件的日志等级："><span class="nav-number">5.1.1.3.</span> <span class="nav-text"><a href="#&#x663E;&#x793A;&#x6240;&#x6709;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;&#xFF1A;" class="headerlink" title="&#x663E;&#x793A;&#x6240;&#x6709;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;&#xFF1A;"></a>&#x663E;&#x793A;&#x6240;&#x6709;&#x63D2;&#x4EF6;&#x7684;&#x65E5;&#x5FD7;&#x7B49;&#x7EA7;&#xFF1A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gstreamer日志输出文件，默认输出到终端"><span class="nav-number">5.1.1.4.</span> <span class="nav-text"><a href="#Gstreamer&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#xFF0C;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x5230;&#x7EC8;&#x7AEF;" class="headerlink" title="Gstreamer&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#xFF0C;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x5230;&#x7EC8;&#x7AEF;"></a>Gstreamer&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x6587;&#x4EF6;&#xFF0C;&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x5230;&#x7EC8;&#x7AEF;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adding-your-own-debug-information"><span class="nav-number">5.1.2.</span> <span class="nav-text"><a href="#Adding-your-own-debug-information" class="headerlink" title="Adding your own debug information"></a>Adding your own debug information</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Getting-pipeline-graphs"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#Getting-pipeline-graphs" class="headerlink" title="Getting pipeline graphs"></a>Getting pipeline graphs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-number">5.2.1.</span> <span class="nav-text"><a href="#&#x73AF;&#x5883;&#x53D8;&#x91CF;" class="headerlink" title="&#x73AF;&#x5883;&#x53D8;&#x91CF;"></a>&#x73AF;&#x5883;&#x53D8;&#x91CF;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码中"><span class="nav-number">5.2.2.</span> <span class="nav-text"><a href="#&#x4EE3;&#x7801;&#x4E2D;" class="headerlink" title="&#x4EE3;&#x7801;&#x4E2D;"></a>&#x4EE3;&#x7801;&#x4E2D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-12-Streaming"><span class="nav-number">6.</span> <span class="nav-text"><a href="#Basic-tutorial-12-Streaming" class="headerlink" title="Basic tutorial 12: Streaming"></a>Basic tutorial 12: Streaming</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-tutorial-14-Handy-elements"><span class="nav-number">7.</span> <span class="nav-text"><a href="#Basic-tutorial-14-Handy-elements" class="headerlink" title="Basic tutorial 14: Handy elements"></a>Basic tutorial 14: Handy elements</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bins"><span class="nav-number">7.1.</span> <span class="nav-text"><a href="#Bins" class="headerlink" title="Bins"></a>Bins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#File-input-output"><span class="nav-number">7.2.</span> <span class="nav-text"><a href="#File-input-output" class="headerlink" title="File input/output"></a>File input/output</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Network"><span class="nav-number">7.3.</span> <span class="nav-text"><a href="#Network" class="headerlink" title="Network"></a>Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-media-generation"><span class="nav-number">7.4.</span> <span class="nav-text"><a href="#Test-media-generation" class="headerlink" title="Test media generation"></a>Test media generation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Video-adapters"><span class="nav-number">7.5.</span> <span class="nav-text"><a href="#Video-adapters" class="headerlink" title="Video adapters"></a>Video adapters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Audio-adapters"><span class="nav-number">7.6.</span> <span class="nav-text"><a href="#Audio-adapters" class="headerlink" title="Audio adapters"></a>Audio adapters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Multithreading"><span class="nav-number">7.7.</span> <span class="nav-text"><a href="#Multithreading" class="headerlink" title="Multithreading"></a>Multithreading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Capabilities"><span class="nav-number">7.8.</span> <span class="nav-text"><a href="#Capabilities" class="headerlink" title="Capabilities"></a>Capabilities</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debugging"><span class="nav-number">7.9.</span> <span class="nav-text"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

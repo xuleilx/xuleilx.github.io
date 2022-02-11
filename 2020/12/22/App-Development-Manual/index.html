@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Gstreamer,Media," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="What is GStreamer?GStreamer plug-ins could be classified into  protocols handling sources: for audio and video (involves protocol plugins) formats: parsers, formaters, muxers, demuxers, metadata, subt">
+<meta name="keywords" content="Gstreamer,Media">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[App]Development Manual">
+<meta property="og:url" content="http://yoursite.com/2020/12/22/App-Development-Manual/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="What is GStreamer?GStreamer plug-ins could be classified into  protocols handling sources: for audio and video (involves protocol plugins) formats: parsers, formaters, muxers, demuxers, metadata, subt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/gstreamer-overview.png">
+<meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/communication.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190812141200931.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvdXhpYW9uaTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://xuleilx.github.io/images/gstreamer状态变更.png">
+<meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-buffering.png">
+<meta property="og:image" content="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-synchronizing.png">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[App]Development Manual">
+<meta name="twitter:description" content="What is GStreamer?GStreamer plug-ins could be classified into  protocols handling sources: for audio and video (involves protocol plugins) formats: parsers, formaters, muxers, demuxers, metadata, subt">
+<meta name="twitter:image" content="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/gstreamer-overview.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/22/App-Development-Manual/"/>
+
+
+
+
+
+  <title>[App]Development Manual | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/22/App-Development-Manual/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[App]Development Manual</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-22T22:38:35+08:00">
+                2020-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gstreamer/" itemprop="url" rel="index">
+                    <span itemprop="name">Gstreamer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="What-is-GStreamer"><a href="#What-is-GStreamer" class="headerlink" title="What is GStreamer?"></a>What is GStreamer?</h1><p>GStreamer plug-ins could be classified into</p>
+<ul>
+<li>protocols handling</li>
+<li>sources: for audio and video (involves protocol plugins)</li>
+<li>formats: parsers, formaters, muxers, demuxers, metadata, subtitles</li>
+<li>codecs: coders and decoders</li>
+<li>filters: converters, mixers, effects, …</li>
+<li>sinks: for audio and video (involves protocol plugins)</li>
+</ul>
+<p><img src="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/gstreamer-overview.png" alt="GStreamer overview"></p>
+<p>GStreamer is packaged into</p>
+<ul>
+<li>gstreamer: the core package</li>
+<li>gst-plugins-base: an essential exemplary set of elements</li>
+<li>gst-plugins-good: a set of good-quality plug-ins under LGPL</li>
+<li>gst-plugins-ugly: a set of good-quality plug-ins that might pose distribution problems</li>
+<li>gst-plugins-bad: a set of plug-ins that need more quality</li>
+<li>gst-libav: a set of plug-ins that wrap libav for decoding and encoding <strong>软解插件</strong></li>
+<li>a few others packages</li>
+</ul>
+<h2 id="Communicationend"><a href="#Communicationend" class="headerlink" title="Communicationend"></a>Communicationend</h2><p>GStreamer provides several mechanisms for communication and data exchange between the <em>application</em> and the <em>pipeline</em>.</p>
+<ul>
+<li><em>buffers</em> are objects for passing streaming data between elements in the pipeline. Buffers always travel from sources to sinks (downstream).</li>
+<li><em>events</em> are objects sent between elements or from the application to elements. Events can travel upstream and downstream. Downstream events can be synchronised to the data flow.</li>
+<li><em>messages</em> are objects posted by elements on the pipeline’s message bus, where they will be held for collection by the application. Messages can be intercepted synchronously from the streaming thread context of the element posting the message, but are usually handled asynchronously by the application from the application’s main thread. Messages are used to transmit information such as errors, tags, state changes, buffering state, redirects etc. from elements to the application in a thread-safe way.</li>
+<li><em>queries</em> allow applications to request information such as duration or current playback position from the pipeline. Queries are always answered synchronously. Elements can also use queries to request information from their peer elements (such as the file size or duration). They can be used both ways within a pipeline, but upstream queries are more common.</li>
+</ul>
+<p><img src="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/communication.png" alt="GStreamer pipeline with different communication flows"></p>
+<ul>
+<li><p><em>signal</em><br>signal不是gstreamer特有的东西，它是来自于GObject体系，是用于app和GObject之间进行交互的一种机制。在gstreamer中，element本身也是gobject，所以，通过signal，就可以将app和element联系起来。<br>当element发生了一些事情相让app知道时，就可以用signal的方式来通知app比如动态创建了一个Pad。当然也可以在element与element之间使用， 比如在Gstplaybin当中就会侦听uridecoderbin发出来的autoplug-factories，autoplug-select等信号。</p>
+<p>signal和Bus message不同，bus message是pipeline上的，一般是app和pipeline交互的一种方法。signal则具体到了每个element。</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190812141200931.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvdXhpYW9uaTAx,size_16,color_FFFFFF,t_70" alt="整体框图"></p>
+<h1 id="Initializing-GStreamer"><a href="#Initializing-GStreamer" class="headerlink" title="Initializing GStreamer"></a>Initializing GStreamer</h1><h2 id="Simple-initialization"><a href="#Simple-initialization" class="headerlink" title="Simple initialization"></a>Simple initialization</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gst_init</span><br></pre></td></tr></table></figure>
+<h2 id="The-GOption-interface"><a href="#The-GOption-interface" class="headerlink" title="The GOption interface"></a>The GOption interface</h2><p><a href="http://developer.gnome.org/glib/stable/glib-Commandline-option-parser.html" target="_blank" rel="noopener">GOption</a> </p>
+<h1 id="Elements"><a href="#Elements" class="headerlink" title="Elements"></a>Elements</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gst_element_factory_make ()</span><br><span class="line">gst_object_unref ()</span><br><span class="line"><span class="comment">//gst_element_factory_make实际上是由gst_element_factory_find,gst_element_factory_create组合而成</span></span><br><span class="line">gst_element_factory_make () </span><br><span class="line">	factory = gst_element_factory_find ()</span><br><span class="line">	element = gst_element_factory_create () </span><br><span class="line">	gst_object_unref (GST_OBJECT (element));</span><br><span class="line">	gst_object_unref (GST_OBJECT (factory));</span><br></pre></td></tr></table></figure>
+<h2 id="Using-an-element-as-a-GObject"><a href="#Using-an-element-as-a-GObject" class="headerlink" title="Using an element as a GObject"></a>Using an element as a <code>GObject</code></h2><p>Every <code>GstElement</code> inherits at least one property from its parent <code>GstObject</code>: the “name” property.</p>
+<p>You can get and set this property using the functions <code>gst_object_set_name</code> and <code>gst_object_get_name</code></p>
+<p>GObject：<a href="https://developer.gnome.org/gobject/stable/rn01.html" target="_blank" rel="noopener">https://developer.gnome.org/gobject/stable/rn01.html</a><br>GLIB：<a href="https://developer.gnome.org/gobject/stable/pt01.html" target="_blank" rel="noopener">https://developer.gnome.org/gobject/stable/pt01.html</a></p>
+<h2 id="Linking-elements"><a href="#Linking-elements" class="headerlink" title="Linking elements"></a>Linking elements</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 组成PipeLine</span></span><br><span class="line">gst_bin_add_many()</span><br><span class="line"><span class="comment">// Link的目的：匹配Element之间的pad，link只能发生在同一个pipeline中的Element之间</span></span><br><span class="line">gst_element_link_many ()</span><br></pre></td></tr></table></figure>
+<h2 id="Element-States"><a href="#Element-States" class="headerlink" title="Element States"></a>Element States</h2><ul>
+<li><p><code>GST_STATE_NULL</code>: this is the default state. <strong>No resources are allocated in this state,</strong> so, transitioning to it will free all resources. The element must be in this state when its refcount reaches 0 and it is freed.</p>
+</li>
+<li><p><code>GST_STATE_READY</code>: in the ready state, <strong>an element has allocated all of its global resources</strong>, that is, resources that can be kept within streams. You can think about opening devices, allocating buffers and so on. However, the stream is not opened in this state, so the stream positions is automatically zero. If a stream was previously opened, it should be closed in this state, and position, properties and such should be reset.</p>
+</li>
+<li><p><code>GST_STATE_PAUSED</code>: in this state, an element has opened the stream, but is not actively processing it. An element is allowed to modify a stream’s position, read and process data and such to prepare for playback as soon as state is changed to PLAYING, but it is <em>not</em> allowed to play the data which would make the clock run. In summary, PAUSED is the same as PLAYING but without a running clock.</p>
+<p>Elements going into the <code>PAUSED</code> state should prepare themselves for moving over to the <code>PLAYING</code> state as soon as possible. Video or audio outputs would, for example, wait for data to arrive and queue it so they can play it right after the state change. Also, video sinks can already play the first frame (since this does not affect the clock yet). Autopluggers could use this same state transition to already plug together a pipeline. Most other elements, such as codecs or filters, do not need to explicitly do anything in this state, however.</p>
+</li>
+<li><p><code>GST_STATE_PLAYING</code>: in the <code>PLAYING</code> state, an element does exactly the same as in the <code>PAUSED</code> state, except that the clock now runs.</p>
+</li>
+</ul>
+<p><a href="https://gstreamer.freedesktop.org/documentation/gstreamer/gstelement.html#GST_STATE_READY" target="_blank" rel="noopener">GST_STATE_READY</a> or <a href="https://gstreamer.freedesktop.org/documentation/gstreamer/gstelement.html#GST_STATE_NULL" target="_blank" rel="noopener">GST_STATE_NULL</a> 这两个状态的变更是同步的。参照gst_element_set_state()接口说明。原因主要这两个状态涉及到资源的分配和释放。</p>
+<p> 动态添加元素时，需要单独设置状态。when adding elements dynamically to an already-running pipeline, e.g. from within a “pad-added” signal callback, you need to set it to the desired target state yourself using <code>gst_element_set_state ()</code> or <code>gst_element_sync_state_with_parent ()</code>.</p>
+<p><img src="https://xuleilx.github.io/images/gstreamer状态变更.png" alt="gstreamer状态变更"></p>
+<h1 id="Bins"><a href="#Bins" class="headerlink" title="Bins"></a>Bins</h1><p>Bins allow you to combine a group of linked elements into one logical element. You do not deal with the individual elements anymore but with just one element, the bin. </p>
+<h2 id="Creating-a-bin"><a href="#Creating-a-bin" class="headerlink" title="Creating a bin"></a>Creating a bin</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gst_bin_new();</span><br><span class="line">gst_bin_add();</span><br><span class="line">gst_bin_add_many();</span><br><span class="line">gst_bin_remove();</span><br><span class="line"><span class="comment">// 可以选择是否放入pipeline中</span></span><br><span class="line">gst_pipeline_new()</span><br></pre></td></tr></table></figure>
+<h2 id="Bins-manage-states-of-their-children"><a href="#Bins-manage-states-of-their-children" class="headerlink" title="Bins manage states of their children"></a>Bins manage states of their children</h2><p>Bins manage the state of all elements contained in them. If you set a bin (or a pipeline, which is a special top-level type of bin) to a certain target state using <code>gst_element_set_state ()</code>, it will make sure all elements contained within it will also be set to this state. This means it’s usually only necessary to set the state of the top-level pipeline to start up the pipeline or shut it down.</p>
+<h1 id="Bus"><a href="#Bus" class="headerlink" title="Bus"></a>Bus</h1><h2 id="How-to-use-a-bus"><a href="#How-to-use-a-bus" class="headerlink" title="How to use a bus"></a>How to use a bus</h2><p>Run a GLib/Gtk+ main loop (or iterate the default GLib main context yourself regularly) and attach some kind of watch to the bus. This way the GLib main loop will check the bus for new messages and notify you whenever there are messages.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// switch message</span></span><br><span class="line"><span class="comment">// 异步消息</span></span><br><span class="line">gst_bus_add_watch()</span><br><span class="line">gst_bus_add_signal_watch()</span><br><span class="line"><span class="comment">// 同步消息</span></span><br><span class="line">gst_bus_set_sync_handler()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 面向对象的做法，需要监视一个添加一个，不破坏原来代码</span></span><br><span class="line">g_signal_connect (bus, <span class="string">"message::eos"</span>, G_CALLBACK (cb_message_eos), <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<p> The return value of the handler should be <code>TRUE</code> to keep the handler attached to the bus, return <code>FALSE</code> to remove it.</p>
+<h2 id="Message-types"><a href="#Message-types" class="headerlink" title="Message types"></a>Message types</h2><ul>
+<li>Error, warning and information notifications</li>
+<li>End-of-stream notification</li>
+<li>Tags: metadata ID3信息</li>
+<li>State-changes</li>
+<li>Buffering: network-streams, 获取网络流媒体播放进度，“buffer-percent”</li>
+<li>Element messages</li>
+<li>Application-specific messages</li>
+</ul>
+<h1 id="Pads-and-capabilities"><a href="#Pads-and-capabilities" class="headerlink" title="Pads and capabilities"></a>Pads and capabilities</h1><ul>
+<li>Pads</li>
+<li>Dynamic (or sometimes) pads</li>
+<li>Request pads</li>
+</ul>
+<h2 id="Capabilities-of-a-pad"><a href="#Capabilities-of-a-pad" class="headerlink" title="Capabilities of a pad"></a>Capabilities of a pad</h2><h3 id="Properties-and-values"><a href="#Properties-and-values" class="headerlink" title="Properties and values"></a>Properties and values</h3><p><strong>Basic</strong> types, this can be pretty much any <code>GType</code> registered with Glib. </p>
+<ul>
+<li>An integer value (<code>G_TYPE_INT</code>): the property has this exact value.</li>
+<li>A boolean value (<code>G_TYPE_BOOLEAN</code>): the property is either <code>TRUE</code> or <code>FALSE</code>.</li>
+<li>A float value (<code>G_TYPE_FLOAT</code>): the property has this exact floating point value.</li>
+<li>A string value (<code>G_TYPE_STRING</code>): the property contains a UTF-8 string.</li>
+<li>A fraction value (<code>GST_TYPE_FRACTION</code>): contains a fraction expressed by an integer numerator and denominator.</li>
+</ul>
+<p><strong>Range</strong> types are <code>GType</code>s registered by GStreamer to indicate a range of possible values. </p>
+<ul>
+<li>An integer range value (<code>GST_TYPE_INT_RANGE</code>): the property denotes a range of possible integers, with a lower and an upper boundary. The “vorbisdec” element, for example, has a rate property that can be between 8000 and 50000.</li>
+<li>A float range value (<code>GST_TYPE_FLOAT_RANGE</code>): the property denotes a range of possible floating point values, with a lower and an upper boundary.</li>
+<li>A fraction range value (<code>GST_TYPE_FRACTION_RANGE</code>): the property denotes a range of possible fraction values, with a lower and an upper boundary.</li>
+</ul>
+<p><strong>List</strong> value (<code>GST_TYPE_LIST</code>)<br><strong>Array</strong> value (<code>GST_TYPE_ARRAY</code>)<br><code>GST_TYPE_LIST</code>和<code>GST_TYPE_ARRAY</code>区别：<code>GST_TYPE_LIST</code>一组值中任意一个。<code>GST_TYPE_ARRAY</code>是一个整体，每个元素可能用的地方不一样，比如：这个数组有四个值，分别表示左右前后扬声器默认音量。</p>
+<h2 id="What-capabilities-are-used-for"><a href="#What-capabilities-are-used-for" class="headerlink" title="What capabilities are used for"></a>What capabilities are used for</h2><ul>
+<li><p>Autoplugging: automatically finding elements to link to a pad based on its capabilities. All autopluggers use this method.</p>
+</li>
+<li><p>Compatibility detection: when two pads are linked, GStreamer can verify if the two pads are talking about the same media type. The process of linking two pads and checking if they are compatible is called “caps negotiation”.</p>
+</li>
+<li><p>Metadata: by reading the capabilities from a pad, applications can provide information about the type of media that is being streamed over the pad, which is information about the stream that is currently being played back. 比如：视频宽高.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gst_structure_get_int (str, <span class="string">"width"</span>, &amp;width);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Filtering: an application can use capabilities to limit the possible media types that can stream between two pads to a specific subset of their supported stream types. An application can, for example, use “filtered caps” to set a specific (fixed or non-fixed) video size that should stream between two pads. You will see an example of filtered caps later in this manual, in Manually adding or removing data from/to a pipeline. You can do caps filtering by inserting a capsfilter element into your pipeline and setting its “caps” property. <strong>Caps filters are often placed after converter elements like audioconvert, audioresample, videoconvert or videoscale to force those converters to convert data to a specific output format at a certain point in a stream</strong>.</p>
+</li>
+</ul>
+<h3 id="Creating-capabilities-for-filtering"><a href="#Creating-capabilities-for-filtering" class="headerlink" title="Creating capabilities for filtering"></a>Creating capabilities for filtering</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gst_caps_new_full ()  </span></span><br><span class="line">caps = gst_caps_new_simple (<span class="string">"video/x-raw"</span>,</span><br><span class="line">          <span class="string">"format"</span>, G_TYPE_STRING, <span class="string">"I420"</span>,</span><br><span class="line">          <span class="string">"width"</span>, G_TYPE_INT, <span class="number">384</span>,</span><br><span class="line">          <span class="string">"height"</span>, G_TYPE_INT, <span class="number">288</span>,</span><br><span class="line">          <span class="string">"framerate"</span>, GST_TYPE_FRACTION, <span class="number">25</span>, <span class="number">1</span>,</span><br><span class="line">          <span class="literal">NULL</span>);</span><br><span class="line">link_ok = gst_element_link_filtered (element1, element2, caps);</span><br></pre></td></tr></table></figure>
+<h1 id="Buffers-and-Events"><a href="#Buffers-and-Events" class="headerlink" title="Buffers and Events"></a>Buffers and Events</h1><p>Events are control particles that are sent both up- and downstream in a pipeline along with buffers. <code>Downstream</code> events notify fellow elements of stream states. Possible events include <strong>seeking, flushes, end-of-stream notifications</strong> and so on. <code>Upstream</code> events are used both in application-element interaction as well as element-element interaction to request changes in stream state, such as <strong>seeks</strong>. </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GstEvent *event;</span><br><span class="line"></span><br><span class="line">event = gst_event_new_seek (<span class="number">1.0</span>, GST_FORMAT_TIME,</span><br><span class="line">                GST_SEEK_FLAG_NONE,</span><br><span class="line">                GST_SEEK_METHOD_SET, time_ns,</span><br><span class="line">                GST_SEEK_TYPE_NONE, G_GUINT64_CONSTANT (<span class="number">0</span>));</span><br><span class="line">gst_element_send_event (element, event);</span><br></pre></td></tr></table></figure>
+<h1 id="Position-tracking-and-seeking"><a href="#Position-tracking-and-seeking" class="headerlink" title="Position tracking and seeking"></a>Position tracking and seeking</h1><h2 id="Querying-getting-the-position-or-length-of-a-stream"><a href="#Querying-getting-the-position-or-length-of-a-stream" class="headerlink" title="Querying: getting the position or length of a stream"></a>Querying: getting the position or length of a stream</h2><p>Internally, queries will be sent to the sinks, and “dispatched” <code>backwards</code> until one element can handle it; that result will be sent back to the function caller. Usually, that is the <code>demuxer</code>,  although with live sources (from a webcam), it is the source itself.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gst_element_query ()</span><br><span class="line">	gst_element_query_position ()</span><br><span class="line">	gst_element_query_duration ()</span><br><span class="line"><span class="comment">// 定时查询进度</span></span><br><span class="line">g_timeout_add (<span class="number">200</span>, (GSourceFunc) cb_print_position, pipeline);</span><br></pre></td></tr></table></figure>
+<h2 id="Events-seeking-and-more"><a href="#Events-seeking-and-more" class="headerlink" title="Events: seeking (and more)"></a>Events: seeking (and more)</h2><p>It is important to realise that seeks will not happen instantly in the sense that they are finished when the function <code>gst_element_seek ()</code> returns.</p>
+<p>Seeks with the GST_SEEK_FLAG_FLUSH should be done when the pipeline is in PAUSED or PLAYING state.</p>
+<p>Seeks without the GST_SEEK_FLAG_FLUSH should only be done when the pipeline is in the PLAYING state. </p>
+<p>Executing a non-flushing seek in the PAUSED state might deadlock because the pipeline streaming threads might be blocked in the sinks.</p>
+<p>You can wait (blocking) for the seek to complete with <code>gst_element_get_state()</code> or by waiting for the ASYNC_DONE message to appear on the bus.</p>
+<p>It is possible to do multiple seeks in short time-intervals, such as a direct response to slider movement. </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gst_element_seek </span><br><span class="line">	gst_element_seek_simple</span><br></pre></td></tr></table></figure>
+<h1 id="Metadata"><a href="#Metadata" class="headerlink" title="Metadata"></a>Metadata</h1><h2 id="Metadata-reading"><a href="#Metadata-reading" class="headerlink" title="Metadata reading"></a>Metadata reading</h2><ol>
+<li>歌曲名</li>
+<li>专辑名</li>
+<li>艺术家</li>
+<li>专辑图片</li>
+</ol>
+<h2 id="显示图片"><a href="#显示图片" class="headerlink" title="显示图片"></a>显示图片</h2><p>gst-launch-1.0 -v filesrc location=3d_data.png ! decodebin ! autovideoconvert ! imagefreeze ! autovideosink</p>
+<h1 id="Threads"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</h1><h2 id="When-would-you-want-to-force-a-thread"><a href="#When-would-you-want-to-force-a-thread" class="headerlink" title="When would you want to force a thread?"></a>When would you want to force a thread?</h2><p>We have seen that threads are created by elements but it is also possible to insert elements in the pipeline for the sole purpose of forcing a new thread in the pipeline.</p>
+<p>There are several reasons to force the use of threads. However, for performance reasons, you never want to use one thread for every element out there, since that will create some overhead. Let’s now list some situations where threads can be particularly useful:</p>
+<ul>
+<li>Data buffering, for example when dealing with network streams or when recording data from a live stream such as a video or audio card. Short hickups elsewhere in the pipeline will not cause data loss. See also <a href="https://gstreamer.freedesktop.org/documentation/application-development/advanced/buffering.html#stream-buffering" target="_blank" rel="noopener">Stream buffering</a> about network buffering with queue2.</li>
+</ul>
+<p><img src="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-buffering.png" alt="Data buffering, from a networked source"></p>
+<ul>
+<li>Synchronizing output devices, e.g. when playing a stream containing both video and audio data. By using threads for both outputs, they will run independently and their synchronization will be better.</li>
+</ul>
+<p><img src="https://gstreamer.freedesktop.org/documentation/application-development/advanced/images/thread-synchronizing.png" alt="Synchronizing audio and video sinks"></p>
+<p>We’ve mentioned the “queue” element several times now. A queue is the thread boundary element through which you can force the use of threads. </p>
+<p>To use a queue (and therefore force the use of two distinct threads in the pipeline), one can simply create a “queue” element and put this in as part of the pipeline. GStreamer will take care of all threading details internally.</p>
+<h1 id="Playback-Components"><a href="#Playback-Components" class="headerlink" title="Playback Components"></a>Playback Components</h1><h2 id="Playbin"><a href="#Playbin" class="headerlink" title="Playbin"></a>Playbin</h2><h2 id="Decodebin"><a href="#Decodebin" class="headerlink" title="Decodebin"></a>Decodebin</h2><p>Decodebin is the actual autoplugger backend of playbin, which was discussed in the previous section. Decodebin will, in short, accept input from a source that is linked to its sinkpad and will try to detect the media type contained in the stream, and set up decoder routines for each of those. It will automatically select decoders. For each decoded stream, it will emit the “pad-added” signal, to let the client know about the newly found decoded stream. For unknown streams (which might be the whole stream), it will emit the “unknown-type” signal. The application is then responsible for reporting the error to the user.</p>
+<h2 id="URIDecodebin"><a href="#URIDecodebin" class="headerlink" title="URIDecodebin"></a>URIDecodebin</h2><h2 id="Playsink"><a href="#Playsink" class="headerlink" title="Playsink"></a>Playsink</h2><h1 id="Things-to-check-when-writing-an-application"><a href="#Things-to-check-when-writing-an-application" class="headerlink" title="Things to check when writing an application"></a>Things to check when writing an application</h1><p>This chapter contains a fairly random selection of things that can be useful to keep in mind when writing GStreamer-based applications. It’s up to you how much you’re going to use the information provided here. We will shortly discuss how to debug pipeline problems using GStreamer applications. Also, we will touch upon how to acquire knowledge about plugins and elements and how to test simple pipelines before building applications around them.</p>
+<h2 id="Good-programming-habits"><a href="#Good-programming-habits" class="headerlink" title="Good programming habits"></a>Good programming habits</h2><ul>
+<li>Always add a <code>GstBus</code> handler to your pipeline. Always report errors in your application, and try to do something with warnings and information messages, too.</li>
+<li>Always check return values of GStreamer functions. Especially, check return values of <code>gst_element_link ()</code>and <code>gst_element_set_state ()</code>.</li>
+<li>Dereference return values of all functions returning a non-base type, such as <code>gst_element_get_pad ()</code>. Also, always free non-const string returns, such as <code>gst_object_get_name ()</code>.</li>
+<li>Always use your pipeline object to keep track of the current state of your pipeline. Don’t keep private variables in your application. Also, don’t update your user interface if a user presses the “play” button. Instead, listen for the “state-changed” message on the <code>GstBus</code> and only update the user interface whenever this message is received.</li>
+<li>Report all bugs that you find to Gitlab at <a href="https://gitlab.freedesktop.org/gstreamer" target="_blank" rel="noopener">https://gitlab.freedesktop.org/gstreamer/</a>.</li>
+</ul>
+<h2 id="Debugging"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</h2><p>Applications can make use of the extensive GStreamer debugging system to debug pipeline problems. Elements will write output to this system to log what they’re doing. It’s not used for error reporting, but it is very useful for tracking what an element is doing exactly, which can come in handy when debugging application issues (such as failing seeks, out-of-sync media, etc.).</p>
+<p>Most GStreamer-based applications accept the commandline option <code>--gst-debug=LIST</code> and related family members. The list consists of astart of Rose highlighter annotation. comma-separated end of Rose highlighter annotation.list of category/level pairs, which can set the debugging level for a specific debugging category. For example, <code>--gst-debug=oggdemux:5</code> would turn on debugging for the Ogg demuxer element. You can use wildcards as well. A debugging level of 0 will turn off all debugging, and a level of 9 will turn on all debugging. Intermediate values only turn on some debugging (based on message severity; 2, for example, will only display errors and warnings). Here’s a list of all available options:</p>
+<ul>
+<li><code>start of Rose highlighter annotation.--gst-debug-helpend of Rose highlighter annotation.</code> will print available debug categories and exit.</li>
+<li><code>--gst-debug-level=LEVEL</code> will set the default debug level (which can range from 0 (no output) to 9 (everything)).</li>
+<li><code>--gst-debug=LIST</code> takes a comma-separated list of category_name:level pairs to set specific levels for the individual categories. Example: <code>GST_AUTOPLUG:5,avidemux:3</code>. Alternatively, you can also set the <code>GST_DEBUG</code>environment variable, which has the same effect.</li>
+<li><code>--gst-debug-no-color</code> will disable color debugging. You can also set the GST_DEBUG_NO_COLOR environment variable to 1 if you want to disable colored debug output permanently. Note that if you are disabling color purely to avoid messing up your pager output, try using <code>less -R</code>.</li>
+<li><code>--gst-debug-color-mode=MODE</code> will change debug log coloring mode. MODE can be one of the following: <code>on</code>, <code>off</code>, <code>auto</code>, <code>disable</code>, <code>unix</code>. You can also set the GST_DEBUG_COLOR_MODE environment variable if you want to change colored debug output permanently. Note that if you are disabling color purely to avoid messing up your pager output, try using <code>less -R</code>.</li>
+<li><code>--gst-debug-disable</code> disables debugging altogether.</li>
+<li><code>--gst-plugin-spew</code> enables printout of errors while loading GStreamer plugins.</li>
+</ul>
+<h2 id="Conversion-plugins"><a href="#Conversion-plugins" class="headerlink" title="Conversion plugins"></a>Conversion plugins</h2><p>GStreamer contains a bunch of conversion plugins that most applications will find useful. Specifically, those are videoscalers (videoscale), colorspace convertors (videoconvert), audio format convertors and channel resamplers (audioconvert) and audio samplerate convertors (audioresample). Those convertors don’t do anything when not required, they will act in passthrough mode. They will activate when the hardware doesn’t support a specific request, though. All applications are recommended to use those elements.</p>
+<h2 id="Utility-applications-provided-with-GStreamer"><a href="#Utility-applications-provided-with-GStreamer" class="headerlink" title="Utility applications provided with GStreamer"></a>Utility applications provided with GStreamer</h2><p>GStreamer comes with a default set of command-line utilities that can help in application development. We will discuss only <code>gst-launch</code> and <code>gst-inspect</code> here.</p>
+<h3 id="gst-launch"><a href="#gst-launch" class="headerlink" title="gst-launch"></a><code>gst-launch</code></h3><p><code>gst-launch</code> is a simple script-like commandline application that can be used to test pipelines. For example, the command <code>gst-launch audiotestsrc ! audioconvert ! audio/x-raw,channels=2 ! alsasink</code> will run a pipeline which generates a sine-wave audio stream and plays it to your ALSA audio card. <code>gst-launch</code> also allows the use of threads (will be used automatically as required or as queue elements are inserted in the pipeline) and bins (using brackets, so “(” and “)”). You can use dots to imply padnames on elements, or even omit the padname to automatically select a pad. Using all this, the pipeline <code>gst-launch filesrc location=file.ogg ! oggdemux name=d d. ! queue ! theoradec ! videoconvert ! xvimagesink d. ! queue ! vorbisdec ! audioconvert ! audioresample ! alsasink</code> will play an Ogg file containing a Theora video-stream and a Vorbis audio-stream. You can also use autopluggers such as decodebin on the commandline. See the manual page of <code>gst-launch</code> for more information.</p>
+<h3 id="gst-inspect"><a href="#gst-inspect" class="headerlink" title="gst-inspect"></a><code>gst-inspect</code></h3><p><code>gst-inspect</code> can be used to inspect all properties, signals, dynamic parameters and the object hierarchy of an element. This can be very useful to see which <code>GObject</code> properties or which signals (and using what arguments) an element supports. Run <code>gst-inspect fakesrc</code> to get an idea of what it does. See the manual page of <code>gst-inspect</code>for more information.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gstreamer/" rel="tag"># Gstreamer</a>
+          
+            <a href="/tags/Media/" rel="tag"># Media</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/29/启动Siri导致车机卡死问题分析/" rel="next" title="启动Siri导致车机卡死问题分析">
+                <i class="fa fa-chevron-left"></i> 启动Siri导致车机卡死问题分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/24/App-Basic-tutorial/" rel="prev" title="[App]Basic tutorial">
+                [App]Basic tutorial <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-is-GStreamer"><span class="nav-number">1.</span> <span class="nav-text"><a href="#What-is-GStreamer" class="headerlink" title="What is GStreamer?"></a>What is GStreamer?</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Communicationend"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#Communicationend" class="headerlink" title="Communicationend"></a>Communicationend</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Initializing-GStreamer"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Initializing-GStreamer" class="headerlink" title="Initializing GStreamer"></a>Initializing GStreamer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Simple-initialization"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#Simple-initialization" class="headerlink" title="Simple initialization"></a>Simple initialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-GOption-interface"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#The-GOption-interface" class="headerlink" title="The GOption interface"></a>The GOption interface</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Elements"><span class="nav-number">3.</span> <span class="nav-text"><a href="#Elements" class="headerlink" title="Elements"></a>Elements</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-an-element-as-a-GObject"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#Using-an-element-as-a-GObject" class="headerlink" title="Using an element as a GObject"></a>Using an element as a <code>GObject</code></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linking-elements"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#Linking-elements" class="headerlink" title="Linking elements"></a>Linking elements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Element-States"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#Element-States" class="headerlink" title="Element States"></a>Element States</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bins"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Bins" class="headerlink" title="Bins"></a>Bins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-a-bin"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#Creating-a-bin" class="headerlink" title="Creating a bin"></a>Creating a bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bins-manage-states-of-their-children"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#Bins-manage-states-of-their-children" class="headerlink" title="Bins manage states of their children"></a>Bins manage states of their children</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bus"><span class="nav-number">5.</span> <span class="nav-text"><a href="#Bus" class="headerlink" title="Bus"></a>Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-a-bus"><span class="nav-number">5.1.</span> <span class="nav-text"><a href="#How-to-use-a-bus" class="headerlink" title="How to use a bus"></a>How to use a bus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Message-types"><span class="nav-number">5.2.</span> <span class="nav-text"><a href="#Message-types" class="headerlink" title="Message types"></a>Message types</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pads-and-capabilities"><span class="nav-number">6.</span> <span class="nav-text"><a href="#Pads-and-capabilities" class="headerlink" title="Pads and capabilities"></a>Pads and capabilities</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Capabilities-of-a-pad"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#Capabilities-of-a-pad" class="headerlink" title="Capabilities of a pad"></a>Capabilities of a pad</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Properties-and-values"><span class="nav-number">6.1.1.</span> <span class="nav-text"><a href="#Properties-and-values" class="headerlink" title="Properties and values"></a>Properties and values</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-capabilities-are-used-for"><span class="nav-number">6.2.</span> <span class="nav-text"><a href="#What-capabilities-are-used-for" class="headerlink" title="What capabilities are used for"></a>What capabilities are used for</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-capabilities-for-filtering"><span class="nav-number">6.2.1.</span> <span class="nav-text"><a href="#Creating-capabilities-for-filtering" class="headerlink" title="Creating capabilities for filtering"></a>Creating capabilities for filtering</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Buffers-and-Events"><span class="nav-number">7.</span> <span class="nav-text"><a href="#Buffers-and-Events" class="headerlink" title="Buffers and Events"></a>Buffers and Events</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Position-tracking-and-seeking"><span class="nav-number">8.</span> <span class="nav-text"><a href="#Position-tracking-and-seeking" class="headerlink" title="Position tracking and seeking"></a>Position tracking and seeking</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Querying-getting-the-position-or-length-of-a-stream"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#Querying-getting-the-position-or-length-of-a-stream" class="headerlink" title="Querying: getting the position or length of a stream"></a>Querying: getting the position or length of a stream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Events-seeking-and-more"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#Events-seeking-and-more" class="headerlink" title="Events: seeking (and more)"></a>Events: seeking (and more)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Metadata"><span class="nav-number">9.</span> <span class="nav-text"><a href="#Metadata" class="headerlink" title="Metadata"></a>Metadata</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Metadata-reading"><span class="nav-number">9.1.</span> <span class="nav-text"><a href="#Metadata-reading" class="headerlink" title="Metadata reading"></a>Metadata reading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示图片"><span class="nav-number">9.2.</span> <span class="nav-text"><a href="#&#x663E;&#x793A;&#x56FE;&#x7247;" class="headerlink" title="&#x663E;&#x793A;&#x56FE;&#x7247;"></a>&#x663E;&#x793A;&#x56FE;&#x7247;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Threads"><span class="nav-number">10.</span> <span class="nav-text"><a href="#Threads" class="headerlink" title="Threads"></a>Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#When-would-you-want-to-force-a-thread"><span class="nav-number">10.1.</span> <span class="nav-text"><a href="#When-would-you-want-to-force-a-thread" class="headerlink" title="When would you want to force a thread?"></a>When would you want to force a thread?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Playback-Components"><span class="nav-number">11.</span> <span class="nav-text"><a href="#Playback-Components" class="headerlink" title="Playback Components"></a>Playback Components</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Playbin"><span class="nav-number">11.1.</span> <span class="nav-text"><a href="#Playbin" class="headerlink" title="Playbin"></a>Playbin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decodebin"><span class="nav-number">11.2.</span> <span class="nav-text"><a href="#Decodebin" class="headerlink" title="Decodebin"></a>Decodebin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URIDecodebin"><span class="nav-number">11.3.</span> <span class="nav-text"><a href="#URIDecodebin" class="headerlink" title="URIDecodebin"></a>URIDecodebin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Playsink"><span class="nav-number">11.4.</span> <span class="nav-text"><a href="#Playsink" class="headerlink" title="Playsink"></a>Playsink</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Things-to-check-when-writing-an-application"><span class="nav-number">12.</span> <span class="nav-text"><a href="#Things-to-check-when-writing-an-application" class="headerlink" title="Things to check when writing an application"></a>Things to check when writing an application</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Good-programming-habits"><span class="nav-number">12.1.</span> <span class="nav-text"><a href="#Good-programming-habits" class="headerlink" title="Good programming habits"></a>Good programming habits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debugging"><span class="nav-number">12.2.</span> <span class="nav-text"><a href="#Debugging" class="headerlink" title="Debugging"></a>Debugging</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conversion-plugins"><span class="nav-number">12.3.</span> <span class="nav-text"><a href="#Conversion-plugins" class="headerlink" title="Conversion plugins"></a>Conversion plugins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Utility-applications-provided-with-GStreamer"><span class="nav-number">12.4.</span> <span class="nav-text"><a href="#Utility-applications-provided-with-GStreamer" class="headerlink" title="Utility applications provided with GStreamer"></a>Utility applications provided with GStreamer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gst-launch"><span class="nav-number">12.4.1.</span> <span class="nav-text"><a href="#gst-launch" class="headerlink" title="gst-launch"></a><code>gst-launch</code></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gst-inspect"><span class="nav-number">12.4.2.</span> <span class="nav-text"><a href="#gst-inspect" class="headerlink" title="gst-inspect"></a><code>gst-inspect</code></span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

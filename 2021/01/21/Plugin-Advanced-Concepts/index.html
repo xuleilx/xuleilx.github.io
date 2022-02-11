@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Gstreamer,Media," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Playbin连接流程 根据URI找src插件 playbin 根据 uri 中指定的协议来判断走哪个src element，比如：uri=file:///tmp/123.mp4 选择filesrcuri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm 选择 souphtt">
+<meta name="keywords" content="Gstreamer,Media">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Plugin]Advanced Concepts">
+<meta property="og:url" content="http://yoursite.com/2021/01/21/Plugin-Advanced-Concepts/index.html">
+<meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="Playbin连接流程 根据URI找src插件 playbin 根据 uri 中指定的协议来判断走哪个src element，比如：uri=file:///tmp/123.mp4 选择filesrcuri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm 选择 souphtt">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-02-11T02:42:47.959Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[Plugin]Advanced Concepts">
+<meta name="twitter:description" content="Playbin连接流程 根据URI找src插件 playbin 根据 uri 中指定的协议来判断走哪个src element，比如：uri=file:///tmp/123.mp4 选择filesrcuri=https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm 选择 souphtt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/01/21/Plugin-Advanced-Concepts/"/>
+
+
+
+
+
+  <title>[Plugin]Advanced Concepts | 沧海一粟</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a09ceae12f206f43946524c0910b1b4a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">沧海一粟</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">只要路是对的，就不怕路远</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/21/Plugin-Advanced-Concepts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[Plugin]Advanced Concepts</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-21T00:59:29+08:00">
+                2021-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gstreamer/" itemprop="url" rel="index">
+                    <span itemprop="name">Gstreamer</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Playbin连接流程"><a href="#Playbin连接流程" class="headerlink" title="Playbin连接流程"></a>Playbin连接流程</h1><ol>
+<li><p>根据URI找src插件</p>
+<p>playbin 根据 uri 中指定的协议来判断走哪个src element，比如：uri=file:///tmp/123.mp4 选择filesrcuri=<a href="https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm" target="_blank" rel="noopener">https://www.freedesktop.org/software/gstreamer-sdk/data/media/sintel_trailer-480p.webm</a> 选择 souphttpsrc</p>
+</li>
+<li><p>通过typefind找demux插件</p>
+<p>通过typefind初步解析MIME媒体类型，找出支持该媒体类型的demux插件</p>
+</li>
+<li><p>Demux插件分流</p>
+<p>demux插件会解析数据流的头部，完成音频和视频的分流，创建Sometimes 的pads。流消失，pads就会消失。</p>
+</li>
+<li><p>Decode插件解码</p>
+<p>demux知道不同的MIME媒体类型的编码格式，找到对应解码插件</p>
+</li>
+<li><p>Sink插件</p>
+<p>播放或显示裸数据</p>
+</li>
+</ol>
+<h1 id="特殊类型的pads"><a href="#特殊类型的pads" class="headerlink" title="特殊类型的pads"></a>特殊类型的pads</h1><ol>
+<li>Sometimes pads：用于demux</li>
+<li>Request pads：用于mux</li>
+</ol>
+<h1 id="数据流模式scheduling-modes"><a href="#数据流模式scheduling-modes" class="headerlink" title="数据流模式scheduling modes"></a>数据流模式scheduling modes</h1><p>Push- and Pull-mode。GStreamer在任何调度模式下都支持带有pads的element，其中并非所有pads都需要在同一模式下运行。</p>
+<h2 id="Push-mode"><a href="#Push-mode" class="headerlink" title="Push mode"></a>Push mode</h2><p>之前一篇文章里面有用到<code>_chain ()</code>，可以看到该函数是设置给了sinkpad，上游的<code>gst_pad_push</code>作用在srcpad上，触发下游元素<code>_chain ()</code>被调用。</p>
+<h2 id="Pull-mode"><a href="#Pull-mode" class="headerlink" title="Pull mode"></a>Pull mode</h2><p>一般Demuxers, parsers 以及部分codec插件充当这样的角色，<code>gst_pad_pull_range</code>作用在sinkpad上，从src element中pull，push到downstream elements，控制着pipeline的数据流。需要提供随机访问。</p>
+<p>可以看出，一般source pad会push数据给下游的element。当然source pad也可以pull，但是用的比较少。此模式的先决条件是使用<code>gst_pad_set_getrange_function</code>为source pad设置了<code>_get_range</code>。设置的函数会调用<code>gst_pad_pull_range</code>获取数据。</p>
+<p>当sink element在PULL模式下激活时，它应该启动一个task ，该任务在其sinkpad上调用<code>gst_pad_pull_range</code></p>
+<p>This can come in useful for several different kinds of elements:</p>
+<ul>
+<li>Demuxers, parsers and certain kinds of decoders where data comes in unparsed (such as MPEG-audio or video streams), since those will prefer byte-exact (random) access from their input. If possible, however, such elements should be prepared to operate in push-mode mode, too.</li>
+<li>Certain kind of audio outputs, which require control over their input data flow, such as the Jack sound server.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gst_pad_set_activate_function (filter-&gt;sinkpad, gst_my_filter_activate);</span><br><span class="line">gst_pad_set_activatemode_function (filter-&gt;sinkpad,gst_my_filter_activate_mode);</span><br><span class="line"><span class="comment">// gst_my_filter_activate_mode 启动一个task，调用gst_pad_push</span></span><br></pre></td></tr></table></figure>
+<h3 id="Providing-random-access"><a href="#Providing-random-access" class="headerlink" title="Providing random access"></a>Providing random access</h3><p>Several elements can implement random access:</p>
+<ul>
+<li>Data <code>sources</code>, such as a file source, that can provide data from any offset with reasonable low latency.</li>
+<li><code>Filters</code> that would like to provide a pull-mode scheduling over the whole pipeline.</li>
+<li><code>Parsers</code> who can easily provide this by skipping a small part of their input and are thus essentially “forwarding” getrange requests literally without any own processing involved. Examples include tag readers (e.g. ID3) or single output parsers, such as a WAVE parser.</li>
+</ul>
+<h1 id="Caps-negotiation"><a href="#Caps-negotiation" class="headerlink" title="Caps negotiation"></a>Caps negotiation</h1><p>In GStreamer, negotiation of the media format always follows the following simple rules:</p>
+<ul>
+<li>A downstream element suggest a format on its sinkpad and places the suggestion in the result of the CAPS query performed on the sinkpad. See also <a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/negotiation.html#implementing-a-caps-query-function" target="_blank" rel="noopener">Implementing a CAPS query function</a>.</li>
+<li>An upstream element decides on a format. It sends the selected media format downstream on its source pad with a CAPS event. Downstream elements reconfigure themselves to handle the media type in the CAPS event on the sinkpad.</li>
+<li>A downstream element can inform upstream that it would like to suggest a new format by sending a RECONFIGURE event upstream. The RECONFIGURE event simply instructs an upstream element to restart the negotiation phase. Because the element that sent out the RECONFIGURE event is now suggesting another format, the format in the pipeline might change.</li>
+</ul>
+<h2 id="Dynamic-negotiation"><a href="#Dynamic-negotiation" class="headerlink" title="Dynamic negotiation"></a>Dynamic negotiation</h2><p>A typical flow goes like this:</p>
+<ul>
+<li>Caps are received on the sink pad of the element.</li>
+<li>If the element prefers to operate in passthrough mode, check if downstream accepts the caps with the ACCEPT_CAPS query. If it does, we can complete negotiation and we can operate in passthrough mode.</li>
+<li>Calculate the possible caps for the source pad.</li>
+<li>Query the downstream peer pad for the list of possible caps.</li>
+<li>Select from the downstream list the first caps that you can transform to and set this as the output caps. You might have to fixate the caps to some reasonable defaults to construct fixed caps.</li>
+</ul>
+<p>Examples of this type of elements include:</p>
+<ul>
+<li><p>Converter elements such as videoconvert, audioconvert, audioresample, videoscale, …</p>
+</li>
+<li><p>Source elements such as audiotestsrc, videotestsrc, v4l2src, pulsesrc, …</p>
+</li>
+</ul>
+<h1 id="Memory-allocation"><a href="#Memory-allocation" class="headerlink" title="Memory allocation"></a>Memory allocation</h1><p><code>GstBuffer</code> &gt; <code>GstMemory</code></p>
+<p><code>GstMemory(GstMapInfo)</code>：manages access to a piece of memory and then continue with one of it’s main users<br><code>GstBuffer</code>： is used to exchange data between plugins and with the application. A <code>GstBuffer</code> contains one or more <code>GstMemory</code> objects. These objects hold the buffer’s data.<br><code>GstMeta</code>：can be placed on buffers to provide extra info about it and its memory.<br><code>GstBufferPool</code>：allows to more-efficiently manage buffers of the same size.</p>
+<p>Elements can ask a <code>GstBufferPool</code> or <code>GstAllocator</code> from the downstream peer element. If downstream is able to provide these objects, upstream can use them to allocate buffers.</p>
+<p>Many sink elements have accelerated methods for copying data to hardware, or have direct access to hardware. It is common for these elements to be able to create a <code>GstBufferPool</code> or <code>GstAllocator</code> for their upstream peers. </p>
+<p><strong>GstMemory的使用</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GstMemory *mem;</span><br><span class="line">GstMapInfo info;</span><br><span class="line">gint i;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* allocate 100 bytes */</span></span><br><span class="line">mem = gst_allocator_alloc (<span class="literal">NULL</span>, <span class="number">100</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* get access to the memory in write mode */</span></span><br><span class="line">gst_memory_map (mem, &amp;info, GST_MAP_WRITE);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* fill with pattern */</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; info.size; i++)</span><br><span class="line">  info.data[i] = i;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* release memory */</span></span><br><span class="line">gst_memory_unmap (mem, &amp;info);</span><br></pre></td></tr></table></figure>
+<p><strong>GstBuffer的使用</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">GstBuffer *buffer;</span><br><span class="line">GstMemory *mem;</span><br><span class="line">GstMapInfo info;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* make empty buffer */</span></span><br><span class="line">buffer = gst_buffer_new ();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* make memory holding 100 bytes */</span></span><br><span class="line">mem = gst_allocator_alloc (<span class="literal">NULL</span>, <span class="number">100</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* add the buffer */</span></span><br><span class="line">gst_buffer_append_memory (buffer, mem);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* get WRITE access to the memory and fill with 0xff */</span></span><br><span class="line">gst_buffer_map (buffer, &amp;info, GST_MAP_WRITE);</span><br><span class="line"><span class="built_in">memset</span> (info.data, <span class="number">0xff</span>, info.size);</span><br><span class="line">gst_buffer_unmap (buffer, &amp;info);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* free the buffer */</span></span><br><span class="line">gst_buffer_unref (buffer);</span><br></pre></td></tr></table></figure>
+<p><strong>GstBufferPool的使用</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GstStructure *config;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* get config structure */</span></span><br><span class="line">config = gst_buffer_pool_get_config (pool);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* set caps, size, minimum and maximum buffers in the pool */</span></span><br><span class="line">gst_buffer_pool_config_set_params (config, caps, size, min, max);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* configure allocator and parameters */</span></span><br><span class="line">gst_buffer_pool_config_set_allocator (config, allocator, &amp;params);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* store the updated configuration again */</span></span><br><span class="line">gst_buffer_pool_set_config (pool, config);</span><br></pre></td></tr></table></figure>
+<h1 id="Media-Types-and-Properties"><a href="#Media-Types-and-Properties" class="headerlink" title="Media Types and Properties"></a>Media Types and Properties</h1><p>MIME类型：<a href="https://www.iana.org/assignments/media-types/media-types.xhtml" target="_blank" rel="noopener">https://www.iana.org/assignments/media-types/media-types.xhtml</a></p>
+<h1 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h1><p>常见的Event：</p>
+<ul>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#stream-start" target="_blank" rel="noopener">Stream Start</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#caps" target="_blank" rel="noopener">Caps</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#segment" target="_blank" rel="noopener">Segment</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#tag-metadata" target="_blank" rel="noopener">Tag (metadata)</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#end-of-stream-eos" target="_blank" rel="noopener">End of Stream (EOS)</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#table-of-contents" target="_blank" rel="noopener">Table Of Contents</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#gap" target="_blank" rel="noopener">Gap</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#flush-start" target="_blank" rel="noopener">Flush Start</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#flush-stop" target="_blank" rel="noopener">Flush Stop</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#quality-of-service-qos" target="_blank" rel="noopener">Quality Of Service (QOS)</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#seek-request" target="_blank" rel="noopener">Seek Request</a></li>
+<li><a href="https://gstreamer.freedesktop.org/documentation/plugin-development/advanced/events.html#navigation" target="_blank" rel="noopener">Navigation</a></li>
+</ul>
+<p><strong>Downstream event</strong>：src -&gt; sink</p>
+<p><strong>Upstream event</strong>: src &lt;- sink</p>
+<p>The most common upstream events are seek events, Quality-of-Service (QoS) and reconfigure events. <code>gst_pad_send_event</code></p>
+<p><strong>Segment event</strong>: A segment event is sent downstream to announce the range of valid timestamps in the stream and how they should be transformed into running-time and stream-time. A segment event must always be sent before the first buffer of data and after a flush </p>
+<h1 id="Demuxer-or-Parser"><a href="#Demuxer-or-Parser" class="headerlink" title="Demuxer or Parser"></a>Demuxer or Parser</h1><p><strong>Parsers</strong> are demuxers with only one source pad. </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gstreamer/" rel="tag"># Gstreamer</a>
+          
+            <a href="/tags/Media/" rel="tag"># Media</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/21/Plugin-The-Basics-of-Writing-a-Plugin/" rel="next" title="[Plugin]The Basics of Writing a Plugin">
+                <i class="fa fa-chevron-left"></i> [Plugin]The Basics of Writing a Plugin
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/04/H-264视频码流解析/" rel="prev" title="H.264视频码流解析">
+                H.264视频码流解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/xuleilx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:xuleilx@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                    
+                      <i class="fa fa-fw fa-google"></i>Google</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/yourname" target="_blank" title="FB Page">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://vk.com/yourname" target="_blank" title="VK Group">
+                    
+                      <i class="fa fa-fw fa-vk"></i>VK Group</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/yourname" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://youtube.com/yourname" target="_blank" title="YouTube">
+                    
+                      <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://instagram.com/yourname" target="_blank" title="Instagram">
+                    
+                      <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="skype:yourname?call|chat" target="_blank" title="Skype">
+                    
+                      <i class="fa fa-fw fa-skype"></i>Skype</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Playbin连接流程"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Playbin&#x8FDE;&#x63A5;&#x6D41;&#x7A0B;" class="headerlink" title="Playbin&#x8FDE;&#x63A5;&#x6D41;&#x7A0B;"></a>Playbin&#x8FDE;&#x63A5;&#x6D41;&#x7A0B;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#特殊类型的pads"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7279;&#x6B8A;&#x7C7B;&#x578B;&#x7684;pads" class="headerlink" title="&#x7279;&#x6B8A;&#x7C7B;&#x578B;&#x7684;pads"></a>&#x7279;&#x6B8A;&#x7C7B;&#x578B;&#x7684;pads</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据流模式scheduling-modes"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6570;&#x636E;&#x6D41;&#x6A21;&#x5F0F;scheduling-modes" class="headerlink" title="&#x6570;&#x636E;&#x6D41;&#x6A21;&#x5F0F;scheduling modes"></a>&#x6570;&#x636E;&#x6D41;&#x6A21;&#x5F0F;scheduling modes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Push-mode"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#Push-mode" class="headerlink" title="Push mode"></a>Push mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pull-mode"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#Pull-mode" class="headerlink" title="Pull mode"></a>Pull mode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Providing-random-access"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#Providing-random-access" class="headerlink" title="Providing random access"></a>Providing random access</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Caps-negotiation"><span class="nav-number">4.</span> <span class="nav-text"><a href="#Caps-negotiation" class="headerlink" title="Caps negotiation"></a>Caps negotiation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dynamic-negotiation"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#Dynamic-negotiation" class="headerlink" title="Dynamic negotiation"></a>Dynamic negotiation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Memory-allocation"><span class="nav-number">5.</span> <span class="nav-text"><a href="#Memory-allocation" class="headerlink" title="Memory allocation"></a>Memory allocation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Media-Types-and-Properties"><span class="nav-number">6.</span> <span class="nav-text"><a href="#Media-Types-and-Properties" class="headerlink" title="Media Types and Properties"></a>Media Types and Properties</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Events"><span class="nav-number">7.</span> <span class="nav-text"><a href="#Events" class="headerlink" title="Events"></a>Events</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Demuxer-or-Parser"><span class="nav-number">8.</span> <span class="nav-text"><a href="#Demuxer-or-Parser" class="headerlink" title="Demuxer or Parser"></a>Demuxer or Parser</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
