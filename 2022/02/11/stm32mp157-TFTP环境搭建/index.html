@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="概率," />
+  <meta name="keywords" content="stm32mp157," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363">
-<meta name="keywords" content="概率">
+<meta name="description" content="目的嵌入式开发，免不了需要修改kernel代码和设备树。如果每次更新都要重新烧录，既费时又费力。通常我们不需要修改uboot的代码，可以让uboot通过tftp下载我们的kernel和设备树到指定的地址然后启动Linux。 开发板网络环境搭建准备工作 电脑 开发板 网线 USB转网口网络拓扑结构VMWare设置USB转网口设备的连接状态，让设备连接到虚拟机TFTP 环境搭建TFTP 简介TFTP（">
+<meta name="keywords" content="stm32mp157">
 <meta property="og:type" content="article">
-<meta property="og:title" content="相依事件的概率">
-<meta property="og:url" content="http://yoursite.com/2019/03/19/相依事件的概率/index.html">
+<meta property="og:title" content="stm32mp157-TFTP环境搭建">
+<meta property="og:url" content="http://yoursite.com/2022/02/11/stm32mp157-TFTP环境搭建/index.html">
 <meta property="og:site_name" content="沧海一粟">
-<meta property="og:description" content="剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363">
+<meta property="og:description" content="目的嵌入式开发，免不了需要修改kernel代码和设备树。如果每次更新都要重新烧录，既费时又费力。通常我们不需要修改uboot的代码，可以让uboot通过tftp下载我们的kernel和设备树到指定的地址然后启动Linux。 开发板网络环境搭建准备工作 电脑 开发板 网线 USB转网口网络拓扑结构VMWare设置USB转网口设备的连接状态，让设备连接到虚拟机TFTP 环境搭建TFTP 简介TFTP（">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-02-11T02:42:47.963Z">
+<meta property="og:image" content="https://xuleilx.github.io/images/TFTP环境搭建-网络拓扑结构.png">
+<meta property="og:updated_time" content="2022-02-12T07:53:36.587Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="相依事件的概率">
-<meta name="twitter:description" content="剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363">
+<meta name="twitter:title" content="stm32mp157-TFTP环境搭建">
+<meta name="twitter:description" content="目的嵌入式开发，免不了需要修改kernel代码和设备树。如果每次更新都要重新烧录，既费时又费力。通常我们不需要修改uboot的代码，可以让uboot通过tftp下载我们的kernel和设备树到指定的地址然后启动Linux。 开发板网络环境搭建准备工作 电脑 开发板 网线 USB转网口网络拓扑结构VMWare设置USB转网口设备的连接状态，让设备连接到虚拟机TFTP 环境搭建TFTP 简介TFTP（">
+<meta name="twitter:image" content="https://xuleilx.github.io/images/TFTP环境搭建-网络拓扑结构.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/19/相依事件的概率/"/>
+  <link rel="canonical" href="http://yoursite.com/2022/02/11/stm32mp157-TFTP环境搭建/"/>
 
 
 
 
 
-  <title>相依事件的概率 | 沧海一粟</title>
+  <title>stm32mp157-TFTP环境搭建 | 沧海一粟</title>
   
 
 
@@ -337,7 +339,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/19/相依事件的概率/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/02/11/stm32mp157-TFTP环境搭建/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -354,7 +356,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">相依事件的概率</h1>
+          <h1 class="post-title" itemprop="name headline">stm32mp157-TFTP环境搭建</h1>
         
 
         <div class="post-meta">
@@ -366,8 +368,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-19T10:34:56+08:00">
-                2019-03-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-11T11:23:46+08:00">
+                2022-02-11
               </time>
             
 
@@ -376,6 +378,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设备驱动/" itemprop="url" rel="index">
+                    <span itemprop="name">设备驱动</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -404,29 +428,25 @@
       
 
       
-        <p>剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。<br>随机取出9张，其中有四张是1的概率是多少？</p>
-<h6 id="解法1"><a href="#解法1" class="headerlink" title="解法1"></a>解法1</h6><p>P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands)</p>
-<p>total # of hands = $\frac{36<em>35</em>34<em>33</em>32<em>31</em>30<em>29</em>28}{9<em>8</em>7<em>6</em>5<em>4</em>3<em>2</em>1}$</p>
-<p>the # of hands with 4 1’s = $\frac{1<em>1</em>1<em>1</em>32<em>31</em>30<em>29</em>28}{5<em>4</em>3<em>2</em>1}$</p>
-<p>P(all 4 cards is 1 in my hand of 9)  = $\frac{1<em>1</em>1<em>1</em>32<em>31</em>30<em>29</em>28}{5<em>4</em>3<em>2</em>1} <em> \frac{9</em>8<em>7</em>6<em>5</em>4<em>3</em>2<em>1}{36</em>35<em>34</em>33<em>32</em>31<em>30</em>29*28}$= $\frac{2}{935}$</p>
-<h6 id="解法2"><a href="#解法2" class="headerlink" title="解法2"></a>解法2</h6><table>
-<thead>
-<tr>
-<th>取到一张1的概率</th>
-<th>剩下的35张取到1的概率</th>
-<th>剩下的34张取到1的概率</th>
-<th>剩下的33张取到1的概率</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$\frac{1}{36}*9$</td>
-<td>$\frac{1}{35}*8$</td>
-<td>$\frac{1}{34}*7$</td>
-<td>$\frac{1}{33}*6$</td>
-</tr>
-</tbody>
-</table>
+        <h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>嵌入式开发，免不了需要修改kernel代码和设备树。如果每次更新都要重新烧录，既费时又费力。通常我们不需要修改uboot的代码，可以让uboot通过tftp下载我们的kernel和设备树到指定的地址然后启动Linux。</p>
+<h1 id="开发板网络环境搭建"><a href="#开发板网络环境搭建" class="headerlink" title="开发板网络环境搭建"></a>开发板网络环境搭建</h1><h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li>电脑</li>
+<li>开发板</li>
+<li>网线</li>
+<li>USB转网口<h2 id="网络拓扑结构"><a href="#网络拓扑结构" class="headerlink" title="网络拓扑结构"></a>网络拓扑结构</h2><img src="https://xuleilx.github.io/images/TFTP环境搭建-网络拓扑结构.png" alt="网络拓扑结构"><h2 id="VMWare设置"><a href="#VMWare设置" class="headerlink" title="VMWare设置"></a>VMWare设置</h2>USB转网口设备的连接状态，让设备连接到虚拟机<h1 id="TFTP-环境搭建"><a href="#TFTP-环境搭建" class="headerlink" title="TFTP 环境搭建"></a>TFTP 环境搭建</h1><h2 id="TFTP-简介"><a href="#TFTP-简介" class="headerlink" title="TFTP 简介"></a>TFTP 简介</h2>TFTP（Trivial File Transfer Protocol,简单文件传输协议）是 TCP/IP 协议族中的一个用来在客户机与服务器之间进行简单文件传输的协议，提供不复杂、开销不大的文件传输服务。我们可以使用 TFTP 来加载内核 zImage、设备树和其他较小的文件到开发板 DDR 上，从而实现网络挂载。<h2 id="搭建-TFTP"><a href="#搭建-TFTP" class="headerlink" title="搭建 TFTP"></a>搭建 TFTP</h2><h3 id="安装和配置-xinetd"><a href="#安装和配置-xinetd" class="headerlink" title="安装和配置 xinetd"></a>安装和配置 xinetd</h3>执行以下指令，安装 xinetd。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt-get install xinetd</span><br><span class="line"><span class="meta">$</span> sudo vi /etc/xinetd.conf</span><br><span class="line"><span class="meta">$</span> cat /etc/xinetd.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Simple configuration file for xinetd</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> Some defaults, and include /etc/xinetd.d/</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Please note that you need a log_type line to be able to use log_on_success</span><br><span class="line"><span class="meta">#</span> and log_on_failure. The default is the following :</span><br><span class="line"><span class="meta">#</span> log_type = SYSLOG daemon info</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">includedir /etc/xinetd.d</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="TFTP-目录"><a href="#TFTP-目录" class="headerlink" title="TFTP 目录"></a>TFTP 目录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mkdir -p /home/alex/linux/tftpboot</span><br><span class="line"><span class="meta">#</span>$ chmod 777 /home/alex/study/stm32mp157/tftpboot</span><br><span class="line"><span class="meta">$</span> cd /home/alex/linux/</span><br></pre></td></tr></table></figure>
+<h3 id="tftp-hpa-和-tftpd-hpa-服务程序"><a href="#tftp-hpa-和-tftpd-hpa-服务程序" class="headerlink" title="tftp-hpa 和 tftpd-hpa 服务程序"></a>tftp-hpa 和 tftpd-hpa 服务程序</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo apt-get install tftp-hpa tftpd-hpa</span><br><span class="line"><span class="meta">$</span> sudo vi /etc/default/tftpd-hpa</span><br><span class="line"><span class="meta">$</span> cat /etc/default/tftpd-hpa</span><br><span class="line"><span class="meta">#</span> /etc/default/tftpd-hpa</span><br><span class="line"></span><br><span class="line">TFTP_USERNAME="tftp"</span><br><span class="line">TFTP_DIRECTORY="/home/alex/study/stm32mp157/tftpboot"</span><br><span class="line">TFTP_ADDRESS=":69"</span><br><span class="line">TFTP_OPTIONS="--secure"</span><br><span class="line"><span class="meta">$</span> sudo vi /etc/xinetd.d/tftp -p</span><br><span class="line"><span class="meta">$</span> cat /etc/xinetd.d/tftp</span><br><span class="line"></span><br><span class="line">service tftp</span><br><span class="line">&#123;</span><br><span class="line">protocol = udp</span><br><span class="line">port = 69</span><br><span class="line">socket_type = dgram</span><br><span class="line">wait = yes</span><br><span class="line">user = root</span><br><span class="line">server = /usr/sbin/in.tftpd</span><br><span class="line">server_args = -s /home/alex/study/stm32mp157/tftpboot -c</span><br><span class="line">disable = no</span><br><span class="line">per_source = 11</span><br><span class="line">cps =100 2</span><br><span class="line">flags =IPv4</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> sudo service tftpd-hpa restart</span><br><span class="line"><span class="meta">$</span> sudo service xinetd restart</span><br></pre></td></tr></table></figure>
+<h3 id="网络环境"><a href="#网络环境" class="headerlink" title="网络环境"></a>网络环境</h3><pre><code>确保网络环境正常， Ubuntu和开发板能相互 ping 通。
+开发板 IP： 192.168.10.50
+虚拟机 IP： 192.168.10.100
+电脑网口的 IP： 192.168.10.200
+</code></pre><h3 id="TFTP-测试"><a href="#TFTP-测试" class="headerlink" title="TFTP 测试"></a>TFTP 测试</h3><p>在开发板文件系统执行以下指令设置开发板 IP，将虚拟机（192.168.10.100） TFTP 工作目录下的 test.c 文件拷贝到开发板中。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0 192.168.10.50</span><br><span class="line">tftp -g -r test.c 192.168.10.100</span><br><span class="line">cat test.c</span><br></pre></td></tr></table></figure></p>
+<h2 id="TFTP-挂载内核和设备树"><a href="#TFTP-挂载内核和设备树" class="headerlink" title="TFTP 挂载内核和设备树"></a>TFTP 挂载内核和设备树</h2><p>启动开发板，进入 uboot 命令行界面，设置网络相关信息。 这里笔者 Ubuntu 的 IP 是<br>192.168.1.208，给开发板设置的 IP 是 192.168.1.250，使用的是交换机连接开发板和电脑。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">setenv ipaddr 192.168.1.250</span><br><span class="line">setenv ethaddr 00:04:9f:04:d2:35</span><br><span class="line">setenv gatewayip 192.168.1.1</span><br><span class="line">setenv netmask 255.255.255.0</span><br><span class="line">setenv serverip 192.168.1.208</span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure></p>
+<p>设置完后测试开发板和虚拟机的连接。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 192.168.1.208</span><br></pre></td></tr></table></figure></p>
+<p>确保网络正常后，设置 uboot 环境变量来挂载 Ubuntu 里 TFTP 目录下的内核和设备树。<br>注意 - 符号为英文的，两边各有一个空格。（以下排版中用绿色着重空格，红色着重符号）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">setenv bootcmd 'tftp c2000000 uImage;tftp c4000000 stm32mp157d-atk.dtb;bootm c2000000 - c4000000'</span><br><span class="line">setenv bootargs 'console=ttySTM0,115200 root=/dev/mmcblk2p3 rootwait rw'</span><br><span class="line">saveenv</span><br><span class="line">boot</span><br></pre></td></tr></table></figure></p>
+<p>Uboot恢复默认设置<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">env default -a</span><br><span class="line">saveenv</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -473,7 +493,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/概率/" rel="tag"># 概率</a>
+            <a href="/tags/stm32mp157/" rel="tag"># stm32mp157</a>
           
         </div>
       
@@ -486,8 +506,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/19/独立事件的组合概率/" rel="next" title="独立事件的组合概率">
-                <i class="fa fa-chevron-left"></i> 独立事件的组合概率
+              <a href="/2022/02/09/stm32mp157-LED点灯实验/" rel="next" title="stm32mp157-LED点灯实验">
+                <i class="fa fa-chevron-left"></i> stm32mp157-LED点灯实验
               </a>
             
           </div>
@@ -495,10 +515,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/19/概率相加/" rel="prev" title="概率相加">
-                概率相加 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -700,7 +716,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#解法1"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x89E3;&#x6CD5;1" class="headerlink" title="&#x89E3;&#x6CD5;1"></a>&#x89E3;&#x6CD5;1</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#解法2"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x89E3;&#x6CD5;2" class="headerlink" title="&#x89E3;&#x6CD5;2"></a>&#x89E3;&#x6CD5;2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目的"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x76EE;&#x7684;" class="headerlink" title="&#x76EE;&#x7684;"></a>&#x76EE;&#x7684;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发板网络环境搭建"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x5F00;&#x53D1;&#x677F;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x642D;&#x5EFA;" class="headerlink" title="&#x5F00;&#x53D1;&#x677F;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x642D;&#x5EFA;"></a>&#x5F00;&#x53D1;&#x677F;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x642D;&#x5EFA;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x51C6;&#x5907;&#x5DE5;&#x4F5C;" class="headerlink" title="&#x51C6;&#x5907;&#x5DE5;&#x4F5C;"></a>&#x51C6;&#x5907;&#x5DE5;&#x4F5C;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络拓扑结构"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x7F51;&#x7EDC;&#x62D3;&#x6251;&#x7ED3;&#x6784;" class="headerlink" title="&#x7F51;&#x7EDC;&#x62D3;&#x6251;&#x7ED3;&#x6784;"></a>&#x7F51;&#x7EDC;&#x62D3;&#x6251;&#x7ED3;&#x6784;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMWare设置"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#VMWare&#x8BBE;&#x7F6E;" class="headerlink" title="VMWare&#x8BBE;&#x7F6E;"></a>VMWare&#x8BBE;&#x7F6E;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFTP-环境搭建"><span class="nav-number">3.</span> <span class="nav-text"><a href="#TFTP-&#x73AF;&#x5883;&#x642D;&#x5EFA;" class="headerlink" title="TFTP &#x73AF;&#x5883;&#x642D;&#x5EFA;"></a>TFTP &#x73AF;&#x5883;&#x642D;&#x5EFA;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TFTP-简介"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#TFTP-&#x7B80;&#x4ECB;" class="headerlink" title="TFTP &#x7B80;&#x4ECB;"></a>TFTP &#x7B80;&#x4ECB;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建-TFTP"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#&#x642D;&#x5EFA;-TFTP" class="headerlink" title="&#x642D;&#x5EFA; TFTP"></a>&#x642D;&#x5EFA; TFTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和配置-xinetd"><span class="nav-number">3.2.1.</span> <span class="nav-text"><a href="#&#x5B89;&#x88C5;&#x548C;&#x914D;&#x7F6E;-xinetd" class="headerlink" title="&#x5B89;&#x88C5;&#x548C;&#x914D;&#x7F6E; xinetd"></a>&#x5B89;&#x88C5;&#x548C;&#x914D;&#x7F6E; xinetd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TFTP-目录"><span class="nav-number">3.2.2.</span> <span class="nav-text"><a href="#TFTP-&#x76EE;&#x5F55;" class="headerlink" title="TFTP &#x76EE;&#x5F55;"></a>TFTP &#x76EE;&#x5F55;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tftp-hpa-和-tftpd-hpa-服务程序"><span class="nav-number">3.2.3.</span> <span class="nav-text"><a href="#tftp-hpa-&#x548C;-tftpd-hpa-&#x670D;&#x52A1;&#x7A0B;&#x5E8F;" class="headerlink" title="tftp-hpa &#x548C; tftpd-hpa &#x670D;&#x52A1;&#x7A0B;&#x5E8F;"></a>tftp-hpa &#x548C; tftpd-hpa &#x670D;&#x52A1;&#x7A0B;&#x5E8F;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络环境"><span class="nav-number">3.2.4.</span> <span class="nav-text"><a href="#&#x7F51;&#x7EDC;&#x73AF;&#x5883;" class="headerlink" title="&#x7F51;&#x7EDC;&#x73AF;&#x5883;"></a>&#x7F51;&#x7EDC;&#x73AF;&#x5883;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TFTP-测试"><span class="nav-number">3.2.5.</span> <span class="nav-text"><a href="#TFTP-&#x6D4B;&#x8BD5;" class="headerlink" title="TFTP &#x6D4B;&#x8BD5;"></a>TFTP &#x6D4B;&#x8BD5;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TFTP-挂载内核和设备树"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#TFTP-&#x6302;&#x8F7D;&#x5185;&#x6838;&#x548C;&#x8BBE;&#x5907;&#x6811;" class="headerlink" title="TFTP &#x6302;&#x8F7D;&#x5185;&#x6838;&#x548C;&#x8BBE;&#x5907;&#x6811;"></a>TFTP &#x6302;&#x8F7D;&#x5185;&#x6838;&#x548C;&#x8BBE;&#x5907;&#x6811;</span></a></li></ol></li></ol></div>
             
 
           </div>

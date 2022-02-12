@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[stm32mp157-TFTP环境搭建]]></title>
+    <url>%2F2022%2F02%2F11%2Fstm32mp157-TFTP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%2F</url>
+    <content type="text"><![CDATA[目的嵌入式开发，免不了需要修改kernel代码和设备树。如果每次更新都要重新烧录，既费时又费力。通常我们不需要修改uboot的代码，可以让uboot通过tftp下载我们的kernel和设备树到指定的地址然后启动Linux。 开发板网络环境搭建准备工作 电脑 开发板 网线 USB转网口网络拓扑结构VMWare设置USB转网口设备的连接状态，让设备连接到虚拟机TFTP 环境搭建TFTP 简介TFTP（Trivial File Transfer Protocol,简单文件传输协议）是 TCP/IP 协议族中的一个用来在客户机与服务器之间进行简单文件传输的协议，提供不复杂、开销不大的文件传输服务。我们可以使用 TFTP 来加载内核 zImage、设备树和其他较小的文件到开发板 DDR 上，从而实现网络挂载。搭建 TFTP安装和配置 xinetd执行以下指令，安装 xinetd。123456789101112131415161718$ sudo apt-get install xinetd$ sudo vi /etc/xinetd.conf$ cat /etc/xinetd.conf# Simple configuration file for xinetd## Some defaults, and include /etc/xinetd.d/defaults&#123;# Please note that you need a log_type line to be able to use log_on_success# and log_on_failure. The default is the following :# log_type = SYSLOG daemon info&#125;includedir /etc/xinetd.d TFTP 目录123$ mkdir -p /home/alex/linux/tftpboot#$ chmod 777 /home/alex/study/stm32mp157/tftpboot$ cd /home/alex/linux/ tftp-hpa 和 tftpd-hpa 服务程序1234567891011121314151617181920212223242526272829$ sudo apt-get install tftp-hpa tftpd-hpa$ sudo vi /etc/default/tftpd-hpa$ cat /etc/default/tftpd-hpa# /etc/default/tftpd-hpaTFTP_USERNAME="tftp"TFTP_DIRECTORY="/home/alex/study/stm32mp157/tftpboot"TFTP_ADDRESS=":69"TFTP_OPTIONS="--secure"$ sudo vi /etc/xinetd.d/tftp -p$ cat /etc/xinetd.d/tftpservice tftp&#123;protocol = udpport = 69socket_type = dgramwait = yesuser = rootserver = /usr/sbin/in.tftpdserver_args = -s /home/alex/study/stm32mp157/tftpboot -cdisable = noper_source = 11cps =100 2flags =IPv4&#125;$ sudo service tftpd-hpa restart$ sudo service xinetd restart 网络环境确保网络环境正常， Ubuntu和开发板能相互 ping 通。 开发板 IP： 192.168.10.50 虚拟机 IP： 192.168.10.100 电脑网口的 IP： 192.168.10.200 TFTP 测试在开发板文件系统执行以下指令设置开发板 IP，将虚拟机（192.168.10.100） TFTP 工作目录下的 test.c 文件拷贝到开发板中。123ifconfig eth0 192.168.10.50tftp -g -r test.c 192.168.10.100cat test.c TFTP 挂载内核和设备树启动开发板，进入 uboot 命令行界面，设置网络相关信息。 这里笔者 Ubuntu 的 IP 是192.168.1.208，给开发板设置的 IP 是 192.168.1.250，使用的是交换机连接开发板和电脑。123456setenv ipaddr 192.168.1.250setenv ethaddr 00:04:9f:04:d2:35setenv gatewayip 192.168.1.1setenv netmask 255.255.255.0setenv serverip 192.168.1.208saveenv 设置完后测试开发板和虚拟机的连接。1ping 192.168.1.208 确保网络正常后，设置 uboot 环境变量来挂载 Ubuntu 里 TFTP 目录下的内核和设备树。注意 - 符号为英文的，两边各有一个空格。（以下排版中用绿色着重空格，红色着重符号）1234setenv bootcmd 'tftp c2000000 uImage;tftp c4000000 stm32mp157d-atk.dtb;bootm c2000000 - c4000000'setenv bootargs 'console=ttySTM0,115200 root=/dev/mmcblk2p3 rootwait rw'saveenvboot Uboot恢复默认设置12env default -asaveenv]]></content>
+      <categories>
+        <category>设备驱动</category>
+      </categories>
+      <tags>
+        <tag>stm32mp157</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[stm32mp157-LED点灯实验]]></title>
     <url>%2F2022%2F02%2F09%2Fstm32mp157-LED%E7%82%B9%E7%81%AF%E5%AE%9E%E9%AA%8C%2F</url>
     <content type="text"><![CDATA[实验内容 内核态编写字符驱动，实现对GPIO输出高低电平控制 用户态实现对字符设备读写，完成最终的点灯实验环境正点原子stm32mp157开发板实验步骤xxyy经验总结]]></content>
+      <categories>
+        <category>设备驱动</category>
+      </categories>
+      <tags>
+        <tag>stm32mp157</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[inotify - monitoring filesystem events]]></title>
@@ -380,6 +397,14 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+      <tags>
+        <tag>概率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[概率相加]]></title>
     <url>%2F2019%2F03%2F19%2F%E6%A6%82%E7%8E%87%E7%9B%B8%E5%8A%A0%2F</url>
     <content type="text"><![CDATA[概率相加P(A or B) = P(A) + P(B) - P(A and B) 文氏图12345678910111213141516171819''' +-----------------------------------------+ | | | /----------------\ | | | | | | | A | | | | /--------------------\ | | | | A | | | | | | and | B | | | | | B | | | | | | | | | | \----------|-----/ | | | | | | | | | | | \--------------------/ | | | +-----------------------------------------+ ''']]></content>
@@ -388,9 +413,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+    <title><![CDATA[相依事件的概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -407,14 +432,6 @@
     <title><![CDATA[贝叶斯定理]]></title>
     <url>%2F2019%2F03%2F19%2F%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%AE%9A%E7%90%86%2F</url>
     <content type="text"><![CDATA[贝叶斯定理:$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$$证明：$P(a \cap b) = P(a|b)P(b)$$P(a \cap b) = P(b \cap a) = P(b|a)P(a)$$P(a|b)P(b) = P(b|a)P(a)$$P(b|a) = \frac{P(a|b)P(b)}{P(a)}$ Ex1:一个袋子里有：5个均匀的硬币，10个不均匀的硬币(0.8 H, 0.2 T)求：取6枚4枚是Head，都是去的均匀硬币的概率。即：P(Fair|4/6 Heads)$P(Fair|4/6 Heads) = \frac{P(4/6 Heads|Fair)P(Fair)}{P(4/6 Heads)}$ Ex2:一个班上有30个学生，至少2个同学生日是同一天的概率。解：P(至少2个同学生日是同一天) = 1 - P(没有同学生日在同一天)P(没有同学生日在同一天) = $\frac{A^{30}_{365}}{365^{30}}$]]></content>
-      <tags>
-        <tag>概率</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[相依事件的概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%9B%B8%E4%BE%9D%E4%BA%8B%E4%BB%B6%E7%9A%84%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[剩下的35张取到1的概率36张卡片，分别1-9的四种花色(方块，红桃，梅花，黑桃)的卡片。随机取出9张，其中有四张是1的概率是多少？ 解法1P(all 4 cards is 1 in my hand of 9) = (# of ways in which event can happened)/(the total # of hands) total # of hands = $\frac{363534333231302928}{987654321}$ the # of hands with 4 1’s = $\frac{11113231302928}{54321}$ P(all 4 cards is 1 in my hand of 9) = $\frac{11113231302928}{54321} \frac{987654321}{3635343332313029*28}$= $\frac{2}{935}$ 解法2 取到一张1的概率 剩下的35张取到1的概率 剩下的34张取到1的概率 剩下的33张取到1的概率 $\frac{1}{36}*9$ $\frac{1}{35}*8$ $\frac{1}{34}*7$ $\frac{1}{33}*6$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
