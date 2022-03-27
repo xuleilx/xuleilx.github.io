@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[pinctrl子系统]]></title>
+    <url>%2F2022%2F03%2F12%2Fpinctrl%E5%AD%90%E7%B3%BB%E7%BB%9F%2F</url>
+    <content type="text"><![CDATA[pinctrl介绍pinctrl主要工作pinctrl 子系统主要工作内容如下： 获取设备树中 pin 信息。 根据获取到的 pin 信息来设置 pin 的复用功能 根据获取到的 pin 信息来设置 pin 的电气特性，比如上/下拉、速度、驱动能力等。 对于我们使用者来讲，只需要在设备树里面设置好某个 pin 的相关属性即可，其他的初始化工作均由 pinctrl 子系统来完成， pinctrl 子系统源码目录为 drivers/pinctrl。 pinctrl工作详细设备树1234567891011pinctrl: pin-controller@50002000 &#123; #address-cells = &lt;1&gt;; #size-cells = &lt;1&gt;; compatible = "st,stm32mp157-pinctrl"; ranges = &lt;0 0x50002000 0xa400&gt;; interrupt-parent = &lt;&amp;exti&gt;; st,syscfg = &lt;&amp;exti 0x60 0xff&gt;; hwlocks = &lt;&amp;hsem 0 1&gt;; pins-are-numbered; ...&#125;; pinctrl 驱动流程如下：1、 定义 pinctrl_desc 结构体。2、 初始化结构体， 重点是 pinconf_ops、 pinmux_ops 和 pinctrl_ops 这三个结构体成员变量，但是这部分半导体厂商帮我们搞定。3、 调用 devm_pinctrl_register 函数完成 PIN 控制器注册。 pinctrl和gpio定义pinctrl -&gt;gpiog -&gt;sdmmc1_b4_pins_a使用sdmmc1 -&gt; pinctrl-0 -&gt;sdmmc1_b4_pins_a -&gt; cd-gpios -&gt; gpiog]]></content>
+      <tags>
+        <tag>设备驱动</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[GPIO介绍]]></title>
     <url>%2F2022%2F03%2F06%2FGPIO%E4%BB%8B%E7%BB%8D%2F</url>
     <content type="text"><![CDATA[GPIO基本结构和工作方式工作方式4种输入模式 输入浮空 输入上拉 输入下拉 模拟输入4种输出模式 开漏输出 开漏复用 推挽输出 推挽复用3种翻转速度 2MHz 10MHz 50MHzGPIO硬件原理图 选用IO模式： 浮空输入_IN_FLOATING – 可以做KEY识别，RX1 上拉输入_IPU – IO内部上拉电阻输入 下拉输入_IPD – IO内部下拉电阻输入 模拟输入_AIN – 应用ADC模拟输入，或者低功耗下省电 开漏输出_OUT_OD – IO输出0接GND，IO输出1，悬空，需要外接上拉电阻，才能实现输出高电平。当输出为1时，IO口的状态由上拉电阻拉高电平，但由于是开漏输出模式，这样IO口也就可以由外部电路改变为低电平或不变。可以读IO输入电平变化，实现C51的IO双向功能 推挽输出_OUT_PP – IO输出0，接GND；IO输出1，接VCC，读输入值是未知的 复用功能的推挽输出_AF_PP – 片内外设功能(I2c的SCL，SDA) 复用功能的开漏输出_AF_OD – 片内外设功能(TX1,MOSI,MISO,SCK,SS) GPIO寄存器说明 两个32位配置寄存器(GPIOx_CRL，GPIOx_CRH) 两个32位数据寄存器(GPIOx_IDR和GPIOx_ODR) 一个32位置位/复位寄存器(GPIOx_BSRR) 一个16位复位寄存器(GPIOx_BRR) 一个32位锁定寄存器(GPIOx_LCKR) GPIO初始化时序 GPIO时钟设置。RCC寄存器 设置GPIO通用输出模式。MODER寄存器 设置GPIO为推挽模式。OTYPER寄存器 设置GPIO位高速。OSPEEDR寄存器 设置GPIO位上拉。PUPDR寄存器 设置/清除寄存器。BSRR寄存器]]></content>
@@ -397,17 +405,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[扑克中的概率和文氏图]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
-    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
+    <title><![CDATA[排列组合]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
+    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^nr=C^n{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[排列组合]]></title>
-    <url>%2F2019%2F03%2F19%2F%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88%2F</url>
-    <content type="text"><![CDATA[定义排列排列的定义：从n个不同元素中，任取m(m≤n,m与n均为自然数,下同）个元素按照一定的顺序排成一列，叫做从n个不同元素中取出m个元素的一个排列；从n个不同元素中取出m(m≤n）个元素的所有排列的个数，叫做从n个不同元素中取出m个元素的排列数，用符号 A(n,m）表示。$$计算公式：A^m_n = n(n-1)(n-2)…（n-m+1）=\frac{n!}{(n-m)!}$$ 组合组合的定义：从n个不同元素中，任取m(m≤n）个元素并成一组，叫做从n个不同元素中取出m个元素的一个组合；从n个不同元素中取出m(m≤n）个元素的所有组合的个数，叫做从n个不同元素中取出m个元素的组合数。用符号 C(n,m) 表示。$$计算公式：C^m_n =C^nr=C^n{n-r}=\frac{A^m_n}{m!}=\frac{n!}{m!(n-m)!};C(n,m)=C(n,n-m).n&gt;=m\C^r_n =\binom{n}{r}=\dbinom{n}{n-r}$$]]></content>
+    <title><![CDATA[扑克中的概率和文氏图]]></title>
+    <url>%2F2019%2F03%2F19%2F%E6%89%91%E5%85%8B%E4%B8%AD%E7%9A%84%E6%A6%82%E7%8E%87%E5%92%8C%E6%96%87%E6%B0%8F%E5%9B%BE%2F</url>
+    <content type="text"><![CDATA[扑克中的概率P(Jack) = 4/52 = 1/13 P(♥) = 13/52 = 1/4 P(J and ♥) = 1/52 p(J or ♥) = (4+13-1)/52 = 16/52 = 4/13 文氏图1234567891011121314151617181920'''' # of Jacks / / +---------/--------------------------+ | / 52 | | /--/--\ | | | 4 | | | | /-----------\ | | \---|./ | | | ,'` 13 | | | _-` | | | | .' \--------\--/ | ,-` \ | # of J -` | \ | and ♥ | \ | +---------------------\--------------+ \ # of ♥ '''']]></content>
       <tags>
         <tag>概率</tag>
       </tags>
@@ -421,17 +429,17 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件的组合概率]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
-    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
+    <title><![CDATA[独立事件]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
       <tags>
         <tag>概率</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[独立事件]]></title>
-    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%2F</url>
-    <content type="text"><![CDATA[Find the probability of getting exactly two “head” when flipping three coins. HHH THH HHT THT HTH TTH HTT TTT $$p(2’H’) = \frac{3}{8}$$ 计算骰子的概率两个骰子一次投掷得到的数值和：方法1：枚举| | 1 | 2 | 3 | 4 | 5 | 6 || —- | —- | —- | —- | —- | —- | —- || 1 | 2 | 3 | 4 | 5 | 6 | 7 || 2 | 3 | 4 | 5 | 6 | 7 | 8 || 3 | 4 | 5 | 6 | 7 | 8 | 9 || 4 | 5 | 6 | 7 | 8 | 9 | 10 || 5 | 6 | 7 | 8 | 9 | 10 | 11 || 6 | 7 | 8 | 9 | 10 | 11 | 12 |P(7) = 6/36方法2：P(5) = 4 / 36| D1 | D2 || —- | —- || 1 | 4 || 2 | 3 || 3 | 2 || 4 | 1 |]]></content>
+    <title><![CDATA[独立事件的组合概率]]></title>
+    <url>%2F2019%2F03%2F19%2F%E7%8B%AC%E7%AB%8B%E4%BA%8B%E4%BB%B6%E7%9A%84%E7%BB%84%E5%90%88%E6%A6%82%E7%8E%87%2F</url>
+    <content type="text"><![CDATA[独立事件的组合概率P(H)= 1/2 P(T) = 1/2 Two way to figure out the result1. 枚举出所有的情况P(H,H) = 1/4 (H,H ; H,T ; T,H ; T,T) 2. 每次事件都是独立的，计算独立事件都发生的概率P(H,H) = P(H) P(H) = (1/2) (1/2) = 1/4 P(T,H,T) = P(T) P(H) P(T) = (1/2) (1/2) (1/2) = 1/8]]></content>
       <tags>
         <tag>概率</tag>
       </tags>

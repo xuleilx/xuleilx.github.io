@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="设备驱动," />
 
 
 
@@ -79,14 +79,18 @@
 
 
 
-<meta name="keywords" content="Hexo, NexT">
-<meta property="og:type" content="website">
-<meta property="og:title" content="沧海一粟">
-<meta property="og:url" content="http://yoursite.com/tags/软件工程/index.html">
+<meta name="description" content="pinctrl介绍pinctrl主要工作pinctrl 子系统主要工作内容如下：  获取设备树中 pin 信息。 根据获取到的 pin 信息来设置 pin 的复用功能 根据获取到的 pin 信息来设置 pin 的电气特性，比如上/下拉、速度、驱动能力等。  对于我们使用者来讲，只需要在设备树里面设置好某个 pin 的相关属性即可，其他的初始化工作均由 pinctrl 子系统来完成， pinctrl">
+<meta name="keywords" content="设备驱动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pinctrl子系统">
+<meta property="og:url" content="http://yoursite.com/2022/03/12/pinctrl子系统/index.html">
 <meta property="og:site_name" content="沧海一粟">
+<meta property="og:description" content="pinctrl介绍pinctrl主要工作pinctrl 子系统主要工作内容如下：  获取设备树中 pin 信息。 根据获取到的 pin 信息来设置 pin 的复用功能 根据获取到的 pin 信息来设置 pin 的电气特性，比如上/下拉、速度、驱动能力等。  对于我们使用者来讲，只需要在设备树里面设置好某个 pin 的相关属性即可，其他的初始化工作均由 pinctrl 子系统来完成， pinctrl">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-03-13T02:50:47.085Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="沧海一粟">
+<meta name="twitter:title" content="pinctrl子系统">
+<meta name="twitter:description" content="pinctrl介绍pinctrl主要工作pinctrl 子系统主要工作内容如下：  获取设备树中 pin 信息。 根据获取到的 pin 信息来设置 pin 的复用功能 根据获取到的 pin 信息来设置 pin 的电气特性，比如上/下拉、速度、驱动能力等。  对于我们使用者来讲，只需要在设备树里面设置好某个 pin 的相关属性即可，其他的初始化工作均由 pinctrl 子系统来完成， pinctrl">
 
 
 
@@ -116,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/软件工程/"/>
+  <link rel="canonical" href="http://yoursite.com/2022/03/12/pinctrl子系统/"/>
 
 
 
 
 
-  <title>标签: 软件工程 | 沧海一粟</title>
+  <title>pinctrl子系统 | 沧海一粟</title>
   
 
 
@@ -151,7 +155,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -319,54 +323,185 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>软件工程<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/12/pinctrl子系统/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="沧海一粟">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2022/03/06/Doxygen使用/" itemprop="url">
-              
-                <span itemprop="name">Doxygen使用</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">pinctrl子系统</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-06T16:13:20+08:00"
-              content="2022-03-06" >
-          03-06
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-12T11:09:23+08:00">
+                2022-03-12
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="pinctrl介绍"><a href="#pinctrl介绍" class="headerlink" title="pinctrl介绍"></a>pinctrl介绍</h1><h1 id="pinctrl主要工作"><a href="#pinctrl主要工作" class="headerlink" title="pinctrl主要工作"></a>pinctrl主要工作</h1><p>pinctrl 子系统主要工作内容如下：</p>
+<ol>
+<li>获取设备树中 pin 信息。</li>
+<li>根据获取到的 pin 信息来设置 pin 的复用功能</li>
+<li>根据获取到的 pin 信息来设置 pin 的电气特性，比如上/下拉、速度、驱动能力等。</li>
+</ol>
+<p>对于我们使用者来讲，只需要在设备树里面设置好某个 pin 的相关属性即可，其他的初始化工作均由 pinctrl 子系统来完成， pinctrl 子系统源码目录为 drivers/pinctrl。</p>
+<h1 id="pinctrl工作详细"><a href="#pinctrl工作详细" class="headerlink" title="pinctrl工作详细"></a>pinctrl工作详细</h1><h2 id="设备树"><a href="#设备树" class="headerlink" title="设备树"></a>设备树</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">pinctrl:</span> pin-<span class="class">controller@50002000 </span>&#123;</span><br><span class="line">  <span class="meta">#address-cells = &lt;1&gt;;</span></span><br><span class="line">  <span class="meta">#size-cells = &lt;1&gt;;</span></span><br><span class="line">  compatible = <span class="string">"st,stm32mp157-pinctrl"</span>;</span><br><span class="line">  ranges = <span class="params">&lt;<span class="number">0</span> <span class="number">0x50002000</span> <span class="number">0xa400</span>&gt;</span>;</span><br><span class="line">  interrupt-parent = <span class="params">&lt;<span class="variable">&amp;exti</span>&gt;</span>;</span><br><span class="line">  st,syscfg = <span class="params">&lt;<span class="variable">&amp;exti</span> <span class="number">0x60</span> <span class="number">0xff</span>&gt;</span>;</span><br><span class="line">  hwlocks = <span class="params">&lt;<span class="variable">&amp;hsem</span> <span class="number">0</span> <span class="number">1</span>&gt;</span>;</span><br><span class="line">  pins-are-numbered;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>pinctrl 驱动流程如下：<br>1、 定义 pinctrl_desc 结构体。<br>2、 初始化结构体， 重点是 pinconf_ops、 pinmux_ops 和 pinctrl_ops 这三个结构体成员变量，但是这部分半导体厂商帮我们搞定。<br>3、 调用 devm_pinctrl_register 函数完成 PIN 控制器注册。</p>
+<h1 id="pinctrl和gpio"><a href="#pinctrl和gpio" class="headerlink" title="pinctrl和gpio"></a>pinctrl和gpio</h1><p>定义<br>pinctrl<br>  -&gt;gpiog<br>  -&gt;sdmmc1_b4_pins_a<br>使用<br>sdmmc1<br>  -&gt; pinctrl-0<br>    -&gt;sdmmc1_b4_pins_a<br>  -&gt; cd-gpios<br>    -&gt; gpiog</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Alex 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Alex 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/设备驱动/" rel="tag"># 设备驱动</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/06/GPIO介绍/" rel="next" title="GPIO介绍">
+                <i class="fa fa-chevron-left"></i> GPIO介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -374,6 +509,12 @@
 
 
           
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA2Ni85NjI4"></div>
+    </div>
+  
+
 
         </div>
         
@@ -394,8 +535,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -524,6 +674,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pinctrl介绍"><span class="nav-number">1.</span> <span class="nav-text"><a href="#pinctrl&#x4ECB;&#x7ECD;" class="headerlink" title="pinctrl&#x4ECB;&#x7ECD;"></a>pinctrl&#x4ECB;&#x7ECD;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pinctrl主要工作"><span class="nav-number">2.</span> <span class="nav-text"><a href="#pinctrl&#x4E3B;&#x8981;&#x5DE5;&#x4F5C;" class="headerlink" title="pinctrl&#x4E3B;&#x8981;&#x5DE5;&#x4F5C;"></a>pinctrl&#x4E3B;&#x8981;&#x5DE5;&#x4F5C;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pinctrl工作详细"><span class="nav-number">3.</span> <span class="nav-text"><a href="#pinctrl&#x5DE5;&#x4F5C;&#x8BE6;&#x7EC6;" class="headerlink" title="pinctrl&#x5DE5;&#x4F5C;&#x8BE6;&#x7EC6;"></a>pinctrl&#x5DE5;&#x4F5C;&#x8BE6;&#x7EC6;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设备树"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x8BBE;&#x5907;&#x6811;" class="headerlink" title="&#x8BBE;&#x5907;&#x6811;"></a>&#x8BBE;&#x5907;&#x6811;</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pinctrl和gpio"><span class="nav-number">4.</span> <span class="nav-text"><a href="#pinctrl&#x548C;gpio" class="headerlink" title="pinctrl&#x548C;gpio"></a>pinctrl&#x548C;gpio</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -644,6 +810,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -672,6 +842,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
