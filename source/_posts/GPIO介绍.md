@@ -22,7 +22,7 @@ tags:
 2. 10MHz
 3. 50MHz
 ## GPIO硬件原理图
-![image-20220306142017899](/home/alex/.config/Typora/typora-user-images/image-20220306142017899.png)
+![image-20220306142017899](https://xuleilx.github.io/images/gpio硬件原理图.png)
 
 选用IO模式：
 
